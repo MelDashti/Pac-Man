@@ -1,0 +1,73 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.40.0.0
+Copyright (C) 2024 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Labinf Dauin Politecnico di Torino Flex license: MDK Professional 5.40 (Flex) (mdk_pro) Operation stops: 15 Aug 2025
+ 
+Tool Versions:
+Toolchain:       MDK Professional 5.40 (Flex)  Version: 5.40.0.3
+Toolchain Path:  c:\Keil_v5\ARM\ARMCLANG\Bin
+C Compiler:      ArmClang.exe V6.22
+Assembler:       Armasm.exe V6.22
+Linker/Locator:  ArmLink.exe V6.22
+Library Manager: ArmAr.exe V6.22
+Hex Converter:   FromElf.exe V6.22
+CPU DLL:         SARMCM3.DLL V5.40.0.3
+Dialog DLL:      DARMP1.DLL V1.28.1.0
+Target DLL:      UL2CM3.DLL V1.164.11.0
+Dialog DLL:      TARMP1.DLL V1.27.1.0
+ 
+<h2>Project:</h2>
+C:\Users\s328715\Desktop\12_sample_GLCD_TP\sample.uvprojx
+Project File Date:  12/13/2024
+
+<h2>Output:</h2>
+*** Using Compiler 'V6.22', folder: 'c:\Keil_v5\ARM\ARMCLANG\Bin'
+Build target 'LandTiger_LPC1768 (release)'
+creating preprocessor file for sample.c...
+creating preprocessor file for IRQ_timer.c...
+creating preprocessor file for system_LPC17xx.c...
+compiling IRQ_timer.c...
+Source/sample.c(94): warning: GCC does not allow variable declarations in for loop initializers before C99 [-Wgcc-compat]
+   94 |     for (int i = 0; i < 6; i++) {
+      |          ^
+1 warning generated.
+compiling sample.c...
+creating preprocessor file for AsciiLib.c...
+creating preprocessor file for lib_timer.c...
+compiling lib_timer.c...
+creating preprocessor file for GLCD.c...
+creating preprocessor file for TouchPanel.c...
+creating preprocessor file for HzLib.c...
+linking...
+Program Size: Code=27840 RO-data=1920 RW-data=24 ZI-data=2400  
+".\Objects\sample_GLCD_TP.axf" - 0 Error(s), 1 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                https://www.keil.com/pack/ARM.CMSIS.6.1.0.pack
+                ARM::CMSIS@6.1.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: CORE Version: 6.1.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.LPC1700_DFP.2.7.1.pack
+                Keil::LPC1700_DFP@2.7.1
+                NXP LPC1700 Series Device Support, Drivers and Examples for MCB1700 and LPC1788-32
+
+<h2>Collection of Component include folders:</h2>
+  ./RTE/_LandTiger_LPC1768__release_
+  C:/Keil_v5/ARM/PACK/ARM/CMSIS/6.1.0/CMSIS/Core/Include
+  C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE@6.1.0
+Build Time Elapsed:  00:00:01
+</pre>
+</body>
+</html>
