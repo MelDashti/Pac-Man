@@ -424,11 +424,11 @@ ARM Macro Assembler    Page 7
 Command Line: --debug --xref --diag_suppress=9931,A1950W --cpu=Cortex-M3 --depe
 nd=.\objects\startup_lpc17xx.d -o.\objects\startup_lpc17xx.o -I.\Source -I.\Sou
 rce\CMSIS_core -I.\Source\GLCD -I.\Source\timer -I.\Source\button_EXINT -I.\Sou
-rce\TouchPanel -I.\RTE\_LandTiger_LPC1768__release_ -IC:\Keil_v5\ARM\PACK\ARM\C
-MSIS\6.1.0\CMSIS\Core\Include -IC:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\2.7.1\Devi
-ce\Include --predefine="__UVISION_VERSION SETA 540" --predefine="LPC175x_6x SET
-A 1" --predefine="_RTE_ SETA 1" --list=.\listings\startup_lpc17xx.lst Source\st
-artup_LPC17xx.s
+rce\TouchPanel -I.\RTE\_SW_DEBUG -IC:\Users\meela\AppData\Local\Arm\Packs\ARM\C
+MSIS\6.1.0\CMSIS\Core\Include -IC:\Users\meela\AppData\Local\Arm\Packs\Keil\LPC
+1700_DFP\2.7.1\Device\Include --predefine="__EVAL SETA 1" --predefine="__UVISIO
+N_VERSION SETA 541" --predefine="LPC175x_6x SETA 1" --predefine="_RTE_ SETA 1" 
+--list=.\listings\startup_lpc17xx.lst Source\startup_LPC17xx.s
 
 
 
@@ -1073,4 +1073,4 @@ Symbol: __use_two_region_memory
       None
 Comment: __use_two_region_memory unused
 2 symbols
-402 symbols in table
+403 symbols in table

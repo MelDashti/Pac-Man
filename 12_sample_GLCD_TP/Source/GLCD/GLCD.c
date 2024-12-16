@@ -494,12 +494,12 @@ uint16_t LCD_GetPoint(uint16_t Xpos,uint16_t Ypos)
 *******************************************************************************/
 void LCD_SetPoint(uint16_t Xpos,uint16_t Ypos,uint16_t point)
 {
-	if( Xpos >= MAX_X || Ypos >= MAX_Y )
+	if( Xpos >= MAX_X || Ypos >= MAX_Y ) // check if the coordinates are within screen bounds
 	{
 		return;
 	}
-	LCD_SetCursor(Xpos,Ypos);
-	LCD_WriteReg(0x0022,point);
+	LCD_SetCursor(Xpos,Ypos); // move the cursor to Xpos and Ypos
+	LCD_WriteReg(0x0022,point); // Write the color value to the screen at the cursor location. 
 }
 
 /******************************************************************************

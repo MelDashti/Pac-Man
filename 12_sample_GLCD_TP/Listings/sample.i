@@ -6,8 +6,8 @@
 # 1 "<built-in>" 2
 # 1 "Source/sample.c" 2
 # 24 "Source/sample.c"
-# 1 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 1
-# 41 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
+# 1 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 1
+# 41 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 typedef enum IRQn
 {
 
@@ -59,7 +59,7 @@ typedef enum IRQn
   USBActivity_IRQn = 33,
   CANActivity_IRQn = 34,
 } IRQn_Type;
-# 106 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
+# 106 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 # 1 "./Source/CMSIS_core\\core_cm3.h" 1
 # 29 "./Source/CMSIS_core\\core_cm3.h" 3
 
@@ -67,8 +67,8 @@ typedef enum IRQn
 
 
 
-# 1 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdint.h" 1 3
-# 56 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdint.h" 3
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdint.h" 1 3
+# 56 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdint.h" 3
 typedef signed char int8_t;
 typedef signed short int int16_t;
 typedef signed int int32_t;
@@ -969,9 +969,9 @@ static __inline int32_t ITM_CheckChar (void)
     return (1);
   }
 }
-# 107 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 2
-# 1 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\system_LPC17xx.h" 1
-# 49 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\system_LPC17xx.h"
+# 107 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 2
+# 1 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\system_LPC17xx.h" 1
+# 49 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\system_LPC17xx.h"
 extern uint32_t SystemCoreClock;
 
 
@@ -988,8 +988,8 @@ extern void SystemInit (void);
 
 
 extern void SystemCoreClockUpdate (void);
-# 108 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 2
-# 120 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
+# 108 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 2
+# 120 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 typedef struct
 {
   volatile uint32_t FLASHCFG;
@@ -1837,12 +1837,12 @@ extern void reset_timer( uint8_t timer_num );
 extern void TIMER0_IRQHandler (void);
 extern void TIMER1_IRQHandler (void);
 # 28 "Source/sample.c" 2
-# 1 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 1 3
-# 53 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 1 3
+# 53 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
     typedef unsigned int size_t;
-# 68 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 68 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
     typedef __builtin_va_list __va_list;
-# 87 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 87 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 typedef struct __fpos_t_struct {
     unsigned long long int __pos;
 
@@ -1854,9 +1854,9 @@ typedef struct __fpos_t_struct {
         unsigned int __state1, __state2;
     } __mbstate;
 } fpos_t;
-# 108 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 108 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 typedef struct __FILE FILE;
-# 119 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 119 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 struct __FILE {
     union {
         long __FILE_alignment;
@@ -1867,10 +1867,10 @@ struct __FILE {
 
     } __FILE_opaque;
 };
-# 138 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 138 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern FILE __stdin, __stdout, __stderr;
 extern FILE *__aeabi_stdin, *__aeabi_stdout, *__aeabi_stderr;
-# 224 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 224 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) int remove(const char * ) __attribute__((__nonnull__(1)));
 
 
@@ -1880,7 +1880,7 @@ extern __attribute__((__nothrow__)) int remove(const char * ) __attribute__((__n
 
 
 extern __attribute__((__nothrow__)) int rename(const char * , const char * ) __attribute__((__nonnull__(1,2)));
-# 243 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 243 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) FILE *tmpfile(void);
 
 
@@ -1889,18 +1889,18 @@ extern __attribute__((__nothrow__)) FILE *tmpfile(void);
 
 
 extern __attribute__((__nothrow__)) char *tmpnam(char * );
-# 265 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 265 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) int fclose(FILE * ) __attribute__((__nonnull__(1)));
-# 275 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 275 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) int fflush(FILE * );
-# 285 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 285 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) FILE *fopen(const char * __restrict ,
                            const char * __restrict ) __attribute__((__nonnull__(1,2)));
-# 329 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 329 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) FILE *freopen(const char * __restrict ,
                     const char * __restrict ,
                     FILE * __restrict ) __attribute__((__nonnull__(2,3)));
-# 342 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 342 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) void setbuf(FILE * __restrict ,
                     char * __restrict ) __attribute__((__nonnull__(1)));
 
@@ -1912,11 +1912,11 @@ extern __attribute__((__nothrow__)) void setbuf(FILE * __restrict ,
 extern __attribute__((__nothrow__)) int setvbuf(FILE * __restrict ,
                    char * __restrict ,
                    int , size_t ) __attribute__((__nonnull__(1)));
-# 370 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 370 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 #pragma __printf_args
 extern __attribute__((__nothrow__)) int fprintf(FILE * __restrict ,
                     const char * __restrict , ...) __attribute__((__nonnull__(1,2)));
-# 393 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 393 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 #pragma __printf_args
 extern __attribute__((__nothrow__)) int _fprintf(FILE * __restrict ,
                      const char * __restrict , ...) __attribute__((__nonnull__(1,2)));
@@ -1961,7 +1961,7 @@ extern __attribute__((__nothrow__)) int _sprintf(char * __restrict , const char 
 #pragma __printf_args
 extern __attribute__((__nothrow__)) int __ARM_snprintf(char * __restrict , size_t ,
                      const char * __restrict , ...) __attribute__((__nonnull__(3)));
-# 460 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 460 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 #pragma __printf_args
 extern __attribute__((__nothrow__)) int _snprintf(char * __restrict , size_t ,
                       const char * __restrict , ...) __attribute__((__nonnull__(3)));
@@ -1973,7 +1973,7 @@ extern __attribute__((__nothrow__)) int _snprintf(char * __restrict , size_t ,
 #pragma __scanf_args
 extern __attribute__((__nothrow__)) int fscanf(FILE * __restrict ,
                     const char * __restrict , ...) __attribute__((__nonnull__(1,2)));
-# 503 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 503 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 #pragma __scanf_args
 extern __attribute__((__nothrow__)) int _fscanf(FILE * __restrict ,
                      const char * __restrict , ...) __attribute__((__nonnull__(1,2)));
@@ -2002,11 +2002,11 @@ extern __attribute__((__nothrow__)) int _scanf(const char * __restrict , ...) __
 #pragma __scanf_args
 extern __attribute__((__nothrow__)) int sscanf(const char * __restrict ,
                     const char * __restrict , ...) __attribute__((__nonnull__(1,2)));
-# 541 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 541 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 #pragma __scanf_args
 extern __attribute__((__nothrow__)) int _sscanf(const char * __restrict ,
                      const char * __restrict , ...) __attribute__((__nonnull__(1,2)));
-# 555 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 555 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) int _vfscanf(FILE * __restrict , const char * __restrict , __va_list) __attribute__((__nonnull__(1,2)));
 extern __attribute__((__nothrow__)) int _vscanf(const char * __restrict , __va_list) __attribute__((__nonnull__(1)));
 extern __attribute__((__nothrow__)) int _vsscanf(const char * __restrict , const char * __restrict , __va_list) __attribute__((__nonnull__(1,2)));
@@ -2028,13 +2028,13 @@ extern __attribute__((__nothrow__)) int _vprintf(const char * __restrict , __va_
 
 extern __attribute__((__nothrow__)) int vfprintf(FILE * __restrict ,
                     const char * __restrict , __va_list ) __attribute__((__nonnull__(1,2)));
-# 584 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 584 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) int vsprintf(char * __restrict ,
                      const char * __restrict , __va_list ) __attribute__((__nonnull__(1,2)));
-# 594 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 594 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) int __ARM_vsnprintf(char * __restrict , size_t ,
                      const char * __restrict , __va_list ) __attribute__((__nonnull__(3)));
-# 609 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 609 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) int _vsprintf(char * __restrict ,
                       const char * __restrict , __va_list ) __attribute__((__nonnull__(1,2)));
 
@@ -2051,18 +2051,18 @@ extern __attribute__((__nothrow__)) int _vfprintf(FILE * __restrict ,
 
 extern __attribute__((__nothrow__)) int _vsnprintf(char * __restrict , size_t ,
                       const char * __restrict , __va_list ) __attribute__((__nonnull__(3)));
-# 635 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 635 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 #pragma __printf_args
 extern __attribute__((__nothrow__)) int __ARM_asprintf(char ** , const char * __restrict , ...) __attribute__((__nonnull__(2)));
 extern __attribute__((__nothrow__)) int __ARM_vasprintf(char ** , const char * __restrict , __va_list ) __attribute__((__nonnull__(2)));
-# 649 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 649 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) int fgetc(FILE * ) __attribute__((__nonnull__(1)));
-# 659 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 659 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) char *fgets(char * __restrict , int ,
                     FILE * __restrict ) __attribute__((__nonnull__(1,3)));
-# 673 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 673 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) int fputc(int , FILE * ) __attribute__((__nonnull__(2)));
-# 683 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 683 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) int fputs(const char * __restrict , FILE * __restrict ) __attribute__((__nonnull__(1,2)));
 
 
@@ -2071,13 +2071,13 @@ extern __attribute__((__nothrow__)) int fputs(const char * __restrict , FILE * _
 
 
 extern __attribute__((__nothrow__)) int getc(FILE * ) __attribute__((__nonnull__(1)));
-# 704 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 704 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
     extern __attribute__((__nothrow__)) int (getchar)(void);
-# 713 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 713 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) char *gets(char * ) __attribute__((__nonnull__(1)));
-# 725 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 725 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) int putc(int , FILE * ) __attribute__((__nonnull__(2)));
-# 737 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 737 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
     extern __attribute__((__nothrow__)) int (putchar)(int );
 
 
@@ -2094,26 +2094,26 @@ extern __attribute__((__nothrow__)) int puts(const char * ) __attribute__((__non
 
 
 extern __attribute__((__nothrow__)) int ungetc(int , FILE * ) __attribute__((__nonnull__(2)));
-# 778 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 778 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) size_t fread(void * __restrict ,
                     size_t , size_t , FILE * __restrict ) __attribute__((__nonnull__(1,4)));
-# 794 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 794 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) size_t __fread_bytes_avail(void * __restrict ,
                     size_t , FILE * __restrict ) __attribute__((__nonnull__(1,3)));
-# 810 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 810 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) size_t fwrite(const void * __restrict ,
                     size_t , size_t , FILE * __restrict ) __attribute__((__nonnull__(1,4)));
-# 822 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 822 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) int fgetpos(FILE * __restrict , fpos_t * __restrict ) __attribute__((__nonnull__(1,2)));
-# 833 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 833 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) int fseek(FILE * , long int , int ) __attribute__((__nonnull__(1)));
-# 850 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 850 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) int fsetpos(FILE * __restrict , const fpos_t * __restrict ) __attribute__((__nonnull__(1,2)));
-# 863 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 863 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) long int ftell(FILE * ) __attribute__((__nonnull__(1)));
-# 877 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 877 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) void rewind(FILE * ) __attribute__((__nonnull__(1)));
-# 886 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 886 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) void clearerr(FILE * ) __attribute__((__nonnull__(1)));
 
 
@@ -2133,7 +2133,7 @@ extern __attribute__((__nothrow__)) int ferror(FILE * ) __attribute__((__nonnull
 
 
 extern __attribute__((__nothrow__)) void perror(const char * );
-# 917 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
+# 917 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
 extern __attribute__((__nothrow__)) int _fisatty(FILE * ) __attribute__((__nonnull__(1)));
 
 
@@ -2141,8 +2141,8 @@ extern __attribute__((__nothrow__)) int _fisatty(FILE * ) __attribute__((__nonnu
 extern __attribute__((__nothrow__)) void __use_no_semihosting_swi(void);
 extern __attribute__((__nothrow__)) void __use_no_semihosting(void);
 # 29 "Source/sample.c" 2
-# 1 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 1 3
-# 91 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 1 3
+# 91 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
     typedef unsigned short wchar_t;
 
 
@@ -2151,9 +2151,9 @@ extern __attribute__((__nothrow__)) void __use_no_semihosting(void);
 typedef struct div_t { int quot, rem; } div_t;
 
 typedef struct ldiv_t { long int quot, rem; } ldiv_t;
-# 139 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 139 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) int __aeabi_MB_CUR_MAX(void);
-# 158 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 158 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) double atof(const char * ) __attribute__((__nonnull__(1)));
 
 
@@ -2167,15 +2167,15 @@ extern __attribute__((__nothrow__)) int atoi(const char * ) __attribute__((__non
 
 
 extern __attribute__((__nothrow__)) long int atol(const char * ) __attribute__((__nonnull__(1)));
-# 185 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 185 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) double strtod(const char * __restrict , char ** __restrict ) __attribute__((__nonnull__(1)));
-# 212 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 212 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) long int strtol(const char * __restrict ,
                         char ** __restrict , int ) __attribute__((__nonnull__(1)));
-# 243 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 243 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) unsigned long int strtoul(const char * __restrict ,
                                        char ** __restrict , int ) __attribute__((__nonnull__(1)));
-# 275 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 275 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) long long strtoll(const char * __restrict ,
                                   char ** __restrict , int )
                           __attribute__((__nonnull__(1)));
@@ -2195,9 +2195,9 @@ extern __attribute__((__nothrow__)) unsigned long long strtoull(const char * __r
 
 
 extern __attribute__((__nothrow__)) int rand(void);
-# 303 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 303 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) void srand(unsigned int );
-# 313 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 313 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 struct _rand_state { int __x[57]; };
 extern __attribute__((__nothrow__)) int _rand_r(struct _rand_state *);
 extern __attribute__((__nothrow__)) void _srand_r(struct _rand_state *, unsigned int);
@@ -2230,35 +2230,35 @@ extern __attribute__((__nothrow__)) void *malloc(size_t );
 
 
 extern __attribute__((__nothrow__)) void *realloc(void * , size_t );
-# 374 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 374 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 typedef int (*__heapprt)(void *, char const *, ...);
 extern __attribute__((__nothrow__)) void __heapstats(int (* )(void * ,
                                            char const * , ...),
                         void * ) __attribute__((__nonnull__(1)));
-# 390 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 390 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) int __heapvalid(int (* )(void * ,
                                            char const * , ...),
                        void * , int ) __attribute__((__nonnull__(1)));
-# 411 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 411 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) __attribute__((__noreturn__)) void abort(void);
-# 422 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 422 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) int atexit(void (* )(void)) __attribute__((__nonnull__(1)));
-# 444 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 444 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) __attribute__((__noreturn__)) void exit(int );
-# 460 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 460 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) __attribute__((__noreturn__)) void _Exit(int );
-# 471 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 471 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) char *getenv(const char * ) __attribute__((__nonnull__(1)));
-# 484 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 484 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) int system(const char * );
-# 497 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 497 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern void *bsearch(const void * , const void * ,
               size_t , size_t ,
               int (* )(const void *, const void *)) __attribute__((__nonnull__(1,2,5)));
-# 532 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 532 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern void qsort(void * , size_t , size_t ,
            int (* )(const void *, const void *)) __attribute__((__nonnull__(1,4)));
-# 560 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 560 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) __attribute__((__const__)) int abs(int );
 
 
@@ -2267,11 +2267,11 @@ extern __attribute__((__nothrow__)) __attribute__((__const__)) int abs(int );
 
 
 extern __attribute__((__nothrow__)) __attribute__((__const__)) div_t div(int , int );
-# 579 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 579 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) __attribute__((__const__)) long int labs(long int );
-# 589 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 589 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) __attribute__((__const__)) ldiv_t ldiv(long int , long int );
-# 644 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 644 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 typedef struct __sdiv32by16 { long quot, rem; } __sdiv32by16;
 typedef struct __udiv32by16 { unsigned long quot, rem; } __udiv32by16;
 
@@ -2300,20 +2300,20 @@ __attribute__((__value_in_regs__)) extern __attribute__((__nothrow__)) __attribu
 
 
 extern __attribute__((__nothrow__)) unsigned int __fp_status(unsigned int , unsigned int );
-# 705 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 705 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) int mblen(const char * , size_t );
-# 720 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 720 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) int mbtowc(wchar_t * __restrict ,
                    const char * __restrict , size_t );
-# 739 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 739 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) int wctomb(char * , wchar_t );
-# 761 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 761 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) size_t mbstowcs(wchar_t * __restrict ,
                       const char * __restrict , size_t ) __attribute__((__nonnull__(2)));
-# 779 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 779 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) size_t wcstombs(char * __restrict ,
                       const wchar_t * __restrict , size_t ) __attribute__((__nonnull__(2)));
-# 798 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
+# 798 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
 extern __attribute__((__nothrow__)) void __use_realtime_heap(void);
 extern __attribute__((__nothrow__)) void __use_realtime_division(void);
 extern __attribute__((__nothrow__)) void __use_two_region_memory(void);
@@ -2325,7 +2325,7 @@ extern __attribute__((__nothrow__)) int __C_library_version_number(void);
 # 30 "Source/sample.c" 2
 
 
-
+extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the emulator to find the symbol (can be placed also inside system_LPC17xx.h but since it is RO, it needs more work)
 
 
 
@@ -2336,36 +2336,300 @@ volatile int countdown = 60; // Global for timer use
 void drawUI(void) {
     char buffer[20];
 
-    // SCORE
+    int textOffset = 5; // Space between text and maze borders
+
+    // SCORE (Top-Left)
     sprintf(buffer, "SCORE: %04d", score);
-    GUI_Text(10, 0, (uint8_t *)buffer, 0xFFFF, 0x0000);
+    GUI_Text(10, 0, (uint8_t *)buffer, 0xFFFF, 0x0000); // Placed above top-left corner
 
-    // TIME
+    // TIME (Top-Right)
     sprintf(buffer, "TIME: %02d", countdown);
-    GUI_Text(240, 0, (uint8_t *)buffer, 0xFFFF, 0x0000);
+    GUI_Text(240 - 100, 0, (uint8_t *)buffer, 0xFFFF, 0x0000); // Placed above top-right corner
 
-    // LIVES
+    // LIVES (Bottom-Left)
     sprintf(buffer, "LIVES: %d", lives);
-    GUI_Text(10, 220, (uint8_t *)buffer, 0xFFFF, 0x0000);
+    GUI_Text(10, 320 - 15, (uint8_t *)buffer, 0xFFFF, 0x0000); // Placed below bottom-left corner
 }
+
+
+void drawCentralBox(void) {
+    int boxWidth = 40;
+    int boxHeight = 40;
+
+    int boxLeft = (240 / 2) - (boxWidth / 2);
+    int boxRight = (240 / 2) + (boxWidth / 2);
+    int boxTop = (320 / 2) - (boxHeight / 2);
+    int boxBottom = (320 / 2) + (boxHeight / 2);
+
+    LCD_DrawLine(boxLeft, boxTop, boxRight, boxTop, 0x001F);
+    LCD_DrawLine(boxLeft, boxBottom, boxRight, boxBottom, 0x001F);
+    LCD_DrawLine(boxLeft, boxTop, boxLeft, boxBottom, 0x001F);
+    LCD_DrawLine(boxRight, boxTop, boxRight, boxBottom, 0x001F);
+}
+
+
+void drawSmallRectangle(int startX, int startY, int width, int height, uint16_t color) {
+    int endX = startX + width;
+    int endY = startY + height;
+
+    // Draw rectangle
+    LCD_DrawLine(startX, startY, endX, startY, color); // Top side
+    LCD_DrawLine(startX, endY, endX, endY, color); // Bottom side
+    LCD_DrawLine(startX, startY, startX, endY, color); // Left side
+    LCD_DrawLine(endX, startY, endX, endY, color); // Right side
+}
+
+void drawLShapedBox(int startX, int startY, int width, int height, int thickness, uint16_t color) {
+    // Vertical segment of the L (with closed ends)
+    LCD_DrawLine(startX, startY, startX + thickness, startY, color); // Top edge (closed)
+    LCD_DrawLine(startX, startY, startX, startY + height, color); // Left edge
+    LCD_DrawLine(startX + thickness, startY, startX + thickness, startY + height, color); // Right edge
+    LCD_DrawLine(startX, startY + height, startX + thickness, startY + height, color); // Bottom edge
+
+    // Horizontal segment of the L (with closed ends)
+    int bottomY = startY + height - thickness; // Align horizontal part to bottom of vertical
+    LCD_DrawLine(startX, bottomY, startX + width, bottomY, color); // Top edge of horizontal
+    LCD_DrawLine(startX, bottomY + thickness, startX + width, bottomY + thickness, color); // Bottom edge of horizontal
+    LCD_DrawLine(startX + width, bottomY, startX + width, bottomY + thickness, color); // Right edge (closed)
+}
+
+
+void drawTShapedBox(int startX, int startY, int width, int height, int thickness, uint16_t color) {
+    int centerX = startX + (width / 2); // Calculate center X for the vertical part
+
+    // Top horizontal rectangle (fully closed sides)
+    LCD_DrawLine(startX, startY, startX + width, startY, color); // Top edge
+    LCD_DrawLine(startX, startY + thickness, startX + width, startY + thickness, color); // Bottom edge
+    LCD_DrawLine(startX, startY, startX, startY + thickness, color); // Left side (closed)
+    LCD_DrawLine(startX + width, startY, startX + width, startY + thickness, color); // Right side (closed)
+
+    // Vertical rectangle (centered below the horizontal part)
+    LCD_DrawLine(centerX - (thickness / 2), startY + thickness, centerX - (thickness / 2), startY + height, color); // Left side
+    LCD_DrawLine(centerX + (thickness / 2), startY + thickness, centerX + (thickness / 2), startY + height, color); // Right side
+    LCD_DrawLine(centerX - (thickness / 2), startY + height, centerX + (thickness / 2), startY + height, color); // Bottom edge
+}
+
 
 
 void drawMaze(void) {
     uint16_t mazeColor = 0x001F;
-    // Outer boundary (adjust coordinates as needed)
-    LCD_DrawLine(10, 10, 310, 10, mazeColor);
-    LCD_DrawLine(10, 10, 10, 230, mazeColor);
-    LCD_DrawLine(310, 10, 310, 230, mazeColor);
-    LCD_DrawLine(10, 230, 310, 230, mazeColor);
 
-    // Internal “box” walls (example)
-    LCD_DrawLine(140, 100, 180, 100, mazeColor);
-    LCD_DrawLine(140, 140, 180, 140, mazeColor);
-    LCD_DrawLine(140, 100, 140, 140, mazeColor);
-    LCD_DrawLine(180, 100, 180, 140, mazeColor);
+    int topBottomMargin = 20;
+    int leftRightMargin = 2;
+    int offset = 4;
+    int indentWidth = 20;
 
+    // Vertical boundaries
+    int topY = topBottomMargin;
+    int bottomY = 320 - topBottomMargin;
+
+    // Define two protrusions on the left side:
+    // Each protrusion is defined by a top and bottom Y coordinate where indentation occurs.
+    int protrusion1TopLeft = 80;
+    int protrusion1BottomLeft = 120;
+    int protrusion2TopLeft = 160;
+    int protrusion2BottomLeft = 200;
+
+    // Same protrusions on the right side (mirrored)
+    int protrusion1TopRight = protrusion1TopLeft;
+    int protrusion1BottomRight = protrusion1BottomLeft;
+    int protrusion2TopRight = protrusion2TopLeft;
+    int protrusion2BottomRight = protrusion2BottomLeft;
+
+    // ==== Outer Border ====
+    // Top horizontal line
+    LCD_DrawLine(leftRightMargin, topY, 240 - leftRightMargin, topY, mazeColor);
+
+    // Bottom horizontal line
+    LCD_DrawLine(leftRightMargin, bottomY, 240 - leftRightMargin, bottomY, mazeColor);
+
+    // ---- LEFT OUTER BORDER with two protrusions ----
+    // From topY down to protrusion1Top
+    LCD_DrawLine(leftRightMargin, topY, leftRightMargin, protrusion1TopLeft, mazeColor);
+    // Protrusion 1 (left side)
+    LCD_DrawLine(leftRightMargin, protrusion1TopLeft, leftRightMargin + indentWidth, protrusion1TopLeft, mazeColor);
+    LCD_DrawLine(leftRightMargin + indentWidth, protrusion1TopLeft, leftRightMargin + indentWidth, protrusion1BottomLeft, mazeColor);
+    LCD_DrawLine(leftRightMargin + indentWidth, protrusion1BottomLeft, leftRightMargin, protrusion1BottomLeft, mazeColor);
+
+    // Continue down to protrusion2Top
+    LCD_DrawLine(leftRightMargin, protrusion1BottomLeft, leftRightMargin, protrusion2TopLeft, mazeColor);
+
+    // Protrusion 2 (left side)
+    LCD_DrawLine(leftRightMargin, protrusion2TopLeft, leftRightMargin + indentWidth, protrusion2TopLeft, mazeColor);
+    LCD_DrawLine(leftRightMargin + indentWidth, protrusion2TopLeft, leftRightMargin + indentWidth, protrusion2BottomLeft, mazeColor);
+    LCD_DrawLine(leftRightMargin + indentWidth, protrusion2BottomLeft, leftRightMargin, protrusion2BottomLeft, mazeColor);
+
+    // Down to bottom
+    LCD_DrawLine(leftRightMargin, protrusion2BottomLeft, leftRightMargin, bottomY, mazeColor);
+
+    // ---- RIGHT OUTER BORDER with two protrusions (mirrored) ----
+    // From topY down to protrusion1Top
+    LCD_DrawLine(240 - leftRightMargin, topY, 240 - leftRightMargin, protrusion1TopRight, mazeColor);
+    // Protrusion 1 (right side) mirrored inward
+    LCD_DrawLine(240 - leftRightMargin, protrusion1TopRight, 240 - leftRightMargin - indentWidth, protrusion1TopRight, mazeColor);
+    LCD_DrawLine(240 - leftRightMargin - indentWidth, protrusion1TopRight, 240 - leftRightMargin - indentWidth, protrusion1BottomRight, mazeColor);
+    LCD_DrawLine(240 - leftRightMargin - indentWidth, protrusion1BottomRight, 240 - leftRightMargin, protrusion1BottomRight, mazeColor);
+
+    // Down to protrusion2Top
+    LCD_DrawLine(240 - leftRightMargin, protrusion1BottomRight, 240 - leftRightMargin, protrusion2TopRight, mazeColor);
+
+    // Protrusion 2 (right side)
+    LCD_DrawLine(240 - leftRightMargin, protrusion2TopRight, 240 - leftRightMargin - indentWidth, protrusion2TopRight, mazeColor);
+    LCD_DrawLine(240 - leftRightMargin - indentWidth, protrusion2TopRight, 240 - leftRightMargin - indentWidth, protrusion2BottomRight, mazeColor);
+    LCD_DrawLine(240 - leftRightMargin - indentWidth, protrusion2BottomRight, 240 - leftRightMargin, protrusion2BottomRight, mazeColor);
+
+    // Down to bottom
+    LCD_DrawLine(240 - leftRightMargin, protrusion2BottomRight, 240 - leftRightMargin, bottomY, mazeColor);
+
+
+    // ==== Inner Border (Parallel to Outer, with offset) ====
+
+    // Inner border top and bottom lines
+    int topY_in = topY + offset;
+    int bottomY_in = bottomY - offset;
+
+    LCD_DrawLine(leftRightMargin + offset, topY_in, 240 - leftRightMargin - offset, topY_in, mazeColor);
+    LCD_DrawLine(leftRightMargin + offset, bottomY_in, 240 - leftRightMargin - offset, bottomY_in, mazeColor);
+
+    // Inner border protrusions:
+    // For the left side, adjust protrusion coordinates to prevent intersection
+    int leftMargin_in = leftRightMargin + offset;
+    int leftIndent_in = leftRightMargin + indentWidth - offset;
+
+    // Left inner border with two protrusions
+    // Segment above protrusion1
+    LCD_DrawLine(leftMargin_in, topY_in, leftMargin_in, protrusion1TopLeft - offset, mazeColor);
+    // Protrusion 1 (inner)
+    LCD_DrawLine(leftMargin_in, protrusion1TopLeft - offset, leftIndent_in, protrusion1TopLeft - offset, mazeColor);
+    LCD_DrawLine(leftIndent_in, protrusion1TopLeft - offset, leftIndent_in, protrusion1BottomLeft + offset, mazeColor);
+    LCD_DrawLine(leftIndent_in, protrusion1BottomLeft + offset, leftMargin_in, protrusion1BottomLeft + offset, mazeColor);
+
+    // Between protrusions
+    LCD_DrawLine(leftMargin_in, protrusion1BottomLeft + offset, leftMargin_in, protrusion2TopLeft - offset, mazeColor);
+
+    // Protrusion 2 (inner)
+    LCD_DrawLine(leftMargin_in, protrusion2TopLeft - offset, leftIndent_in, protrusion2TopLeft - offset, mazeColor);
+    LCD_DrawLine(leftIndent_in, protrusion2TopLeft - offset, leftIndent_in, protrusion2BottomLeft + offset, mazeColor);
+    LCD_DrawLine(leftIndent_in, protrusion2BottomLeft + offset, leftMargin_in, protrusion2BottomLeft + offset, mazeColor);
+
+    // Down to bottom_in
+    LCD_DrawLine(leftMargin_in, protrusion2BottomLeft + offset, leftMargin_in, bottomY_in, mazeColor);
+
+    // For the right side inner border:
+    int rightMargin_in = 240 - leftRightMargin - offset;
+    int rightIndent_in = 240 - leftRightMargin - indentWidth + offset;
+
+    // Right inner border with two protrusions
+    // Segment above protrusion1 (right)
+    LCD_DrawLine(rightMargin_in, topY_in, rightMargin_in, protrusion1TopRight - offset, mazeColor);
+    // Protrusion 1 (inner, right)
+    LCD_DrawLine(rightMargin_in, protrusion1TopRight - offset, rightIndent_in, protrusion1TopRight - offset, mazeColor);
+    LCD_DrawLine(rightIndent_in, protrusion1TopRight - offset, rightIndent_in, protrusion1BottomRight + offset, mazeColor);
+    LCD_DrawLine(rightIndent_in, protrusion1BottomRight + offset, rightMargin_in, protrusion1BottomRight + offset, mazeColor);
+
+    // Between protrusions on right
+    LCD_DrawLine(rightMargin_in, protrusion1BottomRight + offset, rightMargin_in, protrusion2TopRight - offset, mazeColor);
+
+    // Protrusion 2 (inner, right)
+    LCD_DrawLine(rightMargin_in, protrusion2TopRight - offset, rightIndent_in, protrusion2TopRight - offset, mazeColor);
+    LCD_DrawLine(rightIndent_in, protrusion2TopRight - offset, rightIndent_in, protrusion2BottomRight + offset, mazeColor);
+    LCD_DrawLine(rightIndent_in, protrusion2BottomRight + offset, rightMargin_in, protrusion2BottomRight + offset, mazeColor);
+
+    // Down to bottom_in
+    LCD_DrawLine(rightMargin_in, protrusion2BottomRight + offset, rightMargin_in, bottomY_in, mazeColor);
+
+
+  // we add other shapes
+  // Add Central Box
+    drawCentralBox();
+
+  // ==== Small Rectangles ====
+    // Adjust the positions and sizes to prevent overlap
+    drawSmallRectangle(30, 60, 30, 20, mazeColor); // Top-left
+    drawSmallRectangle(240 - 60, 60, 30, 20, mazeColor); // Top-right
+    drawSmallRectangle(30, 320 - 70, 30, 20, mazeColor); // Bottom-left
+    drawSmallRectangle(240 - 60, 320 - 70, 30, 20, mazeColor); // Bottom-right
+
+    // ==== L-Shaped Boxes ====
+    // Adjust the positions and sizes to prevent overlap
+    drawLShapedBox(40, 100, 30, 40, 8, mazeColor); // Left-middle
+    drawLShapedBox(240 - 100, 100, 50, 30, 6, mazeColor); // Right-middle
+    drawLShapedBox(40, 320 - 150, 40, 50, 8, mazeColor); // Bottom-left
+    drawLShapedBox(240 - 110, 320 - 100, 40, 50, 10, mazeColor); // Bottom-right
+
+    // ==== T-Shaped Boxes ====
+    // Adjust the positions and sizes to prevent overlap
+    drawTShapedBox((240 / 2) - 25, 70, 60, 50, 9, mazeColor); // Top-center
+    drawTShapedBox(70, 320 - 85, 50, 40, 6, mazeColor); // Bottom-left-center
+    drawTShapedBox(240 - 100, 320 - 115, 50, 40, 6, mazeColor); // Bottom-right-center
 
 }
+# 279 "Source/sample.c"
+void drawFilledSquare(int x, int y, uint16_t color) {
+  int hx, vy; // hx is horizontal offset relative to center and vy is to vertical
+ for (hx = -1 // better to use define as it will be constant and set at compile time.; hx <= 1 // better to use define as it will be constant and set at compile time.; hx++) {
+        for (vy = -1 // better to use define as it will be constant and set at compile time.; vy <= 1 // better to use define as it will be constant and set at compile time.; vy++) {
+            if ((x + hx >= 0 && x + hx < 240) && (y + vy>= 0 && y + vy < 320)) {
+                LCD_SetPoint(x + hx, y + vy, color); // Draw a pixel within bounds
+            }
+        }
+    }
+}
+int isInsideWall(int x, int y) {
+    // ==== Check for Outer Boundaries ====
+    if (x <= 2 || x >= 240 - 2 || y <= 20 || y >= 320 - 20) {
+        return 1; // Outside maze boundaries
+    }
+
+    // ==== Check for Left Protrusions ====
+    //if ((x >= 2 && x <= 22 && y >= 80 && y <= 120) || // Left Protrusion 1
+      // (x >= 2 && x <= 22 && y >= 160 && y <= 200)) { // Left Protrusion 2
+        //return 1;
+    //}
+
+    // ==== Check for Right Protrusions ====
+    if ((x >= 240 - 22 && x <= 240 - 2 && y >= 80 && y <= 120) || // Right Protrusion 1
+        (x >= 240 - 22 && x <= 240 - 2 && y >= 160 && y <= 200)) { // Right Protrusion 2
+        return 1;
+    }
+
+    // ==== Check for Central Box ====
+    int boxWidth = 40, boxHeight = 40;
+    int boxLeft = (240 / 2) - (boxWidth / 2);
+    int boxRight = (240 / 2) + (boxWidth / 2);
+    int boxTop = (320 / 2) - (boxHeight / 2);
+    int boxBottom = (320 / 2) + (boxHeight / 2);
+    if (x >= boxLeft && x <= boxRight && y >= boxTop && y <= boxBottom) {
+        return 1;
+    }
+
+    // ==== Check for Small Rectangles ====
+    if ((x >= 30 && x <= 60 && y >= 60 && y <= 80) || // Top-left
+        (x >= 240 - 60 && x <= 240 - 30 && y >= 60 && y <= 80) || // Top-right
+        (x >= 30 && x <= 60 && y >= 320 - 70 && y <= 320 - 50) || // Bottom-left
+        (x >= 240 - 60 && x <= 240 - 30 && y >= 320 - 70 && y <= 320 - 50)) { // Bottom-right
+        return 1;
+    }
+
+    // ==== Check for L-Shaped Boxes ====
+    if ((x >= 40 && x <= 70 && y >= 100 && y <= 140) || // Left-middle
+        (x >= 240 - 100 && x <= 240 - 50 && y >= 100 && y <= 130) || // Right-middle
+        (x >= 40 && x <= 80 && y >= 320 - 150 && y <= 320 - 100) || // Bottom-left
+        (x >= 240 - 110 && x <= 240 - 70 && y >= 320 - 100 && y <= 320 - 50)) { // Bottom-right
+        return 1;
+    }
+
+    // ==== Check for T-Shaped Boxes ====
+    if ((x >= (240 / 2) - 25 && x <= (240 / 2) + 35 && y >= 70 && y <= 120) || // Top-center
+        (x >= 70 && x <= 120 && y >= 320 - 85 && y <= 320 - 45) || // Bottom-left-center
+        (x >= 240 - 100 && x <= 240 - 50 && y >= 320 - 115 && y <= 320 - 75)) { // Bottom-right-center
+        return 1;
+    }
+
+    return 0; // Not inside any wall or shape
+}
+
+
 
 
 static uint16_t pillPositions[240][2]; // Track pill coordinates
@@ -2373,43 +2637,61 @@ static uint16_t pillPositions[240][2]; // Track pill coordinates
 void placeStandardPills(void) {
     int count = 0;
     int x, y;
-    for (y = 20; y < 220 && count < 240; y += 20) {
-        for (x = 20; x < 300 && count < 240; x += 20) {
-            LCD_SetPoint(x, y, 0xFFE0);
-            pillPositions[count][0] = x;
-            pillPositions[count][1] = y;
-            count++;
+
+    // Dynamically calculate spacing to distribute exactly 240 pills
+    int rows = 22; // Number of rows (adjust based on maze height)
+    int cols = 25; // Number of columns (adjust based on maze width)
+
+    int pillSpacingX = (240 - 40) / cols; // Horizontal spacing
+    int pillSpacingY = (320 - 40) / rows; // Vertical spacing
+
+    // Start placing pills row by row
+  for (y = 40; y <= 320 - 40 && count < 250; y += pillSpacingY) {
+    for (x = 40; x <= 240 - 40 && count < 250; x += pillSpacingX) {
+      if (!isInsideWall(x, y)) { // Check if position is valid
+                drawFilledSquare(x, y, 0xFFE0);
+                pillPositions[count][0] = x;
+                pillPositions[count][1] = y;
+                count++;
+            }
         }
     }
-}
+  while (count < 250) {
+        for (y = 40; y <= 320 - 40; y++) {
+            for (x = 40; x <= 240 - 40; x++) {
+                if (!isInsideWall(x, y)) {
+                    drawFilledSquare(x, y, 0xFFE0);
+                    pillPositions[count][0] = x;
+                    pillPositions[count][1] = y;
+                    count++;
+                    if (count >= 250) {
+                        return;
+                    }
+                }
+            }
+        }
+    }
 
+
+}
 
 
 
 void placePowerPills(void) {
-    for (int i = 0; i < 6; i++) {
-        int idx = rand() % 240; // Random index for power pill
+    int placed = 0;
+
+    while (placed < 6) {
+        int idx = rand() % 240;
         int px = pillPositions[idx][0];
         int py = pillPositions[idx][1];
-        LCD_SetPoint(px, py, 0xF81F);
+
+        if (!isInsideWall(px, py)) { // Check if position is valid
+            drawFilledSquare(px, py, 0xF81F);
+            placed++;
+        }
     }
-
 }
-
-void drawCentralBox(void){
-  // example coordinates for a central box around the screen center
-  int boxLeft = 140;
-  int boxRight = 180;
-  int boxTop = 100;
-  int boxBottom = 140;
-
-  LCD_DrawLine(boxLeft, boxTop, boxRight, boxTop, 0x001F);
-  LCD_DrawLine(boxLeft, boxBottom, boxRight, boxBottom, 0x001F);
-  LCD_DrawLine(boxLeft, boxBottom, boxLeft, boxBottom, 0x001F);
-  LCD_DrawLine(boxRight, boxTop, boxRight, boxBottom, 0x001F);
-}
-
-
+# 413 "Source/sample.c"
 int main(void)
 {
   SystemInit();
@@ -2423,6 +2705,7 @@ int main(void)
 
  // here we draw the maze
  drawMaze();
+ drawCentralBox();
  placeStandardPills();
  placePowerPills();
  drawUI();
