@@ -5,7 +5,7 @@
 # 1 "<command line>" 1
 # 1 "<built-in>" 2
 # 1 "Source/sample.c" 2
-# 24 "Source/sample.c"
+
 # 1 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 1
 # 41 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 typedef enum IRQn
@@ -1782,7 +1782,7 @@ typedef struct
        uint32_t RESERVED8;
   volatile uint32_t Module_ID;
 } LPC_EMAC_TypeDef;
-# 25 "Source/sample.c" 2
+# 3 "Source/sample.c" 2
 # 1 "Source\\GLCD/GLCD.h" 1
 # 90 "Source\\GLCD/GLCD.h"
 void LCD_Initialization(void);
@@ -1792,7 +1792,7 @@ void LCD_SetPoint(uint16_t Xpos,uint16_t Ypos,uint16_t point);
 void LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
 void PutChar( uint16_t Xpos, uint16_t Ypos, uint8_t ASCI, uint16_t charColor, uint16_t bkColor );
 void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_t bkColor);
-# 26 "Source/sample.c" 2
+# 4 "Source/sample.c" 2
 # 1 "Source\\TouchPanel/TouchPanel.h" 1
 # 30 "Source\\TouchPanel/TouchPanel.h"
 typedef struct POINT
@@ -1826,17 +1826,18 @@ void DrawCross(uint16_t Xpos,uint16_t Ypos);
 void TP_DrawPoint(uint16_t Xpos,uint16_t Ypos);
 uint8_t setCalibrationMatrix( Coordinate * displayPtr,Coordinate * screenPtr,Matrix * matrixPtr);
 uint8_t getDisplayPoint(Coordinate * displayPtr,Coordinate * screenPtr,Matrix * matrixPtr );
-# 27 "Source/sample.c" 2
+# 5 "Source/sample.c" 2
 # 1 "Source\\timer/timer.h" 1
 # 14 "Source\\timer/timer.h"
 extern uint32_t init_timer( uint8_t timer_num, uint32_t timerInterval );
 extern void enable_timer( uint8_t timer_num );
 extern void disable_timer( uint8_t timer_num );
 extern void reset_timer( uint8_t timer_num );
+extern volatile int countdown;
 
 extern void TIMER0_IRQHandler (void);
 extern void TIMER1_IRQHandler (void);
-# 28 "Source/sample.c" 2
+# 6 "Source/sample.c" 2
 # 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 1 3
 # 53 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
     typedef unsigned int size_t;
@@ -2140,7 +2141,7 @@ extern __attribute__((__nothrow__)) int _fisatty(FILE * ) __attribute__((__nonnu
 
 extern __attribute__((__nothrow__)) void __use_no_semihosting_swi(void);
 extern __attribute__((__nothrow__)) void __use_no_semihosting(void);
-# 29 "Source/sample.c" 2
+# 7 "Source/sample.c" 2
 # 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 1 3
 # 91 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
     typedef unsigned short wchar_t;
@@ -2322,10 +2323,12 @@ extern __attribute__((__nothrow__)) void __use_no_heap_region(void);
 
 extern __attribute__((__nothrow__)) char const *__C_library_version_string(void);
 extern __attribute__((__nothrow__)) int __C_library_version_number(void);
-# 30 "Source/sample.c" 2
+# 8 "Source/sample.c" 2
+# 19 "Source/sample.c"
+// Optionally define POWER_PILL if you want to add them later
 
 
-extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the emulator to find the symbol (can be placed also inside system_LPC17xx.h but since it is RO, it needs more work)
+// Cell dimensions (adjust as needed)
 
 
 
@@ -2333,401 +2336,218 @@ int score = 0;
 int lives = 1;
 volatile int countdown = 60; // Global for timer use
 
+static int mazeGrid[29][28];
+
+// Example maze layout (28 chars wide each line):
+// 'X' = wall, ' ' = empty space, 'G' = ghost house area
+static const char mazeDef[29][28 +1] = {
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXX", // 28 'X'
+"X            XX            X",
+"X XXXX XXXXX XX XXXXX XXXX X",
+"X XXXX XXXXX XX XXXXX XXXX X",
+"X                          X",
+"X XXXX XX XXXXXXXX XX XXXX X",
+"X XXXX XX XXXXXXXX XX XXXX X",
+"X      XX    XX    XX      X",
+"XXXXXX XXXXX XX XXXXX XXXXXX",
+"XXXXXX XXXXX XX XXXXX XXXXXX",
+"XXXXXX XX          XX XXXXXX",
+"XXXXXX XX XXXXXXXX XX XXXXXX",
+"XXXXXX XX XGGGGGGX XX XXXXXX",
+"          XGGGGGGX          ",
+"XXXXXX XX XGGGGGGX XX XXXXXX",
+"XXXXXX XX XGGGGGGX XX     XX",
+"XXXXXX XX XXXXXXXX	XX XXX XX",
+"X      XX          XX XXX XX",
+"X XXXX XX XXXXXXXX XX XXX XX",
+"X XXXX XX XXXXXXXX XX XXX XX",
+"X XXXX XX          XX     XX",
+"X XXXX XX XXXXXXXX XX XXXXXX",
+"X            XX            X",
+"X XXXX XXXXX XX XXXXX XXXX X",
+"X XXXX XXXXX XX XXXXX XXXX X",
+"X   XX                XX   X",
+"XXX XX XX XXXXXXXX XX XX XXX",
+"X      XX    XX    XX      X",
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+};
+
+
+// // Pac-Man starting position
+int pacmanRow = 15;
+int pacmanCol = 14;
+
+
+// forward declarations
+void drawUI(void);
+void fillCell(int row, int col, int offsetX, int offsetY, uint16_t color);
+void drawPill(int row, int col, int offsetX, int offsetY, uint16_t color, int pillsize);
+void initMazeGrid(void);
+void drawMazeFromGrid(int offsetX, int offsetY);
+
+// Draw Score, Time, Lives
 void drawUI(void) {
     char buffer[20];
 
-    int textOffset = 5; // Space between text and maze borders
-
-    // SCORE (Top-Left)
     sprintf(buffer, "SCORE: %04d", score);
-    GUI_Text(10, 0, (uint8_t *)buffer, 0xFFFF, 0x0000); // Placed above top-left corner
+    GUI_Text(10, 0, (uint8_t *)buffer, 0xFFFF, 0x0000);
 
-    // TIME (Top-Right)
     sprintf(buffer, "TIME: %02d", countdown);
-    GUI_Text(240 - 100, 0, (uint8_t *)buffer, 0xFFFF, 0x0000); // Placed above top-right corner
+    GUI_Text(240 - 100, 0, (uint8_t *)buffer, 0xFFFF, 0x0000);
 
-    // LIVES (Bottom-Left)
     sprintf(buffer, "LIVES: %d", lives);
-    GUI_Text(10, 320 - 15, (uint8_t *)buffer, 0xFFFF, 0x0000); // Placed below bottom-left corner
+    GUI_Text(10, 320 - 15, (uint8_t *)buffer, 0xFFFF, 0x0000);
 }
 
-
-void drawCentralBox(void) {
-    int boxWidth = 40;
-    int boxHeight = 40;
-
-    int boxLeft = (240 / 2) - (boxWidth / 2);
-    int boxRight = (240 / 2) + (boxWidth / 2);
-    int boxTop = (320 / 2) - (boxHeight / 2);
-    int boxBottom = (320 / 2) + (boxHeight / 2);
-
-    LCD_DrawLine(boxLeft, boxTop, boxRight, boxTop, 0x001F);
-    LCD_DrawLine(boxLeft, boxBottom, boxRight, boxBottom, 0x001F);
-    LCD_DrawLine(boxLeft, boxTop, boxLeft, boxBottom, 0x001F);
-    LCD_DrawLine(boxRight, boxTop, boxRight, boxBottom, 0x001F);
-}
-
-
-void drawSmallRectangle(int startX, int startY, int width, int height, uint16_t color) {
-    int endX = startX + width;
-    int endY = startY + height;
-
-    // Draw rectangle
-    LCD_DrawLine(startX, startY, endX, startY, color); // Top side
-    LCD_DrawLine(startX, endY, endX, endY, color); // Bottom side
-    LCD_DrawLine(startX, startY, startX, endY, color); // Left side
-    LCD_DrawLine(endX, startY, endX, endY, color); // Right side
-}
-
-void drawLShapedBox(int startX, int startY, int width, int height, int thickness, uint16_t color) {
-    // Vertical segment of the L (with closed ends)
-    LCD_DrawLine(startX, startY, startX + thickness, startY, color); // Top edge (closed)
-    LCD_DrawLine(startX, startY, startX, startY + height, color); // Left edge
-    LCD_DrawLine(startX + thickness, startY, startX + thickness, startY + height, color); // Right edge
-    LCD_DrawLine(startX, startY + height, startX + thickness, startY + height, color); // Bottom edge
-
-    // Horizontal segment of the L (with closed ends)
-    int bottomY = startY + height - thickness; // Align horizontal part to bottom of vertical
-    LCD_DrawLine(startX, bottomY, startX + width, bottomY, color); // Top edge of horizontal
-    LCD_DrawLine(startX, bottomY + thickness, startX + width, bottomY + thickness, color); // Bottom edge of horizontal
-    LCD_DrawLine(startX + width, bottomY, startX + width, bottomY + thickness, color); // Right edge (closed)
-}
-
-
-void drawTShapedBox(int startX, int startY, int width, int height, int thickness, uint16_t color) {
-    int centerX = startX + (width / 2); // Calculate center X for the vertical part
-
-    // Top horizontal rectangle (fully closed sides)
-    LCD_DrawLine(startX, startY, startX + width, startY, color); // Top edge
-    LCD_DrawLine(startX, startY + thickness, startX + width, startY + thickness, color); // Bottom edge
-    LCD_DrawLine(startX, startY, startX, startY + thickness, color); // Left side (closed)
-    LCD_DrawLine(startX + width, startY, startX + width, startY + thickness, color); // Right side (closed)
-
-    // Vertical rectangle (centered below the horizontal part)
-    LCD_DrawLine(centerX - (thickness / 2), startY + thickness, centerX - (thickness / 2), startY + height, color); // Left side
-    LCD_DrawLine(centerX + (thickness / 2), startY + thickness, centerX + (thickness / 2), startY + height, color); // Right side
-    LCD_DrawLine(centerX - (thickness / 2), startY + height, centerX + (thickness / 2), startY + height, color); // Bottom edge
-}
-
-
-
-void drawMaze(void) {
-    uint16_t mazeColor = 0x001F;
-
-    int topBottomMargin = 20;
-    int leftRightMargin = 2;
-    int offset = 4;
-    int indentWidth = 20;
-
-    // Vertical boundaries
-    int topY = topBottomMargin;
-    int bottomY = 320 - topBottomMargin;
-
-    // Define two protrusions on the left side:
-    // Each protrusion is defined by a top and bottom Y coordinate where indentation occurs.
-    int protrusion1TopLeft = 80;
-    int protrusion1BottomLeft = 120;
-    int protrusion2TopLeft = 160;
-    int protrusion2BottomLeft = 200;
-
-    // Same protrusions on the right side (mirrored)
-    int protrusion1TopRight = protrusion1TopLeft;
-    int protrusion1BottomRight = protrusion1BottomLeft;
-    int protrusion2TopRight = protrusion2TopLeft;
-    int protrusion2BottomRight = protrusion2BottomLeft;
-
-    // ==== Outer Border ====
-    // Top horizontal line
-    LCD_DrawLine(leftRightMargin, topY, 240 - leftRightMargin, topY, mazeColor);
-
-    // Bottom horizontal line
-    LCD_DrawLine(leftRightMargin, bottomY, 240 - leftRightMargin, bottomY, mazeColor);
-
-    // ---- LEFT OUTER BORDER with two protrusions ----
-    // From topY down to protrusion1Top
-    LCD_DrawLine(leftRightMargin, topY, leftRightMargin, protrusion1TopLeft, mazeColor);
-    // Protrusion 1 (left side)
-    LCD_DrawLine(leftRightMargin, protrusion1TopLeft, leftRightMargin + indentWidth, protrusion1TopLeft, mazeColor);
-    LCD_DrawLine(leftRightMargin + indentWidth, protrusion1TopLeft, leftRightMargin + indentWidth, protrusion1BottomLeft, mazeColor);
-    LCD_DrawLine(leftRightMargin + indentWidth, protrusion1BottomLeft, leftRightMargin, protrusion1BottomLeft, mazeColor);
-
-    // Continue down to protrusion2Top
-    LCD_DrawLine(leftRightMargin, protrusion1BottomLeft, leftRightMargin, protrusion2TopLeft, mazeColor);
-
-    // Protrusion 2 (left side)
-    LCD_DrawLine(leftRightMargin, protrusion2TopLeft, leftRightMargin + indentWidth, protrusion2TopLeft, mazeColor);
-    LCD_DrawLine(leftRightMargin + indentWidth, protrusion2TopLeft, leftRightMargin + indentWidth, protrusion2BottomLeft, mazeColor);
-    LCD_DrawLine(leftRightMargin + indentWidth, protrusion2BottomLeft, leftRightMargin, protrusion2BottomLeft, mazeColor);
-
-    // Down to bottom
-    LCD_DrawLine(leftRightMargin, protrusion2BottomLeft, leftRightMargin, bottomY, mazeColor);
-
-    // ---- RIGHT OUTER BORDER with two protrusions (mirrored) ----
-    // From topY down to protrusion1Top
-    LCD_DrawLine(240 - leftRightMargin, topY, 240 - leftRightMargin, protrusion1TopRight, mazeColor);
-    // Protrusion 1 (right side) mirrored inward
-    LCD_DrawLine(240 - leftRightMargin, protrusion1TopRight, 240 - leftRightMargin - indentWidth, protrusion1TopRight, mazeColor);
-    LCD_DrawLine(240 - leftRightMargin - indentWidth, protrusion1TopRight, 240 - leftRightMargin - indentWidth, protrusion1BottomRight, mazeColor);
-    LCD_DrawLine(240 - leftRightMargin - indentWidth, protrusion1BottomRight, 240 - leftRightMargin, protrusion1BottomRight, mazeColor);
-
-    // Down to protrusion2Top
-    LCD_DrawLine(240 - leftRightMargin, protrusion1BottomRight, 240 - leftRightMargin, protrusion2TopRight, mazeColor);
-
-    // Protrusion 2 (right side)
-    LCD_DrawLine(240 - leftRightMargin, protrusion2TopRight, 240 - leftRightMargin - indentWidth, protrusion2TopRight, mazeColor);
-    LCD_DrawLine(240 - leftRightMargin - indentWidth, protrusion2TopRight, 240 - leftRightMargin - indentWidth, protrusion2BottomRight, mazeColor);
-    LCD_DrawLine(240 - leftRightMargin - indentWidth, protrusion2BottomRight, 240 - leftRightMargin, protrusion2BottomRight, mazeColor);
-
-    // Down to bottom
-    LCD_DrawLine(240 - leftRightMargin, protrusion2BottomRight, 240 - leftRightMargin, bottomY, mazeColor);
-
-
-    // ==== Inner Border (Parallel to Outer, with offset) ====
-
-    // Inner border top and bottom lines
-    int topY_in = topY + offset;
-    int bottomY_in = bottomY - offset;
-
-    LCD_DrawLine(leftRightMargin + offset, topY_in, 240 - leftRightMargin - offset, topY_in, mazeColor);
-    LCD_DrawLine(leftRightMargin + offset, bottomY_in, 240 - leftRightMargin - offset, bottomY_in, mazeColor);
-
-    // Inner border protrusions:
-    // For the left side, adjust protrusion coordinates to prevent intersection
-    int leftMargin_in = leftRightMargin + offset;
-    int leftIndent_in = leftRightMargin + indentWidth - offset;
-
-    // Left inner border with two protrusions
-    // Segment above protrusion1
-    LCD_DrawLine(leftMargin_in, topY_in, leftMargin_in, protrusion1TopLeft - offset, mazeColor);
-    // Protrusion 1 (inner)
-    LCD_DrawLine(leftMargin_in, protrusion1TopLeft - offset, leftIndent_in, protrusion1TopLeft - offset, mazeColor);
-    LCD_DrawLine(leftIndent_in, protrusion1TopLeft - offset, leftIndent_in, protrusion1BottomLeft + offset, mazeColor);
-    LCD_DrawLine(leftIndent_in, protrusion1BottomLeft + offset, leftMargin_in, protrusion1BottomLeft + offset, mazeColor);
-
-    // Between protrusions
-    LCD_DrawLine(leftMargin_in, protrusion1BottomLeft + offset, leftMargin_in, protrusion2TopLeft - offset, mazeColor);
-
-    // Protrusion 2 (inner)
-    LCD_DrawLine(leftMargin_in, protrusion2TopLeft - offset, leftIndent_in, protrusion2TopLeft - offset, mazeColor);
-    LCD_DrawLine(leftIndent_in, protrusion2TopLeft - offset, leftIndent_in, protrusion2BottomLeft + offset, mazeColor);
-    LCD_DrawLine(leftIndent_in, protrusion2BottomLeft + offset, leftMargin_in, protrusion2BottomLeft + offset, mazeColor);
-
-    // Down to bottom_in
-    LCD_DrawLine(leftMargin_in, protrusion2BottomLeft + offset, leftMargin_in, bottomY_in, mazeColor);
-
-    // For the right side inner border:
-    int rightMargin_in = 240 - leftRightMargin - offset;
-    int rightIndent_in = 240 - leftRightMargin - indentWidth + offset;
-
-    // Right inner border with two protrusions
-    // Segment above protrusion1 (right)
-    LCD_DrawLine(rightMargin_in, topY_in, rightMargin_in, protrusion1TopRight - offset, mazeColor);
-    // Protrusion 1 (inner, right)
-    LCD_DrawLine(rightMargin_in, protrusion1TopRight - offset, rightIndent_in, protrusion1TopRight - offset, mazeColor);
-    LCD_DrawLine(rightIndent_in, protrusion1TopRight - offset, rightIndent_in, protrusion1BottomRight + offset, mazeColor);
-    LCD_DrawLine(rightIndent_in, protrusion1BottomRight + offset, rightMargin_in, protrusion1BottomRight + offset, mazeColor);
-
-    // Between protrusions on right
-    LCD_DrawLine(rightMargin_in, protrusion1BottomRight + offset, rightMargin_in, protrusion2TopRight - offset, mazeColor);
-
-    // Protrusion 2 (inner, right)
-    LCD_DrawLine(rightMargin_in, protrusion2TopRight - offset, rightIndent_in, protrusion2TopRight - offset, mazeColor);
-    LCD_DrawLine(rightIndent_in, protrusion2TopRight - offset, rightIndent_in, protrusion2BottomRight + offset, mazeColor);
-    LCD_DrawLine(rightIndent_in, protrusion2BottomRight + offset, rightMargin_in, protrusion2BottomRight + offset, mazeColor);
-
-    // Down to bottom_in
-    LCD_DrawLine(rightMargin_in, protrusion2BottomRight + offset, rightMargin_in, bottomY_in, mazeColor);
-
-
-  // we add other shapes
-  // Add Central Box
-    drawCentralBox();
-
-  // ==== Small Rectangles ====
-    // Adjust the positions and sizes to prevent overlap
-    drawSmallRectangle(30, 60, 30, 20, mazeColor); // Top-left
-    drawSmallRectangle(240 - 60, 60, 30, 20, mazeColor); // Top-right
-    drawSmallRectangle(30, 320 - 70, 30, 20, mazeColor); // Bottom-left
-    drawSmallRectangle(240 - 60, 320 - 70, 30, 20, mazeColor); // Bottom-right
-
-    // ==== L-Shaped Boxes ====
-    // Adjust the positions and sizes to prevent overlap
-    drawLShapedBox(40, 100, 30, 40, 8, mazeColor); // Left-middle
-    drawLShapedBox(240 - 100, 100, 50, 30, 6, mazeColor); // Right-middle
-    drawLShapedBox(40, 320 - 150, 40, 50, 8, mazeColor); // Bottom-left
-    drawLShapedBox(240 - 110, 320 - 100, 40, 50, 10, mazeColor); // Bottom-right
-
-    // ==== T-Shaped Boxes ====
-    // Adjust the positions and sizes to prevent overlap
-    drawTShapedBox((240 / 2) - 25, 70, 60, 50, 9, mazeColor); // Top-center
-    drawTShapedBox(70, 320 - 85, 50, 40, 6, mazeColor); // Bottom-left-center
-    drawTShapedBox(240 - 100, 320 - 115, 50, 40, 6, mazeColor); // Bottom-right-center
-
-}
-# 279 "Source/sample.c"
-void drawFilledSquare(int x, int y, uint16_t color) {
-  int hx, vy; // hx is horizontal offset relative to center and vy is to vertical
- for (hx = -1 // better to use define as it will be constant and set at compile time.; hx <= 1 // better to use define as it will be constant and set at compile time.; hx++) {
-        for (vy = -1 // better to use define as it will be constant and set at compile time.; vy <= 1 // better to use define as it will be constant and set at compile time.; vy++) {
-            if ((x + hx >= 0 && x + hx < 240) && (y + vy>= 0 && y + vy < 320)) {
-                LCD_SetPoint(x + hx, y + vy, color); // Draw a pixel within bounds
+// Fill a cell with solid color
+void fillCell(int row, int col, int offsetX, int offsetY, uint16_t color) {
+    int px, py;
+    int startX = offsetX + col * 8;
+    int startY = offsetY + row * 10;
+    for (py = 0; py < 10; py++) {
+        for (px = 0; px < 8; px++) {
+            int drawX = startX + px;
+            int drawY = startY + py;
+            if (drawX < 240 && drawY < 320) {
+                LCD_SetPoint(drawX, drawY, color);
             }
         }
     }
 }
-int isInsideWall(int x, int y) {
-    // ==== Check for Outer Boundaries ====
-    if (x <= 2 || x >= 240 - 2 || y <= 20 || y >= 320 - 20) {
-        return 1; // Outside maze boundaries
-    }
 
-    // ==== Check for Left Protrusions ====
-    //if ((x >= 2 && x <= 22 && y >= 80 && y <= 120) || // Left Protrusion 1
-      // (x >= 2 && x <= 22 && y >= 160 && y <= 200)) { // Left Protrusion 2
-        //return 1;
-    //}
-
-    // ==== Check for Right Protrusions ====
-    if ((x >= 240 - 22 && x <= 240 - 2 && y >= 80 && y <= 120) || // Right Protrusion 1
-        (x >= 240 - 22 && x <= 240 - 2 && y >= 160 && y <= 200)) { // Right Protrusion 2
-        return 1;
-    }
-
-    // ==== Check for Central Box ====
-    int boxWidth = 40, boxHeight = 40;
-    int boxLeft = (240 / 2) - (boxWidth / 2);
-    int boxRight = (240 / 2) + (boxWidth / 2);
-    int boxTop = (320 / 2) - (boxHeight / 2);
-    int boxBottom = (320 / 2) + (boxHeight / 2);
-    if (x >= boxLeft && x <= boxRight && y >= boxTop && y <= boxBottom) {
-        return 1;
-    }
-
-    // ==== Check for Small Rectangles ====
-    if ((x >= 30 && x <= 60 && y >= 60 && y <= 80) || // Top-left
-        (x >= 240 - 60 && x <= 240 - 30 && y >= 60 && y <= 80) || // Top-right
-        (x >= 30 && x <= 60 && y >= 320 - 70 && y <= 320 - 50) || // Bottom-left
-        (x >= 240 - 60 && x <= 240 - 30 && y >= 320 - 70 && y <= 320 - 50)) { // Bottom-right
-        return 1;
-    }
-
-    // ==== Check for L-Shaped Boxes ====
-    if ((x >= 40 && x <= 70 && y >= 100 && y <= 140) || // Left-middle
-        (x >= 240 - 100 && x <= 240 - 50 && y >= 100 && y <= 130) || // Right-middle
-        (x >= 40 && x <= 80 && y >= 320 - 150 && y <= 320 - 100) || // Bottom-left
-        (x >= 240 - 110 && x <= 240 - 70 && y >= 320 - 100 && y <= 320 - 50)) { // Bottom-right
-        return 1;
-    }
-
-    // ==== Check for T-Shaped Boxes ====
-    if ((x >= (240 / 2) - 25 && x <= (240 / 2) + 35 && y >= 70 && y <= 120) || // Top-center
-        (x >= 70 && x <= 120 && y >= 320 - 85 && y <= 320 - 45) || // Bottom-left-center
-        (x >= 240 - 100 && x <= 240 - 50 && y >= 320 - 115 && y <= 320 - 75)) { // Bottom-right-center
-        return 1;
-    }
-
-    return 0; // Not inside any wall or shape
-}
-
-
-
-
-static uint16_t pillPositions[240][2]; // Track pill coordinates
-
-void placeStandardPills(void) {
-    int count = 0;
-    int x, y;
-
-    // Dynamically calculate spacing to distribute exactly 240 pills
-    int rows = 22; // Number of rows (adjust based on maze height)
-    int cols = 25; // Number of columns (adjust based on maze width)
-
-    int pillSpacingX = (240 - 40) / cols; // Horizontal spacing
-    int pillSpacingY = (320 - 40) / rows; // Vertical spacing
-
-    // Start placing pills row by row
-  for (y = 40; y <= 320 - 40 && count < 250; y += pillSpacingY) {
-    for (x = 40; x <= 240 - 40 && count < 250; x += pillSpacingX) {
-      if (!isInsideWall(x, y)) { // Check if position is valid
-                drawFilledSquare(x, y, 0xFFE0);
-                pillPositions[count][0] = x;
-                pillPositions[count][1] = y;
-                count++;
+void drawPill(int row, int col, int offsetX, int offsetY, uint16_t color, int pillSize) {
+    int hx, vy;
+    int startX = offsetX + col * 8;
+    int startY = offsetY + row * 10;
+    int centerX = startX + (8 / 2);
+    int centerY = startY + (10 / 2);
+    for (hx = -pillSize; hx <= pillSize; hx++) {
+        for (vy = -pillSize; vy <= pillSize; vy++) {
+            int drawX = centerX + hx;
+            int drawY = centerY + vy;
+            if (drawX >= 0 && drawX < 240 && drawY >= 0 && drawY < 320) {
+                LCD_SetPoint(drawX, drawY, color);
             }
         }
     }
-  while (count < 250) {
-        for (y = 40; y <= 320 - 40; y++) {
-            for (x = 40; x <= 240 - 40; x++) {
-                if (!isInsideWall(x, y)) {
-                    drawFilledSquare(x, y, 0xFFE0);
-                    pillPositions[count][0] = x;
-                    pillPositions[count][1] = y;
-                    count++;
-                    if (count >= 250) {
-                        return;
-                    }
+}
+
+void initMazeGrid(void) {
+    int r, c;
+    int pillCount = 0;
+
+    for (r = 0; r < 29; r++) {
+        for (c = 0; c < 28; c++) {
+            char cell = mazeDef[r][c];
+            if (cell == 'X') {
+                mazeGrid[r][c] = 1;
+            } else if (cell == 'G') {
+                // Ghost house area as 1 so no pills appear inside
+                mazeGrid[r][c] = 1;
+            } else {
+                // ' ' = empty floor, initially mark 0
+                mazeGrid[r][c] = 0;
+            }
+        }
+    }
+
+    // Fill empty spaces with pills
+    for (r = 0; r < 29; r++) {
+        for (c = 0; c < 28; c++) {
+            if (mazeGrid[r][c] == 0) {
+                mazeGrid[r][c] = 2;
+                pillCount++;
+            }
+        }
+    }
+
+    // Print out the pill count for debugging
+    //printf("Total Pills: %d\n", pillCount);
+
+    srand(time(0); //
+    int powerPillsNeeded = 6;
+    while (powerPillsNeeded > 0) {
+        int rr = rand() % 29;
+        int cc = rand() % 28;
+        if (mazeGrid[rr][cc] == 2) {
+            mazeGrid[rr][cc] = 3;
+            powerPillsNeeded--;
+        }
+    }
+}
+
+void drawMazeFromGrid(int offsetX, int offsetY) {
+    int r, c;
+    for (r = 0; r < 29; r++) {
+        for (c = 0; c < 28; c++) {
+            int cellVal = mazeGrid[r][c];
+            if (cellVal == 1) {
+                fillCell(r, c, offsetX, offsetY, 0x001F);
+     } else if (cellVal == 2) {
+       fillCell(r, c, offsetX, offsetY, 0x0000);
+       // Standard pill size (e.g., 1)
+       drawPill(r, c, offsetX, offsetY, 0xFFE0, 1);
+     } else if (cellVal == 3) {
+       fillCell(r, c, offsetX, offsetY, 0x0000);
+       // Power pill larger size (e.g., 3)
+       drawPill(r, c, offsetX, offsetY, 0xF800, 3);
+
+
+            } else {
+                // 0 or any other cell
+                fillCell(r, c, offsetX, offsetY, 0x0000);
+            }
+        }
+    }
+}
+
+void drawPacMan(int row, int col, int offsetX, int offsetY) {
+    int startX = offsetX + col * 8;
+    int startY = offsetY + row * 10;
+    int radius = 3; // small radius
+  int dy, dx;
+    for (dy = -radius; dy <= radius; dy++) {
+        for (dx = -radius; dx <= radius; dx++) {
+            if (dx*dx + dy*dy <= radius*radius) {
+                int drawX = startX + (8/2) + dx;
+                int drawY = startY + (10/2) + dy;
+                if (drawX >= 0 && drawX < 240 && drawY >= 0 && drawY < 320) {
+                    LCD_SetPoint(drawX, drawY, 0xFFE0);
                 }
             }
         }
     }
-
-
 }
 
 
-
-void placePowerPills(void) {
-    int placed = 0;
-
-    while (placed < 6) {
-        int idx = rand() % 240;
-        int px = pillPositions[idx][0];
-        int py = pillPositions[idx][1];
-
-        if (!isInsideWall(px, py)) { // Check if position is valid
-            drawFilledSquare(px, py, 0xF81F);
-            placed++;
-        }
-    }
-}
-# 413 "Source/sample.c"
 int main(void)
 {
-  SystemInit();
+    int offsetX, offsetY;
 
-  LCD_Initialization();
+    SystemInit();
+    LCD_Initialization();
+    TP_Init();
+    LCD_Clear(0x0000);
 
-   TP_Init();
-// TouchPanel_Calibrate();
+    // This computes offcent during runtime
+    offsetX = (240 - (28 * 8)) / 2;
+    offsetY = (320 - (29 * 10)) / 2;
 
- LCD_Clear(0x0000);
+    initMazeGrid();
+    drawMazeFromGrid(offsetX, offsetY);
+    drawUI();
+  drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
 
- // here we draw the maze
- drawMaze();
- drawCentralBox();
- placeStandardPills();
- placePowerPills();
- drawUI();
+    // Here we place "READY!" near the center
+    GUI_Text((240/2)-20, (320/2)-20, (uint8_t *)"READY!", 0xFFE0, 0x0000);
 
+    init_timer(0, 0x1312D0);
+    enable_timer(0);
 
-  GUI_Text(140, 180, (uint8_t *)"READY!", 0xFFE0, 0x0000);
+    ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->PCON |= 0x1;
+    ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->PCON &= ~(0x2);
 
-
- //GUI_Text(0, 280, (uint8_t *) " touch here : 1 sec to clear  ", 0xF800, 0xFFFF);
- //LCD_DrawLine(0, 0, 200, 200, 0xFFFF);
- //init_timer(0, 0x1312D0 );
- //init_timer(0, 0x6108 );
- init_timer(0, 0x4E2 );
- //init_timer(0, 0xC8 );
-
- enable_timer(0);
-
- ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->PCON |= 0x1;
- ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->PCON &= ~(0x2);
-
-  while (1)
-  {
-  __asm("wfi");
-  }
+    while (1) {
+        __asm("wfi");
+    }
 }

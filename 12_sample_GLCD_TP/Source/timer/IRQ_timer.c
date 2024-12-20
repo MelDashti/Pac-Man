@@ -13,6 +13,9 @@
 #include "../GLCD/GLCD.h" 
 #include "../TouchPanel/TouchPanel.h"
 #include <stdio.h> /*for sprintf*/
+extern volatile int countdown;
+extern void drawUI(void);
+
 
 /******************************************************************************
 ** Function name:		Timer0_IRQHandler
@@ -24,43 +27,22 @@
 **
 ******************************************************************************/
 
+
 void TIMER0_IRQHandler (void)
 {
-	static int clear = 0;
-	char time_in_char[5] = "";
-	int mosse[6][2]={{1,1},{-1,-1},{1,0},{-1,0},{0,1},{0,-1}};
-	int i=0;
-	
-  if(getDisplayPoint(&display, Read_Ads7846(), &matrix )){
-		if(display.y < 280){
-			for(i=0;i<6;i++)
-				TP_DrawPoint(display.x+mosse[i][0],display.y+mosse[i][1]);
-			TP_DrawPoint(display.x,display.y);
-			GUI_Text(200, 0, (uint8_t *) "     ", Blue, Blue);
-			clear = 0;
-		}
-		else{			
-			if(display.y <= 0x13E){			
-				clear++;
-				if(clear%20 == 0){
-					sprintf(time_in_char,"%4d",clear/20);
-					GUI_Text(200, 0, (uint8_t *) time_in_char, White, Blue);
-					if(clear == 200){	/* 1 seconds = 200 times * 500 us*/
-						LCD_Clear(Black);
-						GUI_Text(0, 280, (uint8_t *) " touch here : 1 sec to clear ", Blue, White);			
-						clear = 0;
-					}
-				}
-			}
-		}
-	}
-	else{
-		//do nothing if touch returns values out of bounds
-	}
-  LPC_TIM0->IR = 1;			/* clear interrupt flag */
-  return;
-}
+    // Decrement the countdown if it's greater than 0
+    if (countdown > 0) {
+        countdown--;
+        drawUI(); // Update the displayed countdown
+    } else {
+        // If countdown reached 0, you can show "Game Over!" or handle end condition here.
+        // For now, just keep it simple.
+				GUI_Text((240/2)-30, (320/2)-20, (uint8_t *)"GAME OVER!", Red, Black);
+    }
 
+    LPC_TIM0->IR = 1; // Clear interrupt flag
+    return;
+}
 
 /******************************************************************************
 ** Function name:		Timer1_IRQHandler

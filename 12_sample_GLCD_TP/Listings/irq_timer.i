@@ -1920,6 +1920,7 @@ extern uint32_t init_timer( uint8_t timer_num, uint32_t timerInterval );
 extern void enable_timer( uint8_t timer_num );
 extern void disable_timer( uint8_t timer_num );
 extern void reset_timer( uint8_t timer_num );
+extern volatile int countdown;
 
 extern void TIMER0_IRQHandler (void);
 extern void TIMER1_IRQHandler (void);
@@ -2270,44 +2271,25 @@ extern __attribute__((__nothrow__)) int _fisatty(FILE * ) __attribute__((__nonnu
 extern __attribute__((__nothrow__)) void __use_no_semihosting_swi(void);
 extern __attribute__((__nothrow__)) void __use_no_semihosting(void);
 # 16 "Source/timer/IRQ_timer.c" 2
-# 27 "Source/timer/IRQ_timer.c"
+extern volatile int countdown;
+extern void drawUI(void);
+# 31 "Source/timer/IRQ_timer.c"
 void TIMER0_IRQHandler (void)
 {
- static int clear = 0;
- char time_in_char[5] = "";
- int mosse[6][2]={{1,1},{-1,-1},{1,0},{-1,0},{0,1},{0,-1}};
- int i=0;
-
-  if(getDisplayPoint(&display, Read_Ads7846(), &matrix )){
-  if(display.y < 280){
-   for(i=0;i<6;i++)
-    TP_DrawPoint(display.x+mosse[i][0],display.y+mosse[i][1]);
-   TP_DrawPoint(display.x,display.y);
-   GUI_Text(200, 0, (uint8_t *) "     ", 0x001F, 0x001F);
-   clear = 0;
-  }
-  else{
-   if(display.y <= 0x13E){
-    clear++;
-    if(clear%20 == 0){
-     sprintf(time_in_char,"%4d",clear/20);
-     GUI_Text(200, 0, (uint8_t *) time_in_char, 0xFFFF, 0x001F);
-     if(clear == 200){
-      LCD_Clear(0x0000);
-      GUI_Text(0, 280, (uint8_t *) " touch here : 1 sec to clear ", 0x001F, 0xFFFF);
-      clear = 0;
-     }
+    // Decrement the countdown if it's greater than 0
+    if (countdown > 0) {
+        countdown--;
+        drawUI(); // Update the displayed countdown
+    } else {
+        // If countdown reached 0, you can show "Game Over!" or handle end condition here.
+        // For now, just keep it simple.
+    GUI_Text((240/2)-30, (320/2)-20, (uint8_t *)"GAME OVER!", 0xF800, 0x0000);
     }
-   }
-  }
- }
- else{
-  //do nothing if touch returns values out of bounds
- }
-  ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->IR = 1;
-  return;
+
+    ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->IR = 1; // Clear interrupt flag
+    return;
 }
-# 74 "Source/timer/IRQ_timer.c"
+# 56 "Source/timer/IRQ_timer.c"
 void TIMER1_IRQHandler (void)
 {
   ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->IR = 1;
