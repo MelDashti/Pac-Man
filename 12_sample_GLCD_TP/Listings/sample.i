@@ -2344,10 +2344,12 @@ extern __attribute__((__nothrow__)) void __use_no_heap_region(void);
 extern __attribute__((__nothrow__)) char const *__C_library_version_string(void);
 extern __attribute__((__nothrow__)) int __C_library_version_number(void);
 # 10 "Source/sample.c" 2
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
+# 11 "Source/sample.c" 2
 
 
 extern uint8_t ScaleFlag;
-# 21 "Source/sample.c"
+# 22 "Source/sample.c"
 // Optionally define POWER_PILL if you want to add them later
 
 
@@ -2358,6 +2360,9 @@ extern uint8_t ScaleFlag;
 int score = 0;
 int lives = 1;
 volatile int countdown = 60; // Global for timer use
+
+int offsetX;
+int offsetY;
 
 static int mazeGrid[29][28];
 
@@ -2397,8 +2402,11 @@ static const char mazeDef[29][28 +1] = {
 
 
 // // Pac-Man starting position
-int pacmanRow = 15;
-int pacmanCol = 14;
+int pacmanRow = 2;
+int pacmanCol = 2;
+
+volatile int pacmanDirRow=0;
+volatile int pacmanDirCol=0;
 
 
 // forward declarations
@@ -2542,23 +2550,39 @@ void drawPacMan(int row, int col, int offsetX, int offsetY) {
     }
 }
 
+_Bool movePacMan(void){
+  // Here we calculate the new position based on the current position
+  int newRow = pacmanRow + pacmanDirRow;
+  int newCol = pacmanCol + pacmanDirCol;
+
+  // here we check if the new position is within the bounds and not a wall
+  if(newRow >= 0 && newRow < 29 && newCol >= 0 && newCol < 28 && mazeGrid[newRow][newCol] != 1){
+   // here we clear the old pacman position
+   if (pacmanRow != newRow || pacmanCol != newCol) {
+            fillCell(pacmanRow, pacmanCol, offsetX, offsetY, 0x0000); // Clear old position
+            pacmanRow = newRow;
+            pacmanCol = newCol;
+            drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY); // Draw at new position
+        }
+     return 1;
+  }
+  return 0;
+}
 
 
-volatile int pacmanDirRow=0;
-volatile int pacmanDirCol=0;
 
 int main(void) {
 
-    int offsetX, offsetY;
     SystemInit();
     LCD_Initialization();
     TP_Init();
     LCD_Clear(0x0000);
+  //init_RIT(0x004C4B40); // 50ms
+  init_RIT(0x000F4240 ); // 50ms
 
+  enable_RIT();
     joystick_init(); // NEW: Initialize joystick
 
-  init_RIT(0x004C4B40); // ~50ms at 100MHz
-  enable_RIT();
   offsetX = (240 - (28 * 8)) / 2;
     offsetY = (320 - (29 * 10)) / 2;
 
@@ -2577,39 +2601,10 @@ int main(void) {
     pacmanDirRow = 0;
     pacmanDirCol = 0;
 
+  ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->PCON |= 0x1;
+    ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->PCON &= ~(0x2);
+
   while (1) {
-    __asm("wfi");
-
-    // After waking up from interrupt:
-    // Check if pacmanDirRow or pacmanDirCol changed.
-    // Attempt to move Pac-Man one cell in the chosen direction:
-    int newRow = pacmanRow + pacmanDirRow;
-    int newCol = pacmanCol + pacmanDirCol;
-
-    // Handle wrapping:
-    if (newRow < 0) newRow = 29 - 1;
-    if (newRow >= 29) newRow = 0;
-    if (newCol < 0) newCol = 28 - 1;
-    if (newCol >= 28) newCol = 0;
-
-    // Check if the new cell is a wall:
-    if (mazeGrid[newRow][newCol] != 1) {
-      // It's safe to move
-      pacmanRow = newRow;
-      pacmanCol = newCol;
-
-      // If there's a pill, increment score, remove pill
-      if (mazeGrid[newRow][newCol] == 2 || mazeGrid[newRow][newCol] == 3) {
-        score += (mazeGrid[newRow][newCol] == 2) ? 10 : 50;
-        mazeGrid[newRow][newCol] = 0;
-        drawUI(); // Update score on UI
-      }
-
-      // Redraw Pac-Man at new position
-      drawMazeFromGrid(offsetX, offsetY);
-      drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
-    }
-    // If it's a wall, Pac-Man stays in the same place, no movement.
-  }
+    __asm("wfi");}
     return 0;
 }

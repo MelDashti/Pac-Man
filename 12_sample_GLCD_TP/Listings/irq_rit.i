@@ -1782,14 +1782,15 @@ typedef struct
   volatile uint32_t Module_ID;
 } LPC_EMAC_TypeDef;
 # 2 "Source/RIT/IRQ_RIT.c" 2
-# 1 "Source/RIT\\RIT.h" 1
-# 14 "Source/RIT\\RIT.h"
-extern uint32_t init_RIT( uint32_t RITInterval );
-extern void enable_RIT( void );
-extern void disable_RIT( void );
-extern void reset_RIT( void );
-
-extern void RIT_IRQHandler (void);
+# 1 "./Source\\GLCD/GLCD.h" 1
+# 90 "./Source\\GLCD/GLCD.h"
+void LCD_Initialization(void);
+void LCD_Clear(uint16_t Color);
+uint16_t LCD_GetPoint(uint16_t Xpos,uint16_t Ypos);
+void LCD_SetPoint(uint16_t Xpos,uint16_t Ypos,uint16_t point);
+void LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
+void PutChar( uint16_t Xpos, uint16_t Ypos, uint8_t ASCI, uint16_t charColor, uint16_t bkColor );
+void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_t bkColor);
 # 3 "Source/RIT/IRQ_RIT.c" 2
 # 1 "Source/RIT\\../joystick/joystick.h" 1
 # 11 "Source/RIT\\../joystick/joystick.h"
@@ -1802,72 +1803,73 @@ extern void RIT_IRQHandler (void);
 
 void joystick_init(void);
 # 4 "Source/RIT/IRQ_RIT.c" 2
+# 1 "./Source\\RIT/RIT.h" 1
+# 14 "./Source\\RIT/RIT.h"
+extern uint32_t init_RIT( uint32_t RITInterval );
+extern void enable_RIT( void );
+extern void disable_RIT( void );
+extern void reset_RIT( void );
 
+extern void RIT_IRQHandler (void);
+# 5 "Source/RIT/IRQ_RIT.c" 2
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
+# 6 "Source/RIT/IRQ_RIT.c" 2
 extern volatile int pacmanDirRow;
 extern volatile int pacmanDirCol;
 
-// Track first press vs held state for each direction
-static int firstPressUp = 1;
-static int firstPressDown = 1;
-static int firstPressLeft = 1;
-static int firstPressRight = 1;
 
-void RIT_IRQHandler (void) {
+// Flags to track button state
+static _Bool upPressedFlag = 0;
+static _Bool downPressedFlag = 0;
+static _Bool leftPressedFlag = 0;
+static _Bool rightPressedFlag = 0;
+
+void RIT_IRQHandler(void) {
     // Read joystick inputs (active low)
-    int upPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1<<29));
-    int downPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1<<26));
-    int leftPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1<<27));
-    int rightPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1<<28));
+    int upPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 29)); // Joystick UP
+    int downPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 26)); // Joystick DOWN
+    int leftPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 27)); // Joystick LEFT
+    int rightPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 28)); // Joystick RIGHT
 
     // Handle UP
-    if(upPressed) {
-        if(firstPressUp) { // Only change direction on first press
-            pacmanDirRow = -1;
-            pacmanDirCol = 0;
-            firstPressUp = 0; // Mark as held
-        }
-    } else {
-        firstPressUp = 1; // Reset first press detection
+    if (upPressed && !upPressedFlag) {
+        pacmanDirRow = -1;
+        pacmanDirCol = 0;
+        upPressedFlag = 1; // Mark as handled
+    } else if (!upPressed) {
+        upPressedFlag = 0; // Reset when released
     }
 
     // Handle DOWN
-    if(downPressed) {
-        if(firstPressDown) {
-            pacmanDirRow = 1;
-            pacmanDirCol = 0;
-            firstPressDown = 0;
-        }
-    } else {
-        firstPressDown = 1;
+    if (downPressed && !downPressedFlag) {
+        pacmanDirRow = 1;
+        pacmanDirCol = 0;
+        downPressedFlag = 1;
+    } else if (!downPressed) {
+        downPressedFlag = 0;
     }
 
     // Handle LEFT
-    if(leftPressed) {
-        if(firstPressLeft) {
-            pacmanDirRow = 0;
-            pacmanDirCol = -1;
-            firstPressLeft = 0;
-        }
-    } else {
-        firstPressLeft = 1;
+    if (leftPressed && !leftPressedFlag) {
+        pacmanDirRow = 0;
+        pacmanDirCol = -1;
+        leftPressedFlag = 1;
+    } else if (!leftPressed) {
+        leftPressedFlag = 0;
     }
 
     // Handle RIGHT
-    if(rightPressed) {
-        if(firstPressRight) {
-            pacmanDirRow = 0;
-            pacmanDirCol = 1;
-            firstPressRight = 0;
-        }
-    } else {
-        firstPressRight = 1;
-    }
-
-    // Handle case where no direction is pressed
-    if(!upPressed && !downPressed && !leftPressed && !rightPressed) {
+    if (rightPressed && !rightPressedFlag) {
         pacmanDirRow = 0;
-        pacmanDirCol = 0;
+        pacmanDirCol = 1;
+        rightPressedFlag = 1;
+    } else if (!rightPressed) {
+        rightPressedFlag = 0;
     }
 
-    ((LPC_RIT_TypeDef *) ((0x40080000UL) + 0x30000) )->RICTRL |= 0x1; // Clear interrupt flag
+    // Move Pacman in the current direction
+    movePacMan();
+
+    // Clear the RIT interrupt flag
+    ((LPC_RIT_TypeDef *) ((0x40080000UL) + 0x30000) )->RICTRL |= 0x1;
 }
