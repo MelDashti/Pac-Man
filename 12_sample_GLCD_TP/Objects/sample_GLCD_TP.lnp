@@ -8,6 +8,12 @@
 ".\objects\glcd.o"
 ".\objects\hzlib.o"
 ".\objects\touchpanel.o"
+".\objects\irq_rit.o"
+".\objects\lib_rit.o"
+".\objects\funct_joystick.o"
+".\objects\lib_joystick.o"
+".\objects\funct_led.o"
+".\objects\lib_led.o"
 --strict --scatter ".\Objects\sample_GLCD_TP.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

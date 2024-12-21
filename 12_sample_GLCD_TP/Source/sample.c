@@ -1,6 +1,8 @@
 
 #include "LPC17xx.h"
 #include "GLCD/GLCD.h" 
+#include "joystick/joystick.h"
+#include "RIT/RIT.h"
 #include "TouchPanel/TouchPanel.h"
 #include "timer/timer.h"
 #include <stdio.h>
@@ -211,37 +213,79 @@ void drawPacMan(int row, int col, int offsetX, int offsetY) {
 }
 
 
-int main(void)
-{
-    int offsetX, offsetY;
+
+volatile int pacmanDirRow=0;
+volatile int pacmanDirCol=0;
+
+int main(void) {
 
     SystemInit();   
     LCD_Initialization();
     TP_Init();
     LCD_Clear(Black);
 
-    // This computes offcent during runtime
-    offsetX = (240 - (COLS * CELL_WIDTH)) / 2; 
-    offsetY = (320 - (ROWS * CELL_HEIGHT)) / 2;
+    joystick_init(); // NEW: Initialize joystick
+		
+		init_RIT(0x004C4B40);  // ~50ms at 100MHz
+		enable_RIT();
+		int offsetX = (240 - (COLS * CELL_WIDTH)) / 2; 
+    int offsetY = (320 - (ROWS * CELL_HEIGHT)) / 2;
 
     initMazeGrid();
     drawMazeFromGrid(offsetX, offsetY);
     drawUI();
-		drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
+    drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
 
-    // Here we place "READY!" near the center
+    // ready message
     GUI_Text((240/2)-20, (320/2)-20, (uint8_t *)"READY!", Yellow, Black);
 
-    init_timer(0, 0x1312D0); 
+    init_timer(0, 0x1312D0);
     enable_timer(0);
 
-    LPC_SC->PCON |= 0x1;  
+    // Set initial direction to nothing
+    pacmanDirRow = 0;
+    pacmanDirCol = 0;
+
+		LPC_SC->PCON |= 0x1;  /* Enter power-down mode */
     LPC_SC->PCON &= ~(0x2);
 
-    while (1) {
-        __ASM("wfi");
-    }
+		while (1) {
+				__ASM("wfi");
+
+				// After waking up from interrupt:
+				// Check if pacmanDirRow or pacmanDirCol changed.
+				// Attempt to move Pac-Man one cell in the chosen direction:
+				int newRow = pacmanRow + pacmanDirRow;
+				int newCol = pacmanCol + pacmanDirCol;
+
+				// Handle wrapping:
+				if (newRow < 0) newRow = ROWS - 1;
+				if (newRow >= ROWS) newRow = 0;
+				if (newCol < 0) newCol = COLS - 1;
+				if (newCol >= COLS) newCol = 0;
+
+				// Check if the new cell is a wall:
+				if (mazeGrid[newRow][newCol] != WALL) {
+						// It's safe to move
+						pacmanRow = newRow;
+						pacmanCol = newCol;
+
+						// If there's a pill, increment score, remove pill
+						if (mazeGrid[newRow][newCol] == PILL || mazeGrid[newRow][newCol] == POWER_PILL) {
+								score += (mazeGrid[newRow][newCol] == PILL) ? 10 : 50;
+								mazeGrid[newRow][newCol] = EMPTY; 
+								drawUI(); // Update score on UI
+						}
+
+						// Redraw Pac-Man at new position
+						drawMazeFromGrid(offsetX, offsetY);
+						drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
+				}
+				// If it's a wall, Pac-Man stays in the same place, no movement.
+		}
+    return 0;
 }
+
 
 /*********************************************************************************************************
       END FILE
