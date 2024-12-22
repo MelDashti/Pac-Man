@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\Objects\sample_GLCD_TP.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\sample_GLCD_TP.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6220000: Last Updated: Sun Dec 22 00:04:22 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6220000: Last Updated: Sun Dec 22 10:19:28 2024
 <BR><P>
-<H3>Maximum Stack Usage =        192 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        248 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-TIMER0_IRQHandler &rArr; drawUI &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
+RIT_IRQHandler &rArr; movePacMan &rArr; drawUI &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 <P>
 <H3>
 Functions with no stack information
@@ -466,6 +466,7 @@ Global Symbols
 <LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER0_IRQHandler
+<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
 </UL>
 
 <P><STRONG><a name="[46]"></a>fillCell</STRONG> (Thumb, 82 bytes, Stack size 32 bytes, sample.o(.text), UNUSED)
@@ -497,10 +498,14 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
 </UL>
 
-<P><STRONG><a name="[4e]"></a>movePacMan</STRONG> (Thumb, 346 bytes, Stack size 40 bytes, sample.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = movePacMan &rArr; LCD_SetPoint
+<P><STRONG><a name="[4e]"></a>movePacMan</STRONG> (Thumb, 1094 bytes, Stack size 64 bytes, sample.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 240 + Unknown Stack Size
+<LI>Call Chain = movePacMan &rArr; drawUI &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
+<BR>[Calls]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
+<LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
+<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawUI
 </UL>
 <BR>[Called By]<UL><LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RIT_IRQHandler
 </UL>
@@ -594,6 +599,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TouchPanel_Calibrate
 <LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER0_IRQHandler
 <LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
 <LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawUI
 </UL>
 
@@ -685,7 +691,8 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[27]"></a>RIT_IRQHandler</STRONG> (Thumb, 258 bytes, Stack size 8 bytes, irq_rit.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = RIT_IRQHandler &rArr; movePacMan &rArr; LCD_SetPoint
+<BR><BR>[Stack]<UL><LI>Max Depth = 248 + Unknown Stack Size
+<LI>Call Chain = RIT_IRQHandler &rArr; movePacMan &rArr; drawUI &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
 </UL>
@@ -711,6 +718,7 @@ Global Symbols
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_char_common
 </UL>
 <BR>[Called By]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
 <LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawUI
 </UL>
 

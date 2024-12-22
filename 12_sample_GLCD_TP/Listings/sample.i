@@ -2402,8 +2402,8 @@ static const char mazeDef[29][28 +1] = {
 
 
 // // Pac-Man starting position
-int pacmanRow = 2;
-int pacmanCol = 2;
+int pacmanRow = 1;
+int pacmanCol = 1;
 
 volatile int pacmanDirRow=0;
 volatile int pacmanDirCol=0;
@@ -2551,24 +2551,71 @@ void drawPacMan(int row, int col, int offsetX, int offsetY) {
 }
 
 _Bool movePacMan(void){
-  // Here we calculate the new position based on the current position
-  int newRow = pacmanRow + pacmanDirRow;
-  int newCol = pacmanCol + pacmanDirCol;
+    // Here we calculate the new position based on the current position
+    int newRow = pacmanRow + pacmanDirRow;
+    int newCol = pacmanCol + pacmanDirCol;
 
-  // here we check if the new position is within the bounds and not a wall
-  if(newRow >= 0 && newRow < 29 && newCol >= 0 && newCol < 28 && mazeGrid[newRow][newCol] != 1){
-   // here we clear the old pacman position
-   if (pacmanRow != newRow || pacmanCol != newCol) {
+    // here we check if its teleport location
+    if(newRow == 13 && newCol == 28){
+        fillCell(pacmanRow, pacmanCol, offsetX, offsetY, 0x0000); // Clear old position
+        pacmanRow = newRow;
+        pacmanCol = 0;
+        // Check if there's a pill at the new position
+        if(mazeGrid[pacmanRow][pacmanCol] == 2) {
+            score += 10;
+            mazeGrid[pacmanRow][pacmanCol] = 0;
+        } else if(mazeGrid[pacmanRow][pacmanCol] == 3) {
+            score += 50;
+            mazeGrid[pacmanRow][pacmanCol] = 0;
+        }
+        drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
+        drawUI();
+        return 1;
+    }
+    if(newRow == 13 && newCol == -1){
+        fillCell(pacmanRow, pacmanCol, offsetX, offsetY, 0x0000); // Clear old position
+        pacmanRow = newRow;
+        pacmanCol = 27;
+        // Check if there's a pill at the new position
+        if(mazeGrid[pacmanRow][pacmanCol] == 2) {
+            score += 10;
+            mazeGrid[pacmanRow][pacmanCol] = 0;
+        } else if(mazeGrid[pacmanRow][pacmanCol] == 3) {
+            score += 50;
+            mazeGrid[pacmanRow][pacmanCol] = 0;
+        }
+        drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
+        drawUI();
+        return 1;
+    }
+
+    // here we check if the new position is within the bounds and not a wall
+    if(newRow >= 0 && newRow < 29 && newCol >= 0 && newCol < 28 && mazeGrid[newRow][newCol] != 1){
+        // here we clear the old pacman position
+        if (pacmanRow != newRow || pacmanCol != newCol) {
+            // Check for pills before moving
+            if(mazeGrid[newRow][newCol] == 2) {
+                score += 10;
+                mazeGrid[newRow][newCol] = 0;
+            } else if(mazeGrid[newRow][newCol] == 3) {
+                score += 50;
+                mazeGrid[newRow][newCol] = 0;
+            }
+
             fillCell(pacmanRow, pacmanCol, offsetX, offsetY, 0x0000); // Clear old position
             pacmanRow = newRow;
             pacmanCol = newCol;
             drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY); // Draw at new position
-        }
-     return 1;
-  }
-  return 0;
-}
 
+            // Update UI if we collected anything
+            if(mazeGrid[newRow][newCol] != 0) {
+                drawUI();
+            }
+        }
+        return 1;
+    }
+    return 0;
+}
 
 
 int main(void) {
