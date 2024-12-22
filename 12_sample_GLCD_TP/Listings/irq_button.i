@@ -1789,26 +1789,76 @@ typedef struct
   volatile uint32_t Module_ID;
 } LPC_EMAC_TypeDef;
 # 3 "Source/button_EXINT/IRQ_button.c" 2
+# 1 "./Source\\GLCD/GLCD.h" 1
+# 90 "./Source\\GLCD/GLCD.h"
+void LCD_Initialization(void);
+void LCD_Clear(uint16_t Color);
+uint16_t LCD_GetPoint(uint16_t Xpos,uint16_t Ypos);
+void LCD_SetPoint(uint16_t Xpos,uint16_t Ypos,uint16_t point);
+void LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
+void PutChar( uint16_t Xpos, uint16_t Ypos, uint8_t ASCI, uint16_t charColor, uint16_t bkColor );
+void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_t bkColor);
+# 4 "Source/button_EXINT/IRQ_button.c" 2
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
+# 5 "Source/button_EXINT/IRQ_button.c" 2
 
-extern int down;
+extern volatile _Bool gamePaused;
+_Bool firstUnpauseDone;
 
-void EINT0_IRQHandler (void)
-{
+// Modified EINT0_IRQHandler with debouncing
+void EINT0_IRQHandler(void) {
+    // Disable Button interrupts
+    __NVIC_DisableIRQ(EINT0_IRQn);
 
- ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->EXTINT &= (1 << 0);
+    // Toggle pause state
+    gamePaused = !gamePaused;
+
+
+
+
+  if(gamePaused) {
+    GUI_Text((240/2)-40, (320/2)-10, (uint8_t *)"PAUSE", 0xFFE0, 0x0000);
+    disable_timer(0);
+  } else {
+    // Clear the PAUSE text by drawing a black rectangle
+    int x, y;
+        for(y = (320/2)-10; y < (320/2)-10 + 16; y++){
+          for(x = (240/2)-40; x < (240/2)-40 + 80; x++){
+            LCD_SetPoint(x, y, 0x0000);
+          }
+        }
+
+        // Also clear the "READY!" if not yet cleared
+        if(!firstUnpauseDone) {
+            // "READY!" was at ( (240/2)-20, (320/2)-20 ) ~ (120, 140)
+            // Let’s assume it’s 16 px high, 40 px wide
+            for(y = (320/2)-20; y < (320/2)-20 + 16; y++){
+              for(x = (240/2)-20; x < (240/2)-20 + 40; x++){
+                LCD_SetPoint(x, y, 0x0000);
+              }
+            }
+     // enable_timer(0);
+            firstUnpauseDone = 1;
+        }
+            // **Now do a FULL re-draw** so the center is correct
+        main();
+
+        // Re-enable timer
+        enable_timer(0);
+    }
+
+    ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->EXTINT &= (1 << 0); // Clear pending interrupt
+    enable_RIT();
 }
-
 
 void EINT1_IRQHandler (void)
 {
  __NVIC_DisableIRQ(EINT1_IRQn);
  ((LPC_PINCON_TypeDef *) ((0x40000000UL) + 0x2C000) )->PINSEL4 &= ~(1 << 22);
- down=1;
  ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->EXTINT &= (1 << 1);
 }
 
 void EINT2_IRQHandler (void)
 {
-
   ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->EXTINT &= (1 << 2);
 }

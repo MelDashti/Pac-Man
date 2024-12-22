@@ -3,6 +3,7 @@
 #include "GLCD/GLCD.h" 
 #include "joystick/joystick.h"
 #include "RIT/RIT.h"
+#include "button.h"
 #include "TouchPanel/TouchPanel.h"
 #include "timer/timer.h"
 #include <stdio.h>
@@ -29,9 +30,18 @@ extern uint8_t ScaleFlag;
 int score = 0;
 int lives = 1;
 volatile int countdown = 60; // Global for timer use
+volatile int powerPillsSpawned = 0;
+
+volatile int down_0 = 0;  // For button debouncing
+volatile bool gamePaused = true;
+int totalPills = 240;  // Track remaining pills
+int pillsEaten = 0;
+
 
 int offsetX; 
 int offsetY;
+
+
 
 static int mazeGrid[ROWS][COLS];
 
@@ -164,16 +174,34 @@ void initMazeGrid(void) {
     // Print out the pill count for debugging, giving error
     //printf("Total Pills: %d\n", pillCount);
 
-    srand(1); // Here we can assign a seed for randomizing check later how 
-    int powerPillsNeeded = 6;
-    while (powerPillsNeeded > 0) {
-        int rr = rand() % ROWS;
-        int cc = rand() % COLS;
-        if (mazeGrid[rr][cc] == PILL) {
-            mazeGrid[rr][cc] = POWER_PILL;
-            powerPillsNeeded--;
+//		srand(LPC_TIM0->TC); // Here we can assign a seed for randomizing check later how 
+//    int powerPillsNeeded = 6;
+//    while (powerPillsNeeded > 0) {
+//        int rr = rand() % ROWS;
+//        int cc = rand() % COLS;
+//        if (mazeGrid[rr][cc] == PILL) {
+//            mazeGrid[rr][cc] = POWER_PILL;
+//            powerPillsNeeded--;
+//        }
+//    }
+}
+
+void drawPowerPills(){
+		if ((rand() % 5) == 0) {  
+            // find a random cell that is still a standard pill
+            while (1) {
+                int rr = rand() % ROWS;
+                int cc = rand() % COLS;
+                if (mazeGrid[rr][cc] == PILL) {
+                    mazeGrid[rr][cc] = POWER_PILL;
+                    // Immediately draw it:
+                    fillCell(rr, cc, offsetX, offsetY, Black);
+                    drawPill(rr, cc, offsetX, offsetY, Red, 3);
+                    powerPillsSpawned++;
+                    break;
+                }
+            }
         }
-    }
 }
 
 void drawMazeFromGrid(int offsetX, int offsetY) {
@@ -223,7 +251,18 @@ bool movePacMan(void){
     // Here we calculate the new position based on the current position
     int newRow = pacmanRow + pacmanDirRow;
     int newCol = pacmanCol + pacmanDirCol;
-    
+			
+		// Here we also check if we have won
+		if(pillsEaten >= totalPills){
+				GUI_Text((240/2)-30, (320/2)-10, (uint8_t *)"Victory!", Yellow, Black);
+				
+				// Stop the game
+				gamePaused=true;
+				disable_RIT();      // 
+				disable_timer(0);   // so countdown stops, etc.
+
+				return false;
+		}
     // here we check if its teleport location
     if(newRow == 13 && newCol == 28){
         fillCell(pacmanRow, pacmanCol, offsetX, offsetY, Black); // Clear old position
@@ -265,11 +304,19 @@ bool movePacMan(void){
             // Check for pills before moving
             if(mazeGrid[newRow][newCol] == PILL) {
                 score += 10;
+								pillsEaten++;
                 mazeGrid[newRow][newCol] = EMPTY;
             } else if(mazeGrid[newRow][newCol] == POWER_PILL) {
                 score += 50;
+								pillsEaten++;
                 mazeGrid[newRow][newCol] = EMPTY;
             }
+						
+						// check for extra lives
+						if(score>0 && score%1000==0){
+							lives++;
+							drawUI();
+						}
             
             fillCell(pacmanRow, pacmanCol, offsetX, offsetY, Black); // Clear old position
             pacmanRow = newRow;
@@ -292,6 +339,7 @@ int main(void) {
     SystemInit();   
     LCD_Initialization();
     TP_Init();
+		BUTTON_init();
     LCD_Clear(Black);
 		//init_RIT(0x004C4B40);	// 50ms
 		init_RIT(0x000F4240 );	// 50ms
@@ -311,7 +359,7 @@ int main(void) {
     GUI_Text((240/2)-20, (320/2)-20, (uint8_t *)"READY!", Yellow, Black);
 
     init_timer(0, 0x1312D0);
-    enable_timer(0);
+    //enable_timer(0);
 
     // Set initial direction to nothing
     pacmanDirRow = 0;

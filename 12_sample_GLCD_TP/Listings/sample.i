@@ -1813,6 +1813,13 @@ extern void reset_RIT( void );
 
 extern void RIT_IRQHandler (void);
 # 6 "Source/sample.c" 2
+# 1 "./Source/button_EXINT\\button.h" 1
+void BUTTON_init(void);
+
+void EINT1_IRQHandler(void);
+void EINT2_IRQHandler(void);
+void EINT3_IRQHandler(void);
+# 7 "Source/sample.c" 2
 # 1 "Source\\TouchPanel/TouchPanel.h" 1
 # 30 "Source\\TouchPanel/TouchPanel.h"
 typedef struct POINT
@@ -1846,7 +1853,7 @@ void DrawCross(uint16_t Xpos,uint16_t Ypos);
 void TP_DrawPoint(uint16_t Xpos,uint16_t Ypos);
 uint8_t setCalibrationMatrix( Coordinate * displayPtr,Coordinate * screenPtr,Matrix * matrixPtr);
 uint8_t getDisplayPoint(Coordinate * displayPtr,Coordinate * screenPtr,Matrix * matrixPtr );
-# 7 "Source/sample.c" 2
+# 8 "Source/sample.c" 2
 # 1 "Source\\timer/timer.h" 1
 # 14 "Source\\timer/timer.h"
 extern uint32_t init_timer( uint8_t timer_num, uint32_t timerInterval );
@@ -1857,7 +1864,7 @@ extern volatile int countdown;
 
 extern void TIMER0_IRQHandler (void);
 extern void TIMER1_IRQHandler (void);
-# 8 "Source/sample.c" 2
+# 9 "Source/sample.c" 2
 # 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 1 3
 # 53 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
     typedef unsigned int size_t;
@@ -2161,7 +2168,7 @@ extern __attribute__((__nothrow__)) int _fisatty(FILE * ) __attribute__((__nonnu
 
 extern __attribute__((__nothrow__)) void __use_no_semihosting_swi(void);
 extern __attribute__((__nothrow__)) void __use_no_semihosting(void);
-# 9 "Source/sample.c" 2
+# 10 "Source/sample.c" 2
 # 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 1 3
 # 91 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
     typedef unsigned short wchar_t;
@@ -2343,13 +2350,13 @@ extern __attribute__((__nothrow__)) void __use_no_heap_region(void);
 
 extern __attribute__((__nothrow__)) char const *__C_library_version_string(void);
 extern __attribute__((__nothrow__)) int __C_library_version_number(void);
-# 10 "Source/sample.c" 2
-# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
 # 11 "Source/sample.c" 2
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
+# 12 "Source/sample.c" 2
 
 
 extern uint8_t ScaleFlag;
-# 22 "Source/sample.c"
+# 23 "Source/sample.c"
 // Optionally define POWER_PILL if you want to add them later
 
 
@@ -2360,9 +2367,18 @@ extern uint8_t ScaleFlag;
 int score = 0;
 int lives = 1;
 volatile int countdown = 60; // Global for timer use
+volatile int powerPillsSpawned = 0;
+
+volatile int down_0 = 0; // For button debouncing
+volatile _Bool gamePaused = 1;
+int totalPills = 240; // Track remaining pills
+int pillsEaten = 0;
+
 
 int offsetX;
 int offsetY;
+
+
 
 static int mazeGrid[29][28];
 
@@ -2495,16 +2511,34 @@ void initMazeGrid(void) {
     // Print out the pill count for debugging, giving error
     //printf("Total Pills: %d\n", pillCount);
 
-    srand(1); // Here we can assign a seed for randomizing check later how
-    int powerPillsNeeded = 6;
-    while (powerPillsNeeded > 0) {
-        int rr = rand() % 29;
-        int cc = rand() % 28;
-        if (mazeGrid[rr][cc] == 2) {
-            mazeGrid[rr][cc] = 3;
-            powerPillsNeeded--;
+// srand(((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TC); // Here we can assign a seed for randomizing check later how
+// int powerPillsNeeded = 6;
+// while (powerPillsNeeded > 0) {
+// int rr = rand() % 29;
+// int cc = rand() % 28;
+// if (mazeGrid[rr][cc] == 2) {
+// mazeGrid[rr][cc] = 3;
+// powerPillsNeeded--;
+// }
+// }
+}
+
+void drawPowerPills(){
+  if ((rand() % 5) == 0) {
+            // find a random cell that is still a standard pill
+            while (1) {
+                int rr = rand() % 29;
+                int cc = rand() % 28;
+                if (mazeGrid[rr][cc] == 2) {
+                    mazeGrid[rr][cc] = 3;
+                    // Immediately draw it:
+                    fillCell(rr, cc, offsetX, offsetY, 0x0000);
+                    drawPill(rr, cc, offsetX, offsetY, 0xF800, 3);
+                    powerPillsSpawned++;
+                    break;
+                }
+            }
         }
-    }
 }
 
 void drawMazeFromGrid(int offsetX, int offsetY) {
@@ -2555,6 +2589,17 @@ _Bool movePacMan(void){
     int newRow = pacmanRow + pacmanDirRow;
     int newCol = pacmanCol + pacmanDirCol;
 
+  // Here we also check if we have won
+  if(pillsEaten >= totalPills){
+    GUI_Text((240/2)-30, (320/2)-10, (uint8_t *)"Victory!", 0xFFE0, 0x0000);
+
+    // Stop the game
+    gamePaused=1;
+    disable_RIT(); //
+    disable_timer(0); // so countdown stops, etc.
+
+    return 0;
+  }
     // here we check if its teleport location
     if(newRow == 13 && newCol == 28){
         fillCell(pacmanRow, pacmanCol, offsetX, offsetY, 0x0000); // Clear old position
@@ -2596,11 +2641,19 @@ _Bool movePacMan(void){
             // Check for pills before moving
             if(mazeGrid[newRow][newCol] == 2) {
                 score += 10;
+        pillsEaten++;
                 mazeGrid[newRow][newCol] = 0;
             } else if(mazeGrid[newRow][newCol] == 3) {
                 score += 50;
+        pillsEaten++;
                 mazeGrid[newRow][newCol] = 0;
             }
+
+      // check for extra lives
+      if(score>0 && score%1000==0){
+       lives++;
+       drawUI();
+      }
 
             fillCell(pacmanRow, pacmanCol, offsetX, offsetY, 0x0000); // Clear old position
             pacmanRow = newRow;
@@ -2623,6 +2676,7 @@ int main(void) {
     SystemInit();
     LCD_Initialization();
     TP_Init();
+  BUTTON_init();
     LCD_Clear(0x0000);
   //init_RIT(0x004C4B40); // 50ms
   init_RIT(0x000F4240 ); // 50ms
@@ -2642,7 +2696,7 @@ int main(void) {
     GUI_Text((240/2)-20, (320/2)-20, (uint8_t *)"READY!", 0xFFE0, 0x0000);
 
     init_timer(0, 0x1312D0);
-    enable_timer(0);
+    //enable_timer(0);
 
     // Set initial direction to nothing
     pacmanDirRow = 0;

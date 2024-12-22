@@ -2272,8 +2272,10 @@ extern __attribute__((__nothrow__)) void __use_no_semihosting_swi(void);
 extern __attribute__((__nothrow__)) void __use_no_semihosting(void);
 # 16 "Source/timer/IRQ_timer.c" 2
 extern volatile int countdown;
+extern volatile powerPillsSpawned;
+extern volatile gamePaused;
 extern void drawUI(void);
-# 31 "Source/timer/IRQ_timer.c"
+# 33 "Source/timer/IRQ_timer.c"
 void TIMER0_IRQHandler (void)
 {
     // Decrement the countdown if it's greater than 0
@@ -2286,10 +2288,18 @@ void TIMER0_IRQHandler (void)
     GUI_Text((240/2)-30, (320/2)-20, (uint8_t *)"GAME OVER!", 0xF800, 0x0000);
     }
 
+   // Random spawn of power pill logic
+    // Only spawn if game not paused, and if we haven’t spawned all 6
+    if (!gamePaused && powerPillsSpawned < 6) {
+        // e.g. a small chance each second. You decide the probability; here 1 in 5:
+    drawPowerPills();
+    }
+
+
     ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->IR = 1; // Clear interrupt flag
     return;
 }
-# 56 "Source/timer/IRQ_timer.c"
+# 66 "Source/timer/IRQ_timer.c"
 void TIMER1_IRQHandler (void)
 {
   ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->IR = 1;

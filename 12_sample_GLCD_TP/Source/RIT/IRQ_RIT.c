@@ -5,7 +5,7 @@
 #include <stdbool.h> // For boolean data type
 extern volatile int pacmanDirRow;
 extern volatile int pacmanDirCol;
-
+extern volatile bool gamePaused;
 
 // Flags to track button state
 static bool upPressedFlag = false;
@@ -20,6 +20,9 @@ void RIT_IRQHandler(void) {
     int leftPressed  = !(LPC_GPIO1->FIOPIN & (1 << 27));  // Joystick LEFT
     int rightPressed = !(LPC_GPIO1->FIOPIN & (1 << 28));  // Joystick RIGHT
 
+	// only process the joystick if the game is not paused
+		
+	
     // Handle UP
     if (upPressed && !upPressedFlag) {
         pacmanDirRow = -1;
@@ -57,7 +60,9 @@ void RIT_IRQHandler(void) {
     }
 
     // Move Pacman in the current direction
-    movePacMan();
+    if (!gamePaused) {
+				movePacMan();
+		} 
 
     // Clear the RIT interrupt flag
     LPC_RIT->RICTRL |= 0x1;

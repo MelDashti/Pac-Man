@@ -14,6 +14,8 @@
 #include "../TouchPanel/TouchPanel.h"
 #include <stdio.h> /*for sprintf*/
 extern volatile int countdown;
+extern volatile powerPillsSpawned;
+extern volatile gamePaused;
 extern void drawUI(void);
 
 
@@ -39,7 +41,15 @@ void TIMER0_IRQHandler (void)
         // For now, just keep it simple.
 				GUI_Text((240/2)-30, (320/2)-20, (uint8_t *)"GAME OVER!", Red, Black);
     }
-
+		
+		 // Random spawn of power pill logic 
+    // Only spawn if game not paused, and if we haven’t spawned all 6
+    if (!gamePaused && powerPillsSpawned < 6) {
+        // e.g. a small chance each second.  You decide the probability; here 1 in 5:
+				drawPowerPills();
+    }
+		
+		
     LPC_TIM0->IR = 1; // Clear interrupt flag
     return;
 }

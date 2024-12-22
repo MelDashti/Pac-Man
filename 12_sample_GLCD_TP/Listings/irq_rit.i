@@ -1816,7 +1816,7 @@ extern void RIT_IRQHandler (void);
 # 6 "Source/RIT/IRQ_RIT.c" 2
 extern volatile int pacmanDirRow;
 extern volatile int pacmanDirCol;
-
+extern volatile _Bool gamePaused;
 
 // Flags to track button state
 static _Bool upPressedFlag = 0;
@@ -1830,6 +1830,9 @@ void RIT_IRQHandler(void) {
     int downPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 26)); // Joystick DOWN
     int leftPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 27)); // Joystick LEFT
     int rightPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 28)); // Joystick RIGHT
+
+ // only process the joystick if the game is not paused
+
 
     // Handle UP
     if (upPressed && !upPressedFlag) {
@@ -1868,7 +1871,9 @@ void RIT_IRQHandler(void) {
     }
 
     // Move Pacman in the current direction
+    if (!gamePaused) {
     movePacMan();
+  }
 
     // Clear the RIT interrupt flag
     ((LPC_RIT_TypeDef *) ((0x40080000UL) + 0x30000) )->RICTRL |= 0x1;
