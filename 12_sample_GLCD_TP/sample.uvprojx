@@ -695,6 +695,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Ghost</GroupName>
+          <Files>
+            <File>
+              <FileName>ghost.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Ghost\ghost.c</FilePath>
+            </File>
+            <File>
+              <FileName>ghost.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\Ghost\ghost.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
@@ -1333,6 +1348,21 @@
               <FileName>lib_button.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\button_EXINT\lib_button.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Ghost</GroupName>
+          <Files>
+            <File>
+              <FileName>ghost.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Ghost\ghost.c</FilePath>
+            </File>
+            <File>
+              <FileName>ghost.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\Ghost\ghost.h</FilePath>
             </File>
           </Files>
         </Group>

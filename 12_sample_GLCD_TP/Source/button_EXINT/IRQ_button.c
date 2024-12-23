@@ -4,6 +4,8 @@
 #include <stdbool.h>
 
 extern volatile bool gamePaused;
+extern int offsetX;
+extern int offsetY;
 bool firstUnpauseDone;
 
 // Modified EINT0_IRQHandler with debouncing
@@ -18,28 +20,30 @@ void EINT0_IRQHandler(void) {
 		
 	
 		if(gamePaused) {
-				GUI_Text((240/2)-40, (320/2)-10, (uint8_t *)"PAUSE", Yellow, Black);
+				GUI_Text((240/2)-23, (320/2)-10, (uint8_t *)"PAUSE", Yellow, Black);
 				
 		} else {
 				// Clear the PAUSE text by drawing a black rectangle
 				 int x, y;
-        for(y = (320/2)-10; y < (320/2)-10 + 16; y++){
-          for(x = (240/2)-40; x < (240/2)-40 + 80; x++){
-            LCD_SetPoint(x, y, Black);
-          }
-        }
+				for (y = (320/2)-10; y < (320/2)-10 + 16; y++){
+						for (x = (240/2)-23; x < (240/2)-23 + 40; x++){
+								LCD_SetPoint(x, y, Black);
+						}
+				}
 
         // Also clear the "READY!" if not yet cleared
         if(!firstUnpauseDone) {
-            // "READY!" was at ( (240/2)-20, (320/2)-20 ) ~ (120, 140)
-            // Let’s assume it’s 16 px high, 40 px wide
-            for(y = (320/2)-20; y < (320/2)-20 + 16; y++){
-              for(x = (240/2)-20; x < (240/2)-20 + 40; x++){
-                LCD_SetPoint(x, y, Black);
-              }
-            }
-						enable_timer(0);
-            firstUnpauseDone = true;
+
+				for (y = (320/2)-10; y < (320/2)-10 + 16; y++){
+						for (x = (240/2)-23; x < (240/2)-23 + 40; x++){
+								LCD_SetPoint(x, y, Black);
+						}
+				}
+				// Re-draw ghost if needed
+				drawGhost(offsetX, offsetY);
+
+				enable_timer(0);
+				firstUnpauseDone = true;
         }
     }
 

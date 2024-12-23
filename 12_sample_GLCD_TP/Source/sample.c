@@ -1,7 +1,7 @@
-
 #include "LPC17xx.h"
 #include "GLCD/GLCD.h" 
 #include "joystick/joystick.h"
+#include "Ghost/ghost.h"
 #include "RIT/RIT.h"
 #include "button.h"
 #include "TouchPanel/TouchPanel.h"
@@ -41,9 +41,10 @@ int pillsEaten = 0;
 int offsetX; 
 int offsetY;
 
+extern void initGhost(void);
+extern void drawGhost(int offsetX, int offsetY);
 
-
-static int mazeGrid[ROWS][COLS];
+volatile int mazeGrid[ROWS][COLS];
 
 // Example maze layout (28 chars wide each line):
 // 'X' = wall, ' ' = empty space, 'G' = ghost house area
@@ -59,12 +60,12 @@ static const char mazeDef[ROWS][COLS+1] = {
 "XXXXXX XXXXX XX XXXXX XXXXXX",
 "XXXXXX XXXXX XX XXXXX XXXXXX",
 "XXXXXX XX          XX XXXXXX",
-"XXXXXX XX XXXXXXXX XX XXXXXX",
+"XXXXXX XX XXX  XXX XX XXXXXX",
 "XXXXXX XX XGGGGGGX XX XXXXXX",
 "          XGGGGGGX          ",
 "XXXXXX XX XGGGGGGX XX XXXXXX",
 "XXXXXX XX XGGGGGGX XX     XX",
-"XXXXXX XX XXXXXXXX	XX XXX XX",
+"XXXXXX XX XXXXXXXX XX XXX XX",
 "X      XX          XX XXX XX",
 "X XXXX XX XXXXXXXX XX XXX XX",
 "X XXXX XX XXXXXXXX XX XXX XX",
@@ -153,7 +154,7 @@ void initMazeGrid(void) {
                 mazeGrid[r][c] = WALL;
             } else if (cell == 'G') {
                 // Ghost house area as WALL so no pills appear inside
-                mazeGrid[r][c] = WALL;
+                mazeGrid[r][c] = EMPTY;
             } else {
                 // ' ' = empty floor, initially mark EMPTY
                 mazeGrid[r][c] = EMPTY; 
@@ -161,15 +162,14 @@ void initMazeGrid(void) {
         }
     }
 
-    // Fill empty spaces with pills
-    for (r = 0; r < ROWS; r++) {
-        for (c = 0; c < COLS; c++) {
-            if (mazeGrid[r][c] == EMPTY) {
-                mazeGrid[r][c] = PILL;
-                pillCount++;
-            }
-        }
-    }
+		for (r = 0; r < ROWS; r++) {
+				for (c = 0; c < COLS; c++) {
+						if (mazeGrid[r][c] == EMPTY && mazeDef[r][c] != 'G') {  // Check original maze definition
+								mazeGrid[r][c] = PILL;
+								pillCount++;
+						}
+				}
+		}
 
     // Print out the pill count for debugging, giving error
     //printf("Total Pills: %d\n", pillCount);
@@ -247,6 +247,8 @@ void drawPacMan(int row, int col, int offsetX, int offsetY) {
     }
 }
 
+
+
 bool movePacMan(void){
     // Here we calculate the new position based on the current position
     int newRow = pacmanRow + pacmanDirRow;
@@ -271,10 +273,14 @@ bool movePacMan(void){
         // Check if there's a pill at the new position
         if(mazeGrid[pacmanRow][pacmanCol] == PILL) {
             score += 10;
+						pillsEaten++;
             mazeGrid[pacmanRow][pacmanCol] = EMPTY;
         } else if(mazeGrid[pacmanRow][pacmanCol] == POWER_PILL) {
             score += 50;
+						pillsEaten++;
             mazeGrid[pacmanRow][pacmanCol] = EMPTY;
+						blinky.isChasing = false;
+						blinky.frightenedTimer = 200;
         }
         drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
         drawUI();
@@ -341,9 +347,9 @@ int main(void) {
     TP_Init();
 		BUTTON_init();
     LCD_Clear(Black);
-		//init_RIT(0x004C4B40);	// 50ms
+	//	init_RIT(0x004C4B40);	// 50ms
 		init_RIT(0x000F4240 );	// 50ms
-	
+//	
 		enable_RIT();
     joystick_init(); // NEW: Initialize joystick
 		
@@ -352,11 +358,13 @@ int main(void) {
 
     initMazeGrid();
     drawMazeFromGrid(offsetX, offsetY);
-    drawUI();
+		drawUI();
     drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
+		initGhost(); // initializes the ghost blinky
+		drawGhost(offsetX, offsetY); // draws the initial ghost position
 
     // ready message
-    GUI_Text((240/2)-20, (320/2)-20, (uint8_t *)"READY!", Yellow, Black);
+    GUI_Text((240/2)-23, (320/2)-10, (uint8_t *)"READY", Yellow, Black);
 
     init_timer(0, 0x1312D0);
     //enable_timer(0);

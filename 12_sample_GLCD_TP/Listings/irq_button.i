@@ -1803,6 +1803,8 @@ void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_
 # 5 "Source/button_EXINT/IRQ_button.c" 2
 
 extern volatile _Bool gamePaused;
+extern int offsetX;
+extern int offsetY;
 _Bool firstUnpauseDone;
 
 // Modified EINT0_IRQHandler with debouncing
@@ -1817,34 +1819,31 @@ void EINT0_IRQHandler(void) {
 
 
   if(gamePaused) {
-    GUI_Text((240/2)-40, (320/2)-10, (uint8_t *)"PAUSE", 0xFFE0, 0x0000);
-    disable_timer(0);
+    GUI_Text((240/2)-23, (320/2)-10, (uint8_t *)"PAUSE", 0xFFE0, 0x0000);
+
   } else {
     // Clear the PAUSE text by drawing a black rectangle
-    int x, y;
-        for(y = (320/2)-10; y < (320/2)-10 + 16; y++){
-          for(x = (240/2)-40; x < (240/2)-40 + 80; x++){
-            LCD_SetPoint(x, y, 0x0000);
-          }
-        }
+     int x, y;
+    for (y = (320/2)-10; y < (320/2)-10 + 16; y++){
+      for (x = (240/2)-23; x < (240/2)-23 + 40; x++){
+        LCD_SetPoint(x, y, 0x0000);
+      }
+    }
 
         // Also clear the "READY!" if not yet cleared
         if(!firstUnpauseDone) {
-            // "READY!" was at ( (240/2)-20, (320/2)-20 ) ~ (120, 140)
-            // Let’s assume it’s 16 px high, 40 px wide
-            for(y = (320/2)-20; y < (320/2)-20 + 16; y++){
-              for(x = (240/2)-20; x < (240/2)-20 + 40; x++){
-                LCD_SetPoint(x, y, 0x0000);
-              }
-            }
-     // enable_timer(0);
-            firstUnpauseDone = 1;
-        }
-            // **Now do a FULL re-draw** so the center is correct
-        main();
 
-        // Re-enable timer
-        enable_timer(0);
+    for (y = (320/2)-10; y < (320/2)-10 + 16; y++){
+      for (x = (240/2)-23; x < (240/2)-23 + 40; x++){
+        LCD_SetPoint(x, y, 0x0000);
+      }
+    }
+    // Re-draw ghost if needed
+    drawGhost(offsetX, offsetY);
+
+    enable_timer(0);
+    firstUnpauseDone = 1;
+        }
     }
 
     ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->EXTINT &= (1 << 0); // Clear pending interrupt

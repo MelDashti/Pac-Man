@@ -1792,6 +1792,32 @@ void LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t
 void PutChar( uint16_t Xpos, uint16_t Ypos, uint8_t ASCI, uint16_t charColor, uint16_t bkColor );
 void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_t bkColor);
 # 3 "Source/RIT/IRQ_RIT.c" 2
+# 1 "./Source\\Ghost/ghost.h" 1
+
+
+
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
+# 5 "./Source\\Ghost/ghost.h" 2
+
+// ghost structure
+
+typedef struct {
+ int row;
+ int col;
+ _Bool isChasing;
+ _Bool isActive;
+ int respawnTimer;
+ int frightenedTimer;
+
+}Ghost;
+
+extern Ghost blinky;
+
+// function declaration
+void initGhost(void);
+void updateGhost(void);
+void drawGhost(int offsetX, int offsetY);
+# 4 "Source/RIT/IRQ_RIT.c" 2
 # 1 "Source/RIT\\../joystick/joystick.h" 1
 # 11 "Source/RIT\\../joystick/joystick.h"
 // joystick.h
@@ -1802,7 +1828,7 @@ void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_
 
 
 void joystick_init(void);
-# 4 "Source/RIT/IRQ_RIT.c" 2
+# 5 "Source/RIT/IRQ_RIT.c" 2
 # 1 "./Source\\RIT/RIT.h" 1
 # 14 "./Source\\RIT/RIT.h"
 extern uint32_t init_RIT( uint32_t RITInterval );
@@ -1811,9 +1837,8 @@ extern void disable_RIT( void );
 extern void reset_RIT( void );
 
 extern void RIT_IRQHandler (void);
-# 5 "Source/RIT/IRQ_RIT.c" 2
-# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
 # 6 "Source/RIT/IRQ_RIT.c" 2
+
 extern volatile int pacmanDirRow;
 extern volatile int pacmanDirCol;
 extern volatile _Bool gamePaused;
@@ -1873,6 +1898,7 @@ void RIT_IRQHandler(void) {
     // Move Pacman in the current direction
     if (!gamePaused) {
     movePacMan();
+    updateGhost();
   }
 
     // Clear the RIT interrupt flag

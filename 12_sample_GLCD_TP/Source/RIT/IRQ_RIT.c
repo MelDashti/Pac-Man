@@ -1,5 +1,6 @@
 #include "LPC17xx.h"
 #include "GLCD/GLCD.h" 
+#include "Ghost/ghost.h"
 #include "../joystick/joystick.h"
 #include "RIT/RIT.h"
 #include <stdbool.h> // For boolean data type
@@ -62,6 +63,7 @@ void RIT_IRQHandler(void) {
     // Move Pacman in the current direction
     if (!gamePaused) {
 				movePacMan();
+				updateGhost();
 		} 
 
     // Clear the RIT interrupt flag

@@ -5,7 +5,6 @@
 # 1 "<command line>" 1
 # 1 "<built-in>" 2
 # 1 "Source/sample.c" 2
-
 # 1 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 1
 # 41 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 typedef enum IRQn
@@ -1782,7 +1781,7 @@ typedef struct
        uint32_t RESERVED8;
   volatile uint32_t Module_ID;
 } LPC_EMAC_TypeDef;
-# 3 "Source/sample.c" 2
+# 2 "Source/sample.c" 2
 # 1 "Source\\GLCD/GLCD.h" 1
 # 90 "Source\\GLCD/GLCD.h"
 void LCD_Initialization(void);
@@ -1792,7 +1791,7 @@ void LCD_SetPoint(uint16_t Xpos,uint16_t Ypos,uint16_t point);
 void LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
 void PutChar( uint16_t Xpos, uint16_t Ypos, uint8_t ASCI, uint16_t charColor, uint16_t bkColor );
 void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_t bkColor);
-# 4 "Source/sample.c" 2
+# 3 "Source/sample.c" 2
 # 1 "Source\\joystick/joystick.h" 1
 # 11 "Source\\joystick/joystick.h"
 // joystick.h
@@ -1803,6 +1802,32 @@ void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_
 
 
 void joystick_init(void);
+# 4 "Source/sample.c" 2
+# 1 "Source\\Ghost/ghost.h" 1
+
+
+
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
+# 5 "Source\\Ghost/ghost.h" 2
+
+// ghost structure
+
+typedef struct {
+ int row;
+ int col;
+ _Bool isChasing;
+ _Bool isActive;
+ int respawnTimer;
+ int frightenedTimer;
+
+}Ghost;
+
+extern Ghost blinky;
+
+// function declaration
+void initGhost(void);
+void updateGhost(void);
+void drawGhost(int offsetX, int offsetY);
 # 5 "Source/sample.c" 2
 # 1 "Source\\RIT/RIT.h" 1
 # 14 "Source\\RIT/RIT.h"
@@ -2351,8 +2376,7 @@ extern __attribute__((__nothrow__)) void __use_no_heap_region(void);
 extern __attribute__((__nothrow__)) char const *__C_library_version_string(void);
 extern __attribute__((__nothrow__)) int __C_library_version_number(void);
 # 11 "Source/sample.c" 2
-# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
-# 12 "Source/sample.c" 2
+
 
 
 extern uint8_t ScaleFlag;
@@ -2378,9 +2402,10 @@ int pillsEaten = 0;
 int offsetX;
 int offsetY;
 
+extern void initGhost(void);
+extern void drawGhost(int offsetX, int offsetY);
 
-
-static int mazeGrid[29][28];
+volatile int mazeGrid[29][28];
 
 // Example maze layout (28 chars wide each line):
 // 'X' = wall, ' ' = empty space, 'G' = ghost house area
@@ -2396,12 +2421,12 @@ static const char mazeDef[29][28 +1] = {
 "XXXXXX XXXXX XX XXXXX XXXXXX",
 "XXXXXX XXXXX XX XXXXX XXXXXX",
 "XXXXXX XX          XX XXXXXX",
-"XXXXXX XX XXXXXXXX XX XXXXXX",
+"XXXXXX XX XXX  XXX XX XXXXXX",
 "XXXXXX XX XGGGGGGX XX XXXXXX",
 "          XGGGGGGX          ",
 "XXXXXX XX XGGGGGGX XX XXXXXX",
 "XXXXXX XX XGGGGGGX XX     XX",
-"XXXXXX XX XXXXXXXX	XX XXX XX",
+"XXXXXX XX XXXXXXXX XX XXX XX",
 "X      XX          XX XXX XX",
 "X XXXX XX XXXXXXXX XX XXX XX",
 "X XXXX XX XXXXXXXX XX XXX XX",
@@ -2490,7 +2515,7 @@ void initMazeGrid(void) {
                 mazeGrid[r][c] = 1;
             } else if (cell == 'G') {
                 // Ghost house area as 1 so no pills appear inside
-                mazeGrid[r][c] = 1;
+                mazeGrid[r][c] = 0;
             } else {
                 // ' ' = empty floor, initially mark 0
                 mazeGrid[r][c] = 0;
@@ -2498,15 +2523,14 @@ void initMazeGrid(void) {
         }
     }
 
-    // Fill empty spaces with pills
-    for (r = 0; r < 29; r++) {
-        for (c = 0; c < 28; c++) {
-            if (mazeGrid[r][c] == 0) {
-                mazeGrid[r][c] = 2;
-                pillCount++;
-            }
-        }
+  for (r = 0; r < 29; r++) {
+    for (c = 0; c < 28; c++) {
+      if (mazeGrid[r][c] == 0 && mazeDef[r][c] != 'G') { // Check original maze definition
+        mazeGrid[r][c] = 2;
+        pillCount++;
+      }
     }
+  }
 
     // Print out the pill count for debugging, giving error
     //printf("Total Pills: %d\n", pillCount);
@@ -2584,6 +2608,8 @@ void drawPacMan(int row, int col, int offsetX, int offsetY) {
     }
 }
 
+
+
 _Bool movePacMan(void){
     // Here we calculate the new position based on the current position
     int newRow = pacmanRow + pacmanDirRow;
@@ -2608,10 +2634,14 @@ _Bool movePacMan(void){
         // Check if there's a pill at the new position
         if(mazeGrid[pacmanRow][pacmanCol] == 2) {
             score += 10;
+      pillsEaten++;
             mazeGrid[pacmanRow][pacmanCol] = 0;
         } else if(mazeGrid[pacmanRow][pacmanCol] == 3) {
             score += 50;
+      pillsEaten++;
             mazeGrid[pacmanRow][pacmanCol] = 0;
+      blinky.isChasing = 0;
+      blinky.frightenedTimer = 200;
         }
         drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
         drawUI();
@@ -2678,9 +2708,9 @@ int main(void) {
     TP_Init();
   BUTTON_init();
     LCD_Clear(0x0000);
-  //init_RIT(0x004C4B40); // 50ms
+ // init_RIT(0x004C4B40); // 50ms
   init_RIT(0x000F4240 ); // 50ms
-
+//
   enable_RIT();
     joystick_init(); // NEW: Initialize joystick
 
@@ -2689,11 +2719,13 @@ int main(void) {
 
     initMazeGrid();
     drawMazeFromGrid(offsetX, offsetY);
-    drawUI();
+  drawUI();
     drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
+  initGhost(); // initializes the ghost blinky
+  drawGhost(offsetX, offsetY); // draws the initial ghost position
 
     // ready message
-    GUI_Text((240/2)-20, (320/2)-20, (uint8_t *)"READY!", 0xFFE0, 0x0000);
+    GUI_Text((240/2)-23, (320/2)-10, (uint8_t *)"READY", 0xFFE0, 0x0000);
 
     init_timer(0, 0x1312D0);
     //enable_timer(0);
