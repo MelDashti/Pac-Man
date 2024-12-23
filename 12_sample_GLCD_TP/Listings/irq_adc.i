@@ -1,10 +1,11 @@
-# 1 "Source/sample.c"
+# 1 "Source/adc/IRQ_adc.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 393 "<built-in>" 3
 # 1 "<command line>" 1
 # 1 "<built-in>" 2
-# 1 "Source/sample.c" 2
+# 1 "Source/adc/IRQ_adc.c" 2
+# 11 "Source/adc/IRQ_adc.c"
 # 1 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 1
 # 41 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 typedef enum IRQn
@@ -1781,107 +1782,159 @@ typedef struct
        uint32_t RESERVED8;
   volatile uint32_t Module_ID;
 } LPC_EMAC_TypeDef;
-# 2 "Source/sample.c" 2
-# 1 "Source\\GLCD/GLCD.h" 1
-# 90 "Source\\GLCD/GLCD.h"
-void LCD_Initialization(void);
-void LCD_Clear(uint16_t Color);
-uint16_t LCD_GetPoint(uint16_t Xpos,uint16_t Ypos);
-void LCD_SetPoint(uint16_t Xpos,uint16_t Ypos,uint16_t point);
-void LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
-void PutChar( uint16_t Xpos, uint16_t Ypos, uint8_t ASCI, uint16_t charColor, uint16_t bkColor );
-void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_t bkColor);
-# 3 "Source/sample.c" 2
-# 1 "Source\\joystick/joystick.h" 1
-# 11 "Source\\joystick/joystick.h"
-// joystick.h
+# 12 "Source/adc/IRQ_adc.c" 2
+# 1 "Source/adc\\adc.h" 1
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 1 3
+# 51 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+    typedef unsigned int size_t;
 
 
 
 
 
 
-void joystick_init(void);
-# 4 "Source/sample.c" 2
-# 1 "Source\\Ghost/ghost.h" 1
+extern __attribute__((__nothrow__)) void *memcpy(void * __restrict ,
+                    const void * __restrict , size_t ) __attribute__((__nonnull__(1,2)));
 
 
 
-# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
-# 5 "Source\\Ghost/ghost.h" 2
-
-// ghost structure
-
-typedef struct {
- int row;
- int col;
- _Bool isChasing;
- _Bool isActive;
- int respawnTimer;
- int frightenedTimer;
- int underlyingCell;
-
-}Ghost;
-
-extern Ghost blinky;
-
-// function declaration
-void initGhost(void);
-void updateGhost(void);
-void drawGhost(int offsetX, int offsetY);
-# 5 "Source/sample.c" 2
-# 1 "Source\\RIT/RIT.h" 1
-# 14 "Source\\RIT/RIT.h"
-extern uint32_t init_RIT( uint32_t RITInterval );
-extern void enable_RIT( void );
-extern void disable_RIT( void );
-extern void reset_RIT( void );
-
-extern void RIT_IRQHandler (void);
-# 6 "Source/sample.c" 2
-# 1 "./Source/button_EXINT\\button.h" 1
-void BUTTON_init(void);
-
-void EINT1_IRQHandler(void);
-void EINT2_IRQHandler(void);
-void EINT3_IRQHandler(void);
-# 7 "Source/sample.c" 2
-# 1 "Source\\TouchPanel/TouchPanel.h" 1
-# 30 "Source\\TouchPanel/TouchPanel.h"
-typedef struct POINT
-{
-   uint16_t x;
-   uint16_t y;
-}Coordinate;
 
 
-typedef struct Matrix
-{
-long double An,
-            Bn,
-            Cn,
-            Dn,
-            En,
-            Fn,
-            Divider ;
-} Matrix ;
+
+extern __attribute__((__nothrow__)) void *memmove(void * ,
+                    const void * , size_t ) __attribute__((__nonnull__(1,2)));
+# 77 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+extern __attribute__((__nothrow__)) char *strcpy(char * __restrict , const char * __restrict ) __attribute__((__nonnull__(1,2)));
 
 
-extern Coordinate ScreenSample[3];
-extern Coordinate DisplaySample[3];
-extern Matrix matrix ;
-extern Coordinate display ;
-# 76 "Source\\TouchPanel/TouchPanel.h"
-void TP_Init(void);
-Coordinate *Read_Ads7846(void);
-void TouchPanel_Calibrate(void);
-void DrawCross(uint16_t Xpos,uint16_t Ypos);
-void TP_DrawPoint(uint16_t Xpos,uint16_t Ypos);
-uint8_t setCalibrationMatrix( Coordinate * displayPtr,Coordinate * screenPtr,Matrix * matrixPtr);
-uint8_t getDisplayPoint(Coordinate * displayPtr,Coordinate * screenPtr,Matrix * matrixPtr );
-# 8 "Source/sample.c" 2
-# 1 "Source\\timer/timer.h" 1
-# 14 "Source\\timer/timer.h"
+
+
+
+
+extern __attribute__((__nothrow__)) char *strncpy(char * __restrict , const char * __restrict , size_t ) __attribute__((__nonnull__(1,2)));
+# 93 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+extern __attribute__((__nothrow__)) char *strcat(char * __restrict , const char * __restrict ) __attribute__((__nonnull__(1,2)));
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) char *strncat(char * __restrict , const char * __restrict , size_t ) __attribute__((__nonnull__(1,2)));
+# 117 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+extern __attribute__((__nothrow__)) int memcmp(const void * , const void * , size_t ) __attribute__((__nonnull__(1,2)));
+
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) int strcmp(const char * , const char * ) __attribute__((__nonnull__(1,2)));
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) int strncmp(const char * , const char * , size_t ) __attribute__((__nonnull__(1,2)));
+# 141 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+extern __attribute__((__nothrow__)) int strcasecmp(const char * , const char * ) __attribute__((__nonnull__(1,2)));
+
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) int strncasecmp(const char * , const char * , size_t ) __attribute__((__nonnull__(1,2)));
+# 158 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+extern __attribute__((__nothrow__)) int strcoll(const char * , const char * ) __attribute__((__nonnull__(1,2)));
+# 169 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+extern __attribute__((__nothrow__)) size_t strxfrm(char * __restrict , const char * __restrict , size_t ) __attribute__((__nonnull__(2)));
+# 193 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+extern __attribute__((__nothrow__)) void *memchr(const void * , int , size_t ) __attribute__((__nonnull__(1)));
+# 209 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+extern __attribute__((__nothrow__)) char *strchr(const char * , int ) __attribute__((__nonnull__(1)));
+# 218 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+extern __attribute__((__nothrow__)) size_t strcspn(const char * , const char * ) __attribute__((__nonnull__(1,2)));
+# 232 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+extern __attribute__((__nothrow__)) char *strpbrk(const char * , const char * ) __attribute__((__nonnull__(1,2)));
+# 247 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+extern __attribute__((__nothrow__)) char *strrchr(const char * , int ) __attribute__((__nonnull__(1)));
+# 257 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+extern __attribute__((__nothrow__)) size_t strspn(const char * , const char * ) __attribute__((__nonnull__(1,2)));
+# 270 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+extern __attribute__((__nothrow__)) char *strstr(const char * , const char * ) __attribute__((__nonnull__(1,2)));
+# 280 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+extern __attribute__((__nothrow__)) char *strtok(char * __restrict , const char * __restrict ) __attribute__((__nonnull__(2)));
+extern __attribute__((__nothrow__)) char *_strtok_r(char * , const char * , char ** ) __attribute__((__nonnull__(2,3)));
+# 321 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+extern __attribute__((__nothrow__)) void *memset(void * , int , size_t ) __attribute__((__nonnull__(1)));
+
+
+
+
+
+extern __attribute__((__nothrow__)) char *strerror(int );
+
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) size_t strlen(const char * ) __attribute__((__nonnull__(1)));
+
+
+
+
+
+extern __attribute__((__nothrow__)) size_t strnlen(const char * , size_t ) __attribute__((__nonnull__(1)));
+
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) size_t strlcpy(char * , const char * , size_t ) __attribute__((__nonnull__(1,2)));
+# 369 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+extern __attribute__((__nothrow__)) size_t strlcat(char * , const char * , size_t ) __attribute__((__nonnull__(1,2)));
+# 395 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\string.h" 3
+extern __attribute__((__nothrow__)) void _membitcpybl(void * , const void * , int , int , size_t ) __attribute__((__nonnull__(1,2)));
+extern __attribute__((__nothrow__)) void _membitcpybb(void * , const void * , int , int , size_t ) __attribute__((__nonnull__(1,2)));
+extern __attribute__((__nothrow__)) void _membitcpyhl(void * , const void * , int , int , size_t ) __attribute__((__nonnull__(1,2)));
+extern __attribute__((__nothrow__)) void _membitcpyhb(void * , const void * , int , int , size_t ) __attribute__((__nonnull__(1,2)));
+extern __attribute__((__nothrow__)) void _membitcpywl(void * , const void * , int , int , size_t ) __attribute__((__nonnull__(1,2)));
+extern __attribute__((__nothrow__)) void _membitcpywb(void * , const void * , int , int , size_t ) __attribute__((__nonnull__(1,2)));
+extern __attribute__((__nothrow__)) void _membitmovebl(void * , const void * , int , int , size_t ) __attribute__((__nonnull__(1,2)));
+extern __attribute__((__nothrow__)) void _membitmovebb(void * , const void * , int , int , size_t ) __attribute__((__nonnull__(1,2)));
+extern __attribute__((__nothrow__)) void _membitmovehl(void * , const void * , int , int , size_t ) __attribute__((__nonnull__(1,2)));
+extern __attribute__((__nothrow__)) void _membitmovehb(void * , const void * , int , int , size_t ) __attribute__((__nonnull__(1,2)));
+extern __attribute__((__nothrow__)) void _membitmovewl(void * , const void * , int , int , size_t ) __attribute__((__nonnull__(1,2)));
+extern __attribute__((__nothrow__)) void _membitmovewb(void * , const void * , int , int , size_t ) __attribute__((__nonnull__(1,2)));
+# 2 "Source/adc\\adc.h" 2
+
+
+void ADC_init (void);
+void ADC_start_conversion (void);
+
+
+void ADC_IRQHandler(void);
+# 13 "Source/adc/IRQ_adc.c" 2
+# 1 "Source/adc\\../led/led.h" 1
+# 12 "Source/adc\\../led/led.h"
+void LED_init(void);
+void LED_deinit(void);
+
+
+void LED_On (unsigned int num);
+void LED_Off (unsigned int num);
+void LED_Out(unsigned int value);
+# 14 "Source/adc/IRQ_adc.c" 2
+# 1 "Source/adc\\../timer/timer.h" 1
+# 14 "Source/adc\\../timer/timer.h"
 extern uint32_t init_timer( uint8_t timer_num, uint32_t timerInterval );
 extern void enable_timer( uint8_t timer_num );
 extern void disable_timer( uint8_t timer_num );
@@ -1891,860 +1944,33 @@ extern volatile int countdown;
 
 extern void TIMER0_IRQHandler (void);
 extern void TIMER1_IRQHandler (void);
-# 9 "Source/sample.c" 2
-# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 1 3
-# 53 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-    typedef unsigned int size_t;
-# 68 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-    typedef __builtin_va_list __va_list;
-# 87 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-typedef struct __fpos_t_struct {
-    unsigned long long int __pos;
+# 15 "Source/adc/IRQ_adc.c" 2
 
 
 
 
 
-    struct {
-        unsigned int __state1, __state2;
-    } __mbstate;
-} fpos_t;
-# 108 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-typedef struct __FILE FILE;
-# 119 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-struct __FILE {
-    union {
-        long __FILE_alignment;
+unsigned short AD_current;
+unsigned short AD_last = 0xFF;
 
 
 
-        char __FILE_size[84];
+const int freqs[8]={4240,3779,3367,3175,2834,2525,2249,2120};
+# 37 "Source/adc/IRQ_adc.c"
+//const int freqs[8]={2120,1890,1684,1592,1417,1263,1125,1062};
+# 50 "Source/adc/IRQ_adc.c"
+void ADC_IRQHandler(void) {
 
-    } __FILE_opaque;
-};
-# 138 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern FILE __stdin, __stdout, __stderr;
-extern FILE *__aeabi_stdin, *__aeabi_stdout, *__aeabi_stderr;
-# 224 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) int remove(const char * ) __attribute__((__nonnull__(1)));
+  AD_current = ((((LPC_ADC_TypeDef *) ((0x40000000UL) + 0x34000) )->ADGDR>>4) & 0xFFF);
+  if(AD_current != AD_last){
+  LED_Off(AD_last*7/0xFFF); // ad_last : AD_max = x : 7 LED_Off((AD_last*7/0xFFF));
+  LED_On(AD_current*7/0xFFF); // ad_current : AD_max = x : 7 LED_On((AD_current*7/0xFFF));
+  disable_timer(0);
+  reset_timer(0);
+  init_timer(0,freqs[AD_current*7/0xFFF]);
+  enable_timer(0);
 
-
-
-
-
-
-
-extern __attribute__((__nothrow__)) int rename(const char * , const char * ) __attribute__((__nonnull__(1,2)));
-# 243 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) FILE *tmpfile(void);
-
-
-
-
-
-
-extern __attribute__((__nothrow__)) char *tmpnam(char * );
-# 265 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) int fclose(FILE * ) __attribute__((__nonnull__(1)));
-# 275 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) int fflush(FILE * );
-# 285 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) FILE *fopen(const char * __restrict ,
-                           const char * __restrict ) __attribute__((__nonnull__(1,2)));
-# 329 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) FILE *freopen(const char * __restrict ,
-                    const char * __restrict ,
-                    FILE * __restrict ) __attribute__((__nonnull__(2,3)));
-# 342 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) void setbuf(FILE * __restrict ,
-                    char * __restrict ) __attribute__((__nonnull__(1)));
-
-
-
-
-
-
-extern __attribute__((__nothrow__)) int setvbuf(FILE * __restrict ,
-                   char * __restrict ,
-                   int , size_t ) __attribute__((__nonnull__(1)));
-# 370 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-#pragma __printf_args
-extern __attribute__((__nothrow__)) int fprintf(FILE * __restrict ,
-                    const char * __restrict , ...) __attribute__((__nonnull__(1,2)));
-# 393 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-#pragma __printf_args
-extern __attribute__((__nothrow__)) int _fprintf(FILE * __restrict ,
-                     const char * __restrict , ...) __attribute__((__nonnull__(1,2)));
-
-
-
-
-
-#pragma __printf_args
-extern __attribute__((__nothrow__)) int printf(const char * __restrict , ...) __attribute__((__nonnull__(1)));
-
-
-
-
-
-
-#pragma __printf_args
-extern __attribute__((__nothrow__)) int _printf(const char * __restrict , ...) __attribute__((__nonnull__(1)));
-
-
-
-
-
-#pragma __printf_args
-extern __attribute__((__nothrow__)) int sprintf(char * __restrict , const char * __restrict , ...) __attribute__((__nonnull__(1,2)));
-
-
-
-
-
-
-
-
-#pragma __printf_args
-extern __attribute__((__nothrow__)) int _sprintf(char * __restrict , const char * __restrict , ...) __attribute__((__nonnull__(1,2)));
-
-
-
-
-
-
-#pragma __printf_args
-extern __attribute__((__nothrow__)) int __ARM_snprintf(char * __restrict , size_t ,
-                     const char * __restrict , ...) __attribute__((__nonnull__(3)));
-# 460 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-#pragma __printf_args
-extern __attribute__((__nothrow__)) int _snprintf(char * __restrict , size_t ,
-                      const char * __restrict , ...) __attribute__((__nonnull__(3)));
-
-
-
-
-
-#pragma __scanf_args
-extern __attribute__((__nothrow__)) int fscanf(FILE * __restrict ,
-                    const char * __restrict , ...) __attribute__((__nonnull__(1,2)));
-# 503 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-#pragma __scanf_args
-extern __attribute__((__nothrow__)) int _fscanf(FILE * __restrict ,
-                     const char * __restrict , ...) __attribute__((__nonnull__(1,2)));
-
-
-
-
-
-#pragma __scanf_args
-extern __attribute__((__nothrow__)) int scanf(const char * __restrict , ...) __attribute__((__nonnull__(1)));
-
-
-
-
-
-
-
-
-#pragma __scanf_args
-extern __attribute__((__nothrow__)) int _scanf(const char * __restrict , ...) __attribute__((__nonnull__(1)));
-
-
-
-
-
-#pragma __scanf_args
-extern __attribute__((__nothrow__)) int sscanf(const char * __restrict ,
-                    const char * __restrict , ...) __attribute__((__nonnull__(1,2)));
-# 541 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-#pragma __scanf_args
-extern __attribute__((__nothrow__)) int _sscanf(const char * __restrict ,
-                     const char * __restrict , ...) __attribute__((__nonnull__(1,2)));
-# 555 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) int _vfscanf(FILE * __restrict , const char * __restrict , __va_list) __attribute__((__nonnull__(1,2)));
-extern __attribute__((__nothrow__)) int _vscanf(const char * __restrict , __va_list) __attribute__((__nonnull__(1)));
-extern __attribute__((__nothrow__)) int _vsscanf(const char * __restrict , const char * __restrict , __va_list) __attribute__((__nonnull__(1,2)));
-extern __attribute__((__nothrow__)) int __ARM_vsscanf(const char * __restrict , const char * __restrict , __va_list) __attribute__((__nonnull__(1,2)));
-
-extern __attribute__((__nothrow__)) int vprintf(const char * __restrict , __va_list ) __attribute__((__nonnull__(1)));
-
-
-
-
-
-
-
-extern __attribute__((__nothrow__)) int _vprintf(const char * __restrict , __va_list ) __attribute__((__nonnull__(1)));
-
-
-
-
-
-extern __attribute__((__nothrow__)) int vfprintf(FILE * __restrict ,
-                    const char * __restrict , __va_list ) __attribute__((__nonnull__(1,2)));
-# 584 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) int vsprintf(char * __restrict ,
-                     const char * __restrict , __va_list ) __attribute__((__nonnull__(1,2)));
-# 594 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) int __ARM_vsnprintf(char * __restrict , size_t ,
-                     const char * __restrict , __va_list ) __attribute__((__nonnull__(3)));
-# 609 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) int _vsprintf(char * __restrict ,
-                      const char * __restrict , __va_list ) __attribute__((__nonnull__(1,2)));
-
-
-
-
-
-extern __attribute__((__nothrow__)) int _vfprintf(FILE * __restrict ,
-                     const char * __restrict , __va_list ) __attribute__((__nonnull__(1,2)));
-
-
-
-
-
-extern __attribute__((__nothrow__)) int _vsnprintf(char * __restrict , size_t ,
-                      const char * __restrict , __va_list ) __attribute__((__nonnull__(3)));
-# 635 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-#pragma __printf_args
-extern __attribute__((__nothrow__)) int __ARM_asprintf(char ** , const char * __restrict , ...) __attribute__((__nonnull__(2)));
-extern __attribute__((__nothrow__)) int __ARM_vasprintf(char ** , const char * __restrict , __va_list ) __attribute__((__nonnull__(2)));
-# 649 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) int fgetc(FILE * ) __attribute__((__nonnull__(1)));
-# 659 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) char *fgets(char * __restrict , int ,
-                    FILE * __restrict ) __attribute__((__nonnull__(1,3)));
-# 673 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) int fputc(int , FILE * ) __attribute__((__nonnull__(2)));
-# 683 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) int fputs(const char * __restrict , FILE * __restrict ) __attribute__((__nonnull__(1,2)));
-
-
-
-
-
-
-extern __attribute__((__nothrow__)) int getc(FILE * ) __attribute__((__nonnull__(1)));
-# 704 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-    extern __attribute__((__nothrow__)) int (getchar)(void);
-# 713 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) char *gets(char * ) __attribute__((__nonnull__(1)));
-# 725 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) int putc(int , FILE * ) __attribute__((__nonnull__(2)));
-# 737 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-    extern __attribute__((__nothrow__)) int (putchar)(int );
-
-
-
-
-
-
-extern __attribute__((__nothrow__)) int puts(const char * ) __attribute__((__nonnull__(1)));
-
-
-
-
-
-
-
-extern __attribute__((__nothrow__)) int ungetc(int , FILE * ) __attribute__((__nonnull__(2)));
-# 778 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) size_t fread(void * __restrict ,
-                    size_t , size_t , FILE * __restrict ) __attribute__((__nonnull__(1,4)));
-# 794 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) size_t __fread_bytes_avail(void * __restrict ,
-                    size_t , FILE * __restrict ) __attribute__((__nonnull__(1,3)));
-# 810 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) size_t fwrite(const void * __restrict ,
-                    size_t , size_t , FILE * __restrict ) __attribute__((__nonnull__(1,4)));
-# 822 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) int fgetpos(FILE * __restrict , fpos_t * __restrict ) __attribute__((__nonnull__(1,2)));
-# 833 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) int fseek(FILE * , long int , int ) __attribute__((__nonnull__(1)));
-# 850 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) int fsetpos(FILE * __restrict , const fpos_t * __restrict ) __attribute__((__nonnull__(1,2)));
-# 863 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) long int ftell(FILE * ) __attribute__((__nonnull__(1)));
-# 877 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) void rewind(FILE * ) __attribute__((__nonnull__(1)));
-# 886 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) void clearerr(FILE * ) __attribute__((__nonnull__(1)));
-
-
-
-
-
-
-
-extern __attribute__((__nothrow__)) int feof(FILE * ) __attribute__((__nonnull__(1)));
-
-
-
-
-extern __attribute__((__nothrow__)) int ferror(FILE * ) __attribute__((__nonnull__(1)));
-
-
-
-
-extern __attribute__((__nothrow__)) void perror(const char * );
-# 917 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
-extern __attribute__((__nothrow__)) int _fisatty(FILE * ) __attribute__((__nonnull__(1)));
-
-
-
-extern __attribute__((__nothrow__)) void __use_no_semihosting_swi(void);
-extern __attribute__((__nothrow__)) void __use_no_semihosting(void);
-# 10 "Source/sample.c" 2
-# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 1 3
-# 91 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-    typedef unsigned short wchar_t;
-
-
-
-
-typedef struct div_t { int quot, rem; } div_t;
-
-typedef struct ldiv_t { long int quot, rem; } ldiv_t;
-# 139 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) int __aeabi_MB_CUR_MAX(void);
-# 158 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) double atof(const char * ) __attribute__((__nonnull__(1)));
-
-
-
-
-
-extern __attribute__((__nothrow__)) int atoi(const char * ) __attribute__((__nonnull__(1)));
-
-
-
-
-
-extern __attribute__((__nothrow__)) long int atol(const char * ) __attribute__((__nonnull__(1)));
-# 185 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) double strtod(const char * __restrict , char ** __restrict ) __attribute__((__nonnull__(1)));
-# 212 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) long int strtol(const char * __restrict ,
-                        char ** __restrict , int ) __attribute__((__nonnull__(1)));
-# 243 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) unsigned long int strtoul(const char * __restrict ,
-                                       char ** __restrict , int ) __attribute__((__nonnull__(1)));
-# 275 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) long long strtoll(const char * __restrict ,
-                                  char ** __restrict , int )
-                          __attribute__((__nonnull__(1)));
-
-
-
-
-
-
-extern __attribute__((__nothrow__)) unsigned long long strtoull(const char * __restrict ,
-                                            char ** __restrict , int )
-                                   __attribute__((__nonnull__(1)));
-
-
-
-
-
-
-extern __attribute__((__nothrow__)) int rand(void);
-# 303 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) void srand(unsigned int );
-# 313 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-struct _rand_state { int __x[57]; };
-extern __attribute__((__nothrow__)) int _rand_r(struct _rand_state *);
-extern __attribute__((__nothrow__)) void _srand_r(struct _rand_state *, unsigned int);
-struct _ANSI_rand_state { int __x[1]; };
-extern __attribute__((__nothrow__)) int _ANSI_rand_r(struct _ANSI_rand_state *);
-extern __attribute__((__nothrow__)) void _ANSI_srand_r(struct _ANSI_rand_state *, unsigned int);
-
-
-
-
-
-extern __attribute__((__nothrow__)) void *calloc(size_t , size_t );
-
-
-
-
-
-extern __attribute__((__nothrow__)) void free(void * );
-
-
-
-
-
-
-
-extern __attribute__((__nothrow__)) void *malloc(size_t );
-
-
-
-
-
-extern __attribute__((__nothrow__)) void *realloc(void * , size_t );
-# 374 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-typedef int (*__heapprt)(void *, char const *, ...);
-extern __attribute__((__nothrow__)) void __heapstats(int (* )(void * ,
-                                           char const * , ...),
-                        void * ) __attribute__((__nonnull__(1)));
-# 390 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) int __heapvalid(int (* )(void * ,
-                                           char const * , ...),
-                       void * , int ) __attribute__((__nonnull__(1)));
-# 411 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) __attribute__((__noreturn__)) void abort(void);
-# 422 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) int atexit(void (* )(void)) __attribute__((__nonnull__(1)));
-# 444 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) __attribute__((__noreturn__)) void exit(int );
-# 460 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) __attribute__((__noreturn__)) void _Exit(int );
-# 471 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) char *getenv(const char * ) __attribute__((__nonnull__(1)));
-# 484 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) int system(const char * );
-# 497 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern void *bsearch(const void * , const void * ,
-              size_t , size_t ,
-              int (* )(const void *, const void *)) __attribute__((__nonnull__(1,2,5)));
-# 532 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern void qsort(void * , size_t , size_t ,
-           int (* )(const void *, const void *)) __attribute__((__nonnull__(1,4)));
-# 560 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) __attribute__((__const__)) int abs(int );
-
-
-
-
-
-
-extern __attribute__((__nothrow__)) __attribute__((__const__)) div_t div(int , int );
-# 579 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) __attribute__((__const__)) long int labs(long int );
-# 589 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) __attribute__((__const__)) ldiv_t ldiv(long int , long int );
-# 644 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-typedef struct __sdiv32by16 { long quot, rem; } __sdiv32by16;
-typedef struct __udiv32by16 { unsigned long quot, rem; } __udiv32by16;
-
-typedef struct __sdiv64by32 { long rem, quot; } __sdiv64by32;
-
-__attribute__((__value_in_regs__)) extern __attribute__((__nothrow__)) __attribute__((__const__)) __sdiv32by16 __rt_sdiv32by16(
-     int ,
-     short int );
-
-
-
-__attribute__((__value_in_regs__)) extern __attribute__((__nothrow__)) __attribute__((__const__)) __udiv32by16 __rt_udiv32by16(
-     unsigned int ,
-     unsigned short );
-
-
-
-__attribute__((__value_in_regs__)) extern __attribute__((__nothrow__)) __attribute__((__const__)) __sdiv64by32 __rt_sdiv64by32(
-     int , unsigned int ,
-     int );
-
-
-
-
-
-
-
-extern __attribute__((__nothrow__)) unsigned int __fp_status(unsigned int , unsigned int );
-# 705 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) int mblen(const char * , size_t );
-# 720 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) int mbtowc(wchar_t * __restrict ,
-                   const char * __restrict , size_t );
-# 739 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) int wctomb(char * , wchar_t );
-# 761 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) size_t mbstowcs(wchar_t * __restrict ,
-                      const char * __restrict , size_t ) __attribute__((__nonnull__(2)));
-# 779 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) size_t wcstombs(char * __restrict ,
-                      const wchar_t * __restrict , size_t ) __attribute__((__nonnull__(2)));
-# 798 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdlib.h" 3
-extern __attribute__((__nothrow__)) void __use_realtime_heap(void);
-extern __attribute__((__nothrow__)) void __use_realtime_division(void);
-extern __attribute__((__nothrow__)) void __use_two_region_memory(void);
-extern __attribute__((__nothrow__)) void __use_no_heap(void);
-extern __attribute__((__nothrow__)) void __use_no_heap_region(void);
-
-extern __attribute__((__nothrow__)) char const *__C_library_version_string(void);
-extern __attribute__((__nothrow__)) int __C_library_version_number(void);
-# 11 "Source/sample.c" 2
-
-
-
-extern uint8_t ScaleFlag;
-# 23 "Source/sample.c"
-// Optionally define POWER_PILL if you want to add them later
-
-
-// Cell dimensions (adjust as needed)
-
-
-
-int score = 0;
-int lives = 1;
-volatile int countdown = 60; // Global for timer use
-volatile int powerPillsSpawned = 0;
-
-volatile int down_0 = 0; // For button debouncing
-volatile _Bool gamePaused = 1;
-int totalPills = 240; // Track remaining pills
-int pillsEaten = 0;
-
-
-int offsetX;
-int offsetY;
-
-extern void initGhost(void);
-extern void drawGhost(int offsetX, int offsetY);
-
-volatile int mazeGrid[29][28];
-
-// Example maze layout (28 chars wide each line):
-// 'X' = wall, ' ' = empty space, 'G' = ghost house area
-static const char mazeDef[29][28 +1] = {
-"XXXXXXXXXXXXXXXXXXXXXXXXXXXX", // 28 'X'
-"X            XX            X",
-"X XXXX XXXXX XX XXXXX XXXX X",
-"X XXXX XXXXX XX XXXXX XXXX X",
-"X                          X",
-"X XXXX XX XXXXXXXX XX XXXX X",
-"X XXXX XX XXXXXXXX XX XXXX X",
-"X      XX    XX    XX      X",
-"XXXXXX XXXXX XX XXXXX XXXXXX",
-"XXXXXX XXXXX XX XXXXX XXXXXX",
-"XXXXXX XX          XX XXXXXX",
-"XXXXXX XX XXX  XXX XX XXXXXX",
-"XXXXXX XX XGGGGGGX XX XXXXXX",
-"          XGGGGGGX          ",
-"XXXXXX XX XGGGGGGX XX XXXXXX",
-"XXXXXX XX XGGGGGGX XX     XX",
-"XXXXXX XX XXXXXXXX XX XXX XX",
-"X      XX          XX XXX XX",
-"X XXXX XX XXXXXXXX XX XXX XX",
-"X XXXX XX XXXXXXXX XX XXX XX",
-"X XXXX XX          XX     XX",
-"X XXXX XX XXXXXXXX XX XXXXXX",
-"X            XX            X",
-"X XXXX XXXXX XX XXXXX XXXX X",
-"X XXXX XXXXX XX XXXXX XXXX X",
-"X   XX                XX   X",
-"XXX XX XX XXXXXXXX XX XX XXX",
-"X      XX    XX    XX      X",
-"XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-};
-
-
-// // Pac-Man starting position
-int pacmanRow = 1;
-int pacmanCol = 1;
-
-volatile int pacmanDirRow=0;
-volatile int pacmanDirCol=0;
-
-
-// forward declarations
-void drawUI(void);
-void fillCell(int row, int col, int offsetX, int offsetY, uint16_t color);
-void drawPill(int row, int col, int offsetX, int offsetY, uint16_t color, int pillsize);
-void initMazeGrid(void);
-void drawMazeFromGrid(int offsetX, int offsetY);
-
-// Draw Score, Time, Lives
-void drawUI(void) {
-    char buffer[20];
-
-    sprintf(buffer, "SCORE: %04d", score);
-    GUI_Text(10, 0, (uint8_t *)buffer, 0xFFFF, 0x0000);
-
-    sprintf(buffer, "TIME: %02d", countdown);
-    GUI_Text(240 - 100, 0, (uint8_t *)buffer, 0xFFFF, 0x0000);
-
-    sprintf(buffer, "LIVES: %d", lives);
-    GUI_Text(10, 320 - 15, (uint8_t *)buffer, 0xFFFF, 0x0000);
-}
-
-// Fill a cell with solid color
-void fillCell(int row, int col, int offsetX, int offsetY, uint16_t color) {
-    int px, py;
-    int startX = offsetX + col * 8;
-    int startY = offsetY + row * 10;
-    for (py = 0; py < 10; py++) {
-        for (px = 0; px < 8; px++) {
-            int drawX = startX + px;
-            int drawY = startY + py;
-            if (drawX < 240 && drawY < 320) {
-                LCD_SetPoint(drawX, drawY, color);
-            }
-        }
-    }
-}
-
-void drawPill(int row, int col, int offsetX, int offsetY, uint16_t color, int pillSize) {
-    int hx, vy;
-    int startX = offsetX + col * 8;
-    int startY = offsetY + row * 10;
-    int centerX = startX + (8 / 2);
-    int centerY = startY + (10 / 2);
-    for (hx = -pillSize; hx <= pillSize; hx++) {
-        for (vy = -pillSize; vy <= pillSize; vy++) {
-            int drawX = centerX + hx;
-            int drawY = centerY + vy;
-            if (drawX >= 0 && drawX < 240 && drawY >= 0 && drawY < 320) {
-                LCD_SetPoint(drawX, drawY, color);
-            }
-        }
-    }
-}
-
-void initMazeGrid(void) {
-    int r, c;
-    int pillCount = 0;
-
-    for (r = 0; r < 29; r++) {
-        for (c = 0; c < 28; c++) {
-            char cell = mazeDef[r][c];
-            if (cell == 'X') {
-                mazeGrid[r][c] = 1;
-            } else if (cell == 'G') {
-                // Ghost house area as 1 so no pills appear inside
-                mazeGrid[r][c] = 0;
-            } else {
-                // ' ' = empty floor, initially mark 0
-                mazeGrid[r][c] = 0;
-            }
-        }
-    }
-
-  for (r = 0; r < 29; r++) {
-    for (c = 0; c < 28; c++) {
-      if (mazeGrid[r][c] == 0 && mazeDef[r][c] != 'G') { // Check original maze definition
-        mazeGrid[r][c] = 2;
-        pillCount++;
-      }
-    }
+  AD_last = AD_current;
   }
 
-    // Print out the pill count for debugging, giving error
-    //printf("Total Pills: %d\n", pillCount);
-
-// srand(((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TC); // Here we can assign a seed for randomizing check later how
-// int powerPillsNeeded = 6;
-// while (powerPillsNeeded > 0) {
-// int rr = rand() % 29;
-// int cc = rand() % 28;
-// if (mazeGrid[rr][cc] == 2) {
-// mazeGrid[rr][cc] = 3;
-// powerPillsNeeded--;
-// }
-// }
-}
-
-void drawPowerPills(){
-  if ((rand() % 5) == 0) {
-            // find a random cell that is still a standard pill
-            while (1) {
-                int rr = rand() % 29;
-                int cc = rand() % 28;
-                if (mazeGrid[rr][cc] == 2) {
-                    mazeGrid[rr][cc] = 3;
-                    // Immediately draw it:
-                    fillCell(rr, cc, offsetX, offsetY, 0x0000);
-                    drawPill(rr, cc, offsetX, offsetY, 0xF800, 3);
-                    powerPillsSpawned++;
-                    break;
-                }
-            }
-        }
-}
-
-void drawMazeFromGrid(int offsetX, int offsetY) {
-    int r, c;
-    for (r = 0; r < 29; r++) {
-        for (c = 0; c < 28; c++) {
-            int cellVal = mazeGrid[r][c];
-            if (cellVal == 1) {
-                fillCell(r, c, offsetX, offsetY, 0x001F);
-     } else if (cellVal == 2) {
-       fillCell(r, c, offsetX, offsetY, 0x0000);
-       // Standard pill size (e.g., 1)
-       drawPill(r, c, offsetX, offsetY, 0xFFE0, 1);
-     } else if (cellVal == 3) {
-       fillCell(r, c, offsetX, offsetY, 0x0000);
-       // Power pill larger size (e.g., 3)
-       drawPill(r, c, offsetX, offsetY, 0xF800, 3);
-
-
-            } else {
-                // 0 or any other cell
-                fillCell(r, c, offsetX, offsetY, 0x0000);
-            }
-        }
-    }
-}
-
-void drawPacMan(int row, int col, int offsetX, int offsetY) {
-    int startX = offsetX + col * 8;
-    int startY = offsetY + row * 10;
-    int radius = 3; // small radius
-  int dy, dx;
-    for (dy = -radius; dy <= radius; dy++) {
-        for (dx = -radius; dx <= radius; dx++) {
-            if (dx*dx + dy*dy <= radius*radius) {
-                int drawX = startX + (8/2) + dx;
-                int drawY = startY + (10/2) + dy;
-                if (drawX >= 0 && drawX < 240 && drawY >= 0 && drawY < 320) {
-                    LCD_SetPoint(drawX, drawY, 0xFFE0);
-                }
-            }
-        }
-    }
-}
-
-
-
-_Bool movePacMan(void){
-    // Here we calculate the new position based on the current position
-    int newRow = pacmanRow + pacmanDirRow;
-    int newCol = pacmanCol + pacmanDirCol;
-
-  // Here we also check if we have won
-  if(pillsEaten >= totalPills){
-    GUI_Text((240/2)-30, (320/2)-10, (uint8_t *)"Victory!", 0xFFE0, 0x0000);
-
-    // Stop the game
-    gamePaused=1;
-    disable_RIT(); //
-    disable_timer(0); // so countdown stops, etc.
-
-    return 0;
-  }
-    // here we check if its teleport location
-    if(newRow == 13 && newCol == 28){
-        fillCell(pacmanRow, pacmanCol, offsetX, offsetY, 0x0000); // Clear old position
-        pacmanRow = newRow;
-        pacmanCol = 0;
-        // Check if there's a pill at the new position
-        if(mazeGrid[pacmanRow][pacmanCol] == 2) {
-            score += 10;
-      pillsEaten++;
-            mazeGrid[pacmanRow][pacmanCol] = 0;
-        } else if(mazeGrid[pacmanRow][pacmanCol] == 3) {
-            score += 50;
-      pillsEaten++;
-            mazeGrid[pacmanRow][pacmanCol] = 0;
-      blinky.isChasing = 0;
-      blinky.frightenedTimer = 10;
-        }
-        drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
-        drawUI();
-        return 1;
-    }
-    if(newRow == 13 && newCol == -1){
-        fillCell(pacmanRow, pacmanCol, offsetX, offsetY, 0x0000); // Clear old position
-        pacmanRow = newRow;
-        pacmanCol = 27;
-        // Check if there's a pill at the new position
-        if(mazeGrid[pacmanRow][pacmanCol] == 2) {
-            score += 10;
-            mazeGrid[pacmanRow][pacmanCol] = 0;
-        } else if(mazeGrid[pacmanRow][pacmanCol] == 3) {
-            score += 50;
-            mazeGrid[pacmanRow][pacmanCol] = 0;
-        }
-        drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
-        drawUI();
-        return 1;
-    }
-
-    // here we check if the new position is within the bounds and not a wall
-    if(newRow >= 0 && newRow < 29 && newCol >= 0 && newCol < 28 && mazeGrid[newRow][newCol] != 1){
-        // here we clear the old pacman position
-        if (pacmanRow != newRow || pacmanCol != newCol) {
-            // Check for pills before moving
-            if(mazeGrid[newRow][newCol] == 2) {
-                score += 10;
-        update_timer1_frequency(440);
-        pillsEaten++;
-                mazeGrid[newRow][newCol] = 0;
-            } else if(mazeGrid[newRow][newCol] == 3) {
-                score += 50;
-        update_timer1_frequency(523);
-        pillsEaten++;
-                mazeGrid[newRow][newCol] = 0;
-            }
-
-      // check for extra lives
-      if(score>0 && score%1000==0){
-       lives++;
-       drawUI();
-      }
-
-            fillCell(pacmanRow, pacmanCol, offsetX, offsetY, 0x0000); // Clear old position
-            pacmanRow = newRow;
-            pacmanCol = newCol;
-            drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY); // Draw at new position
-
-            // Update UI if we collected anything
-            if(mazeGrid[newRow][newCol] != 0) {
-                drawUI();
-            }
-        }
-        return 1;
-    }
-    return 0;
-}
-
-
-int main(void) {
-
-    SystemInit();
-    LCD_Initialization();
-    TP_Init();
-  BUTTON_init();
-    LCD_Clear(0x0000);
- // init_RIT(0x004C4B40); // 50ms
-  init_RIT(0x000F4240 ); // 50ms
-//
-  enable_RIT();
-    joystick_init(); // NEW: Initialize joystick
-
-
-
-  offsetX = (240 - (28 * 8)) / 2;
-    offsetY = (320 - (29 * 10)) / 2;
-
-    initMazeGrid();
-    drawMazeFromGrid(offsetX, offsetY);
-  drawUI();
-    drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
-  initGhost(); // initializes the ghost blinky
-  drawGhost(offsetX, offsetY); // draws the initial ghost position
-
-    // ready message
-    GUI_Text((240/2)-23, (320/2)-10, (uint8_t *)"READY", 0xFFE0, 0x0000);
-
-    init_timer(0, 0x1312D0);
-    //enable_timer(0);
-  init_timer(1, 0x1312D0);
-  enable_timer(1);
-    // Set initial direction to nothing
-    pacmanDirRow = 0;
-    pacmanDirCol = 0;
-
-  ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->PCON |= 0x1;
-    ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->PCON &= ~(0x2);
-
-  while (1) {
-    __asm("wfi");}
-    return 0;
 }

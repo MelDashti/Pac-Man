@@ -62,6 +62,7 @@ void RIT_IRQHandler(void) {
 
     // Move Pacman in the current direction
     if (!gamePaused) {
+				ADC_start_conversion();
 				movePacMan();
 				updateGhost();
 		} 

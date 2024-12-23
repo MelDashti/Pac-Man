@@ -14,6 +14,7 @@
 extern uint32_t init_timer( uint8_t timer_num, uint32_t timerInterval );
 extern void enable_timer( uint8_t timer_num );
 extern void disable_timer( uint8_t timer_num );
+extern void update_timer1_frequency(uint32_t frequency);
 extern void reset_timer( uint8_t timer_num );
 extern volatile int countdown;
 /* IRQ_timer.c */

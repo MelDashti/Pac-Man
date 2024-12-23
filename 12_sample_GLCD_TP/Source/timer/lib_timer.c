@@ -145,14 +145,28 @@ uint32_t init_timer ( uint8_t timer_num, uint32_t TimerInterval )
 	NVIC_EnableIRQ(TIMER0_IRQn);
 	return (1);
   }
-  else if ( timer_num == 1 )
-  {
-	LPC_TIM1->MR0 = TimerInterval;
-	LPC_TIM1->MCR = 3;				/* Interrupt and Reset on MR1 */
+  else if (timer_num == 1) {
+		// Configure P0.26 for AOUT function
+		LPC_PINCON->PINSEL1 &= ~(0x03<<20);  // Clear bits 20,21
+		LPC_PINCON->PINSEL1 |= (0x02<<20);   // Set bits for AOUT function
+		
+		// Power up DAC
+		LPC_SC->PCONP |= (1 << 15);
+		
+		// Set initial DAC value
+		LPC_DAC->DACR = 0;
+		
+		// Initialize Timer1 for sound
+		LPC_TIM1->MR0 = 25000000 / (440 * 45);  // 440Hz base frequency
+		LPC_TIM1->MCR = 3;                       // Interrupt and Reset on MR0
 
-	NVIC_EnableIRQ(TIMER1_IRQn);
-	return (1);
-  }
+		NVIC_EnableIRQ(TIMER1_IRQn);
+		
+		// Enable Timer1 automatically
+		LPC_TIM1->TCR = 1;
+        
+        return (1);
+    }
   return (0);
 }
 

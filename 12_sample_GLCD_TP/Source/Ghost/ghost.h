@@ -12,6 +12,7 @@ typedef struct {
 	bool isActive;
 	int respawnTimer;
 	int frightenedTimer;
+	int underlyingCell;
 	
 }Ghost;
 

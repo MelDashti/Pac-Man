@@ -21,6 +21,7 @@ typedef struct {
  _Bool isActive;
  int respawnTimer;
  int frightenedTimer;
+ int underlyingCell;
 
 }Ghost;
 
@@ -2009,6 +2010,10 @@ extern __attribute__((__nothrow__)) int __C_library_version_number(void);
 
 
 
+
+
+// Optionally define POWER_PILL if you want to add them later
+
 extern volatile int mazeGrid[29][28];
 extern int pacmanRow;
 extern int pacmanCol;
@@ -2043,8 +2048,18 @@ void findNextMoveBFS(Ghost *ghost, int targetRow, int targetCol, int *nextRow, i
     }
 
     // Simple direction calculation
-    int rowDiff = targetRow - ghost->row;
-    int colDiff = targetCol - ghost->col;
+// int rowDiff = targetRow - ghost->row;
+// int colDiff = targetCol - ghost->col;
+  int rowDiff, colDiff;
+  if (ghost->isChasing) {
+    // normal chase: move toward (pacmanRow, pacmanCol)
+    rowDiff = targetRow - ghost->row;
+    colDiff = targetCol - ghost->col;
+  } else {
+    // frightened: move AWAY from (pacmanRow, pacmanCol)
+    rowDiff = ghost->row - targetRow;
+    colDiff = ghost->col - targetCol;
+  }
 
     // Try vertical movement first if there's vertical distance
     if (rowDiff != 0) {
@@ -2082,41 +2097,76 @@ void initGhost(void)
     blinky.isActive = 1;
     blinky.respawnTimer = 0;
     blinky.frightenedTimer = 0;
+   blinky.underlyingCell = 0;
 }
-
 void updateGhost(void)
 {
     if (!blinky.isActive || gamePaused) {
         return;
     }
 
-    // Clear old position first
-    fillCell(blinky.row, blinky.col, offsetX, offsetY, 0x0000);
+    // 1) Restore the OLD cell from underlyingCell
+    // (Instead of painting it black, we redraw the correct tile).
+    int oldRow = blinky.row;
+    int oldCol = blinky.col;
+    int oldCellType = blinky.underlyingCell;
 
+    // RE-DRAW whatever was in oldCellType:
+    if (oldCellType == 2) {
+        fillCell(oldRow, oldCol, offsetX, offsetY, 0x0000);
+        // standard small pill
+        drawPill(oldRow, oldCol, offsetX, offsetY, 0xFFE0, 1);
+    }
+    else if (oldCellType == 3) {
+        fillCell(oldRow, oldCol, offsetX, offsetY, 0x0000);
+        // bigger pill
+        drawPill(oldRow, oldCol, offsetX, offsetY, 0xF800, 3);
+    }
+    else {
+        // just empty floor
+        fillCell(oldRow, oldCol, offsetX, offsetY, 0x0000);
+    }
+
+    // 2) Figure out the ghost's next move
     int nextRow, nextCol;
     findNextMoveBFS(&blinky, pacmanRow, pacmanCol, &nextRow, &nextCol);
 
-    // Update position
+    // 3) Update ghost position
     blinky.row = nextRow;
     blinky.col = nextCol;
 
-    // Draw at new position
+    // 4) Remember what cell type is at the new location
+    blinky.underlyingCell = mazeGrid[nextRow][nextCol];
+
+    // 5) Draw the ghost at the new position
     drawGhost(offsetX, offsetY);
 
-    // Check for collision
+    // 6) Check collision with Pac-Man
     if (blinky.row == pacmanRow && blinky.col == pacmanCol) {
-        lives--;
-        if (lives <= 0) {
-            gamePaused = 1;
-            GUI_Text((240/2)-40, (320/2)-10, (uint8_t *)"GAME OVER!", 0xF800, 0x0000);
-        } else {
-            pacmanRow = 1;
-            pacmanCol = 1;
+        if (!blinky.isChasing) {
+            // Ghost is frightened -> Pac-Man eats ghost
+            score += 100;
+            blinky.isActive = 0;
+            blinky.respawnTimer = 3;
+            // Place ghost in spawn, but offscreen or invisible
             blinky.row = 13;
             blinky.col = 14;
+        } else {
+            // Normal chase -> ghost kills Pac-Man
+            lives--;
+            if (lives <= 0) {
+                gamePaused = 1;
+                GUI_Text((240/2)-40, (320/2)-10, (uint8_t *)"GAME OVER!", 0xF800, 0x0000);
+            } else {
+                pacmanRow = 1;
+                pacmanCol = 1;
+                blinky.row = 13;
+                blinky.col = 14;
+            }
         }
     }
 }
+
 
 void drawGhost(int offsetX, int offsetY)
 {
@@ -2143,14 +2193,15 @@ void drawGhost(int offsetX, int offsetY)
 
 void handleGhostTimer(void)
 {
-    if (!blinky.isActive) {
-        if (--blinky.respawnTimer <= 0) {
-            blinky.isActive = 1;
-            blinky.row = 13;
-            blinky.col = 14;
-            blinky.isChasing = 1;
-        }
+  if (!blinky.isActive) {
+    blinky.respawnTimer--;
+    if (blinky.respawnTimer <= 0) {
+      blinky.isActive = 1;
+      blinky.row = 13;
+      blinky.col = 14;
+      blinky.isChasing = 1; // ghost reverts to normal chase
     }
+  }
     if (blinky.frightenedTimer > 0) {
         blinky.frightenedTimer--;
         if (blinky.frightenedTimer <= 0) {

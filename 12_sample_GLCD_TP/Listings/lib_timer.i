@@ -1788,6 +1788,7 @@ typedef struct
 extern uint32_t init_timer( uint8_t timer_num, uint32_t timerInterval );
 extern void enable_timer( uint8_t timer_num );
 extern void disable_timer( uint8_t timer_num );
+extern void update_timer1_frequency(uint32_t frequency);
 extern void reset_timer( uint8_t timer_num );
 extern volatile int countdown;
 
@@ -1903,13 +1904,27 @@ uint32_t init_timer ( uint8_t timer_num, uint32_t TimerInterval )
  __NVIC_EnableIRQ(TIMER0_IRQn);
  return (1);
   }
-  else if ( timer_num == 1 )
-  {
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->MR0 = TimerInterval;
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->MCR = 3;
+  else if (timer_num == 1) {
+  // Configure P0.26 for AOUT function
+  ((LPC_PINCON_TypeDef *) ((0x40000000UL) + 0x2C000) )->PINSEL1 &= ~(0x03<<20); // Clear bits 20,21
+  ((LPC_PINCON_TypeDef *) ((0x40000000UL) + 0x2C000) )->PINSEL1 |= (0x02<<20); // Set bits for AOUT function
 
- __NVIC_EnableIRQ(TIMER1_IRQn);
- return (1);
-  }
+  // Power up DAC
+  ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->PCONP |= (1 << 15);
+
+  // Set initial DAC value
+  ((LPC_DAC_TypeDef *) ((0x40080000UL) + 0x0C000) )->DACR = 0;
+
+  // Initialize Timer1 for sound
+  ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->MR0 = 25000000 / (440 * 45); // 440Hz base frequency
+  ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->MCR = 3; // Interrupt and Reset on MR0
+
+  __NVIC_EnableIRQ(TIMER1_IRQn);
+
+  // Enable Timer1 automatically
+  ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR = 1;
+
+        return (1);
+    }
   return (0);
 }

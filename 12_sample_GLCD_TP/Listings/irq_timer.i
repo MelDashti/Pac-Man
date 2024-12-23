@@ -1919,6 +1919,7 @@ typedef struct
 extern uint32_t init_timer( uint8_t timer_num, uint32_t timerInterval );
 extern void enable_timer( uint8_t timer_num );
 extern void disable_timer( uint8_t timer_num );
+extern void update_timer1_frequency(uint32_t frequency);
 extern void reset_timer( uint8_t timer_num );
 extern volatile int countdown;
 
@@ -2275,7 +2276,33 @@ extern volatile int countdown;
 extern volatile powerPillsSpawned;
 extern volatile gamePaused;
 extern void drawUI(void);
-# 33 "Source/timer/IRQ_timer.c"
+# 32 "Source/timer/IRQ_timer.c"
+uint16_t SinTable[45] =
+{
+    410, 467, 523, 576, 627, 673, 714, 749, 778,
+    799, 813, 819, 817, 807, 789, 764, 732, 694,
+    650, 602, 550, 495, 438, 381, 324, 270, 217,
+    169, 125, 87 , 55 , 30 , 12 , 2 , 0 , 6 ,
+    20 , 41 , 70 , 105, 146, 193, 243, 297, 353
+};
+
+// Update Timer1 frequency for different sound effects
+void update_timer1_frequency(uint32_t frequency) {
+    if (frequency == 0) {
+        // Disable sound
+        disable_timer(1);
+        ((LPC_DAC_TypeDef *) ((0x40080000UL) + 0x0C000) )->DACR = 0;
+        return;
+    }
+
+    disable_timer(1);
+    // Calculate match value for desired frequency
+    // Clock = 25MHz, Table size = 45 samples
+    uint32_t matchValue = 25000000 / (frequency * 45);
+    ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->MR0 = matchValue;
+    reset_timer(1);
+    enable_timer(1);
+}
 void TIMER0_IRQHandler (void)
 {
     // Decrement the countdown if it's greater than 0
@@ -2288,6 +2315,8 @@ void TIMER0_IRQHandler (void)
     GUI_Text((240/2)-30, (320/2)-20, (uint8_t *)"GAME OVER!", 0xF800, 0x0000);
     }
 
+  // *** ADD THIS LINE! ***
+    handleGhostTimer();
    // Random spawn of power pill logic
     // Only spawn if game not paused, and if we haven’t spawned all 6
     if (!gamePaused && powerPillsSpawned < 6) {
@@ -2299,9 +2328,19 @@ void TIMER0_IRQHandler (void)
     ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->IR = 1; // Clear interrupt flag
     return;
 }
-# 66 "Source/timer/IRQ_timer.c"
-void TIMER1_IRQHandler (void)
-{
-  ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->IR = 1;
-  return;
+# 93 "Source/timer/IRQ_timer.c"
+void TIMER1_IRQHandler(void) {
+
+  static int ticks = 0;
+
+
+    ((LPC_DAC_TypeDef *) ((0x40080000UL) + 0x0C000) )->DACR = (SinTable[ticks] << 6);
+
+
+    ticks++;
+    if (ticks == 45) ticks = 0;
+
+
+    ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->IR = 1;
+    return;
 }

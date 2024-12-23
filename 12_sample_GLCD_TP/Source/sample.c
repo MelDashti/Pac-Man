@@ -280,7 +280,7 @@ bool movePacMan(void){
 						pillsEaten++;
             mazeGrid[pacmanRow][pacmanCol] = EMPTY;
 						blinky.isChasing = false;
-						blinky.frightenedTimer = 200;
+						blinky.frightenedTimer = 10;
         }
         drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
         drawUI();
@@ -310,10 +310,12 @@ bool movePacMan(void){
             // Check for pills before moving
             if(mazeGrid[newRow][newCol] == PILL) {
                 score += 10;
+								update_timer1_frequency(440);
 								pillsEaten++;
                 mazeGrid[newRow][newCol] = EMPTY;
             } else if(mazeGrid[newRow][newCol] == POWER_PILL) {
                 score += 50;
+								update_timer1_frequency(523);
 								pillsEaten++;
                 mazeGrid[newRow][newCol] = EMPTY;
             }
@@ -353,6 +355,8 @@ int main(void) {
 		enable_RIT();
     joystick_init(); // NEW: Initialize joystick
 		
+		
+		
 		offsetX = (240 - (COLS * CELL_WIDTH)) / 2; 
     offsetY = (320 - (ROWS * CELL_HEIGHT)) / 2;
 
@@ -368,7 +372,8 @@ int main(void) {
 
     init_timer(0, 0x1312D0);
     //enable_timer(0);
-
+		init_timer(1, 0x1312D0);
+		enable_timer(1);
     // Set initial direction to nothing
     pacmanDirRow = 0;
     pacmanDirCol = 0;

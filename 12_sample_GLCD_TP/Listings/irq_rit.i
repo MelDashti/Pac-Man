@@ -1808,6 +1808,7 @@ typedef struct {
  _Bool isActive;
  int respawnTimer;
  int frightenedTimer;
+ int underlyingCell;
 
 }Ghost;
 
@@ -1897,6 +1898,7 @@ void RIT_IRQHandler(void) {
 
     // Move Pacman in the current direction
     if (!gamePaused) {
+    ADC_start_conversion();
     movePacMan();
     updateGhost();
   }
