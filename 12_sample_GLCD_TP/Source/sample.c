@@ -50,33 +50,33 @@ volatile int mazeGrid[ROWS][COLS];
 // 'X' = wall, ' ' = empty space, 'G' = ghost house area
 static const char mazeDef[ROWS][COLS+1] = {
 "XXXXXXXXXXXXXXXXXXXXXXXXXXXX", // 28 'X'
-"X            XX            X",
-"X XXXX XXXXX XX XXXXX XXXX X",
-"X XXXX XXXXX XX XXXXX XXXX X",
-"X                          X",
+"X            XX           XX",
+"X XXXX XXXXX XX XXXXX XXXXXX",
+"X XXXX XXXXX XX XXXXX XXXXXX",
+"X     G              G     X",
 "X XXXX XX XXXXXXXX XX XXXX X",
 "X XXXX XX XXXXXXXX XX XXXX X",
 "X      XX    XX    XX      X",
 "XXXXXX XXXXX XX XXXXX XXXXXX",
 "XXXXXX XXXXX XX XXXXX XXXXXX",
-"XXXXXX XX          XX XXXXXX",
-"XXXXXX XX XXX  XXX XX XXXXXX",
-"XXXXXX XX XGGGGGGX XX XXXXXX",
-"          XGGGGGGX          ",
-"XXXXXX XX XGGGGGGX XX XXXXXX",
-"XXXXXX XX XGGGGGGX XX     XX",
-"XXXXXX XX XXXXXXXX XX XXX XX",
-"X      XX          XX XXX XX",
+"XXXXXX XXGGGGGGGGGGXX XXXXXX",
+"XXXXXX XXGXXXGGXXXGXX XXXXXX",
+"XXXXXX XXGXGGGGGGXGXX XXXXXX",
+"GGGG   GGGXGGGGGGXGG    GGGG",
+"XXXXXX XXGXGGGGGGXGXX XXXXXX",
+"XXXXXX XXGXGGGGGGXGXX     XX",
+"XXXXXX XXGXXXXXXXXGXX XXX XX",
+"X      XXGGGGGGGGGGXX XXX XX",
 "X XXXX XX XXXXXXXX XX XXX XX",
 "X XXXX XX XXXXXXXX XX XXX XX",
 "X XXXX XX          XX     XX",
 "X XXXX XX XXXXXXXX XX XXXXXX",
-"X            XX            X",
+"X     G      XX      G     X",
 "X XXXX XXXXX XX XXXXX XXXX X",
 "X XXXX XXXXX XX XXXXX XXXX X",
-"X   XX                XX   X",
-"XXX XX XX XXXXXXXX XX XX XXX",
-"X      XX    XX    XX      X",
+"X   XX                XXXX X",
+"XXX XX XX XXXXXXXX XX XXXX X",
+"XXX    XX    XX    XX      X",
 "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 };
 
@@ -170,7 +170,11 @@ void initMazeGrid(void) {
 						}
 				}
 		}
+    char buffer[20];
 
+    sprintf(buffer, "PILLS: %02d", pillCount);
+    GUI_Text(20, 0, (uint8_t *)buffer, White, Black);
+		
     // Print out the pill count for debugging, giving error
     //printf("Total Pills: %d\n", pillCount);
 
@@ -351,8 +355,8 @@ int main(void) {
     LCD_Clear(Black);
 	//	init_RIT(0x004C4B40);	// 50ms
 		init_RIT(0x000F4240 );	// 50ms
-//	
 		enable_RIT();
+		//ADC_init();
     joystick_init(); // NEW: Initialize joystick
 		
 		
