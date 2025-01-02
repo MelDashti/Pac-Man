@@ -1840,69 +1840,83 @@ extern void reset_RIT( void );
 extern void RIT_IRQHandler (void);
 # 6 "Source/RIT/IRQ_RIT.c" 2
 
+
+
+// here we define the shared variable
+volatile _Bool debouncing = 0;
+
+
 extern volatile int pacmanDirRow;
 extern volatile int pacmanDirCol;
 extern volatile _Bool gamePaused;
+extern volatile _Bool gameOver;
+extern int offsetX;
+extern int offsetY;
 
-// Flags to track button state
-static _Bool upPressedFlag = 0;
-static _Bool downPressedFlag = 0;
-static _Bool leftPressedFlag = 0;
-static _Bool rightPressedFlag = 0;
+
 
 void RIT_IRQHandler(void) {
-    // Read joystick inputs (active low)
-    int upPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 29)); // Joystick UP
-    int downPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 26)); // Joystick DOWN
-    int leftPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 27)); // Joystick LEFT
-    int rightPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 28)); // Joystick RIGHT
+    static _Bool buttonPressed = 0; // Track button state
+    static int debounceCounter = 0; // Counter for debounce delay
 
- // only process the joystick if the game is not paused
+    // Handle button debouncing
+    if (debouncing) {
+        if ((((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00040) )->FIOPIN & (1 << 10)) == 0) { // Button pressed
+            if (!buttonPressed) {
+                buttonPressed = 1; // Mark the button as pressed
+                gamePaused = !gamePaused; // Toggle pause state
 
-
-    // Handle UP
-    if (upPressed && !upPressedFlag) {
-        pacmanDirRow = -1;
-        pacmanDirCol = 0;
-        upPressedFlag = 1; // Mark as handled
-    } else if (!upPressed) {
-        upPressedFlag = 0; // Reset when released
+                if (gamePaused) {
+                    // Display "PAUSE" text
+                    GUI_Text((240 / 2) - 23, (320 / 2) - 10, (uint8_t *)"PAUSE", 0xFFE0, 0x0000);
+                    disable_timer(0); // Pause the game timer
+                } else {
+                    // Clear "PAUSE" text
+                    for (int y = (320 / 2) - 10; y < (320 / 2) - 10 + 16; y++) {
+                        for (int x = (240 / 2) - 23; x < (240 / 2) - 23 + 40; x++) {
+                            LCD_SetPoint(x, y, 0x0000);
+                        }
+                    }
+                    enable_timer(0); // Resume the game timer
+                }
+            }
+        } else { // Button released
+            buttonPressed = 0; // Reset button state
+            debounceCounter++;
+            if (debounceCounter >= 2) { // 50 ms debounce delay
+                debouncing = 0; // End debouncing
+                debounceCounter = 0; // Reset debounce counter
+                __NVIC_EnableIRQ(EINT0_IRQn); // Re-enable EINT0 interrupt
+                ((LPC_PINCON_TypeDef *) ((0x40000000UL) + 0x2C000) )->PINSEL4 |= (1 << 20); // Restore P2.10 to EINT0 mode
+            }
+        }
     }
 
-    // Handle DOWN
-    if (downPressed && !downPressedFlag) {
-        pacmanDirRow = 1;
-        pacmanDirCol = 0;
-        downPressedFlag = 1;
-    } else if (!downPressed) {
-        downPressedFlag = 0;
-    }
-
-    // Handle LEFT
-    if (leftPressed && !leftPressedFlag) {
-        pacmanDirRow = 0;
-        pacmanDirCol = -1;
-        leftPressedFlag = 1;
-    } else if (!leftPressed) {
-        leftPressedFlag = 0;
-    }
-
-    // Handle RIGHT
-    if (rightPressed && !rightPressedFlag) {
-        pacmanDirRow = 0;
-        pacmanDirCol = 1;
-        rightPressedFlag = 1;
-    } else if (!rightPressed) {
-        rightPressedFlag = 0;
-    }
-
-    // Move Pacman in the current direction
+    // Handle joystick input
     if (!gamePaused) {
-    ADC_start_conversion();
-    movePacMan();
-    updateGhost();
-  }
+        int upPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 29)); // Joystick UP
+        int downPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 26)); // Joystick DOWN
+        int leftPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 27)); // Joystick LEFT
+        int rightPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 28)); // Joystick RIGHT
 
-    // Clear the RIT interrupt flag
-    ((LPC_RIT_TypeDef *) ((0x40080000UL) + 0x30000) )->RICTRL |= 0x1;
+        if (upPressed) {
+            pacmanDirRow = -1;
+            pacmanDirCol = 0; // Move up
+        } else if (downPressed) {
+            pacmanDirRow = 1;
+            pacmanDirCol = 0; // Move down
+        } else if (leftPressed) {
+            pacmanDirRow = 0;
+            pacmanDirCol = -1; // Move left
+        } else if (rightPressed) {
+            pacmanDirRow = 0;
+            pacmanDirCol = 1; // Move right
+        }
+
+        ADC_start_conversion();
+        movePacMan();
+        updateGhost();
+    }
+
+    ((LPC_RIT_TypeDef *) ((0x40080000UL) + 0x30000) )->RICTRL |= 0x1; // Clear RIT interrupt flag
 }

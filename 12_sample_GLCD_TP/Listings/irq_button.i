@@ -1803,51 +1803,20 @@ void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_
 # 5 "Source/button_EXINT/IRQ_button.c" 2
 
 extern volatile _Bool gamePaused;
+extern volatile _Bool gameOver;
 extern int offsetX;
 extern int offsetY;
 _Bool firstUnpauseDone;
 
-// Modified EINT0_IRQHandler with debouncing
+extern volatile _Bool debouncing; // here we add this line
+
+
+// EINT0 Handles the pause/start game button.
 void EINT0_IRQHandler(void) {
-    // Disable Button interrupts
-    __NVIC_DisableIRQ(EINT0_IRQn);
-
-    // Toggle pause state
-    gamePaused = !gamePaused;
-
-
-
-
-  if(gamePaused) {
-    GUI_Text((240/2)-23, (320/2)-10, (uint8_t *)"PAUSE", 0xFFE0, 0x0000);
-
-  } else {
-    // Clear the PAUSE text by drawing a black rectangle
-     int x, y;
-    for (y = (320/2)-10; y < (320/2)-10 + 16; y++){
-      for (x = (240/2)-23; x < (240/2)-23 + 40; x++){
-        LCD_SetPoint(x, y, 0x0000);
-      }
-    }
-
-        // Also clear the "READY!" if not yet cleared
-        if(!firstUnpauseDone) {
-
-    for (y = (320/2)-10; y < (320/2)-10 + 16; y++){
-      for (x = (240/2)-23; x < (240/2)-23 + 40; x++){
-        LCD_SetPoint(x, y, 0x0000);
-      }
-    }
-    // Re-draw ghost if needed
-    drawGhost(offsetX, offsetY);
-
-    enable_timer(0);
-    firstUnpauseDone = 1;
-        }
-    }
-
-    ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->EXTINT &= (1 << 0); // Clear pending interrupt
-    enable_RIT();
+   debouncing = 1;
+   __NVIC_DisableIRQ(EINT0_IRQn); // here we disable the button interupt
+   ((LPC_PINCON_TypeDef *) ((0x40000000UL) + 0x2C000) )->PINSEL4 &= ~(1 << 20);
+   ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->EXTINT &= (1 << 0); // Clear pending interrupt
 }
 
 void EINT1_IRQHandler (void)

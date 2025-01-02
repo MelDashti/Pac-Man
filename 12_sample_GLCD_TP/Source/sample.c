@@ -34,6 +34,7 @@ volatile int powerPillsSpawned = 0;
 
 volatile int down_0 = 0;  // For button debouncing
 volatile bool gamePaused = true;
+volatile bool gameOver = false;
 int totalPills = 240;  // Track remaining pills
 int pillsEaten = 0;
 

@@ -3,9 +3,9 @@
 <title>Static Call Graph - [.\Objects\sample_GLCD_TP.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\sample_GLCD_TP.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6220000: Last Updated: Tue Dec 31 12:52:18 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6220000: Last Updated: Thu Jan  2 20:45:44 2025
 <BR><P>
-<H3>Maximum Stack Usage =        248 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        264 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 RIT_IRQHandler &rArr; movePacMan &rArr; drawUI &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 <P>
@@ -244,7 +244,7 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sys_exit
 </UL>
 
-<P><STRONG><a name="[50]"></a>rand</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, rand.o(.emb_text))
+<P><STRONG><a name="[4b]"></a>rand</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, rand.o(.emb_text))
 <BR><BR>[Called By]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawPowerPills
 </UL>
 
@@ -406,68 +406,77 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__user_setup_stackheap
 </UL>
 
-<P><STRONG><a name="[43]"></a>update_timer1_frequency</STRONG> (Thumb, 68 bytes, Stack size 8 bytes, irq_timer.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = update_timer1_frequency
-</UL>
-<BR>[Calls]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;reset_timer
-<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enable_timer
-<LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disable_timer
-</UL>
-<BR>[Called By]<UL><LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
+<P><STRONG><a name="[5d]"></a>enable_timer</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, lib_timer.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_IRQHandler
+<LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RIT_IRQHandler
+<LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_timer1_frequency
 </UL>
 
-<P><STRONG><a name="[b]"></a>TIMER0_IRQHandler</STRONG> (Thumb, 100 bytes, Stack size 16 bytes, irq_timer.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 192 + Unknown Stack Size
-<LI>Call Chain = TIMER0_IRQHandler &rArr; drawUI &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
+<P><STRONG><a name="[50]"></a>disable_timer</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, lib_timer.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_IRQHandler
+<LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RIT_IRQHandler
+<LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER0_IRQHandler
+<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_timer1_frequency
+<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
 </UL>
-<BR>[Calls]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handleGhostTimer
-<LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawPowerPills
-<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
-<LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawUI
-</UL>
-<BR>[Address Reference Count : 1]<UL><LI> startup_lpc17xx.o(RESET)
-</UL>
-<P><STRONG><a name="[c]"></a>TIMER1_IRQHandler</STRONG> (Thumb, 62 bytes, Stack size 0 bytes, irq_timer.o(.text))
-<BR>[Address Reference Count : 1]<UL><LI> startup_lpc17xx.o(RESET)
-</UL>
-<P><STRONG><a name="[c1]"></a>__I$use$semihosting</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, use_no_semi.o(.text), UNUSED)
 
-<P><STRONG><a name="[c2]"></a>__use_no_semihosting_swi</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, use_no_semi.o(.text), UNUSED)
+<P><STRONG><a name="[5e]"></a>reset_timer</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, lib_timer.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_IRQHandler
+<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_timer1_frequency
+</UL>
 
-<P><STRONG><a name="[47]"></a>drawUI</STRONG> (Thumb, 134 bytes, Stack size 40 bytes, sample.o(.text))
+<P><STRONG><a name="[5c]"></a>init_timer</STRONG> (Thumb, 132 bytes, Stack size 0 bytes, lib_timer.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_IRQHandler
+<LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[c1]"></a>__use_two_region_memory</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
+
+<P><STRONG><a name="[c2]"></a>__rt_heap_escrow$2region</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
+
+<P><STRONG><a name="[c3]"></a>__rt_heap_expand$2region</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
+
+<P><STRONG><a name="[c4]"></a>__I$use$semihosting</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, use_no_semi.o(.text), UNUSED)
+
+<P><STRONG><a name="[c5]"></a>__use_no_semihosting_swi</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, use_no_semi.o(.text), UNUSED)
+
+<P><STRONG><a name="[c6]"></a>__semihosting_library_function</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, indicate_semi.o(.text), UNUSED)
+
+<P><STRONG><a name="[43]"></a>drawUI</STRONG> (Thumb, 134 bytes, Stack size 40 bytes, sample.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 176 + Unknown Stack Size
 <LI>Call Chain = drawUI &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
-<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
+<BR>[Calls]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER0_IRQHandler
-<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
+<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
 </UL>
 
-<P><STRONG><a name="[4c]"></a>fillCell</STRONG> (Thumb, 82 bytes, Stack size 32 bytes, sample.o(.text))
+<P><STRONG><a name="[46]"></a>fillCell</STRONG> (Thumb, 82 bytes, Stack size 32 bytes, sample.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = fillCell &rArr; LCD_SetPoint
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
+<BR>[Calls]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateGhost
-<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
+<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
 </UL>
 
-<P><STRONG><a name="[4e]"></a>drawPill</STRONG> (Thumb, 118 bytes, Stack size 40 bytes, sample.o(.text))
+<P><STRONG><a name="[48]"></a>drawPill</STRONG> (Thumb, 118 bytes, Stack size 40 bytes, sample.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = drawPill &rArr; LCD_SetPoint
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
+<BR>[Calls]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateGhost
 </UL>
 
-<P><STRONG><a name="[4f]"></a>initMazeGrid</STRONG> (Thumb, 172 bytes, Stack size 32 bytes, sample.o(.text))
+<P><STRONG><a name="[49]"></a>initMazeGrid</STRONG> (Thumb, 172 bytes, Stack size 32 bytes, sample.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168 + Unknown Stack Size
 <LI>Call Chain = initMazeGrid &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
-<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
+<BR>[Calls]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
 </UL>
 <BR>[Called By]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -475,41 +484,41 @@ Global Symbols
 <P><STRONG><a name="[4a]"></a>drawPowerPills</STRONG> (Thumb, 382 bytes, Stack size 40 bytes, sample.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = drawPowerPills &rArr; LCD_SetPoint
 </UL>
-<BR>[Calls]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rand
-<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
+<BR>[Calls]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rand
+<LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER0_IRQHandler
 </UL>
 
-<P><STRONG><a name="[51]"></a>drawMazeFromGrid</STRONG> (Thumb, 466 bytes, Stack size 56 bytes, sample.o(.text))
+<P><STRONG><a name="[4c]"></a>drawMazeFromGrid</STRONG> (Thumb, 466 bytes, Stack size 56 bytes, sample.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = drawMazeFromGrid &rArr; LCD_SetPoint
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
+<BR>[Calls]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
 </UL>
 <BR>[Called By]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[52]"></a>drawPacMan</STRONG> (Thumb, 106 bytes, Stack size 32 bytes, sample.o(.text))
+<P><STRONG><a name="[4d]"></a>drawPacMan</STRONG> (Thumb, 106 bytes, Stack size 32 bytes, sample.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = drawPacMan &rArr; LCD_SetPoint
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
+<BR>[Calls]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
 </UL>
-<BR>[Called By]<UL><LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
+<BR>[Called By]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
 </UL>
 
-<P><STRONG><a name="[53]"></a>movePacMan</STRONG> (Thumb, 1128 bytes, Stack size 64 bytes, sample.o(.text))
+<P><STRONG><a name="[4e]"></a>movePacMan</STRONG> (Thumb, 1128 bytes, Stack size 64 bytes, sample.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240 + Unknown Stack Size
 <LI>Call Chain = movePacMan &rArr; drawUI &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
-<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_timer1_frequency
-<LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disable_timer
-<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disable_RIT
-<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawPacMan
-<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
-<LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fillCell
-<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
-<LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawUI
+<BR>[Calls]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_timer1_frequency
+<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disable_timer
+<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disable_RIT
+<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawPacMan
+<LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
+<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fillCell
+<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
+<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawUI
 </UL>
 <BR>[Called By]<UL><LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RIT_IRQHandler
 </UL>
@@ -518,95 +527,98 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 192 + Unknown Stack Size
 <LI>Call Chain = main &rArr; initMazeGrid &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
-<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enable_timer
-<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_timer
-<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawGhost
-<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initGhost
-<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;joystick_init
-<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enable_RIT
-<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_RIT
-<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Clear
-<LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BUTTON_init
-<LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TP_Init
-<LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Initialization
-<LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInit
-<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawMazeFromGrid
-<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initMazeGrid
-<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
-<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
+<BR>[Calls]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enable_timer
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_timer
+<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawGhost
+<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initGhost
+<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;joystick_init
+<LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enable_RIT
+<LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_RIT
+<LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Clear
+<LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BUTTON_init
+<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TP_Init
+<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Initialization
+<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInit
+<LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawMazeFromGrid
+<LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initMazeGrid
+<LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
+<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
 </UL>
 <BR>[Called By]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
 </UL>
 
-<P><STRONG><a name="[55]"></a>SystemInit</STRONG> (Thumb, 320 bytes, Stack size 0 bytes, system_lpc17xx.o(.text))
+<P><STRONG><a name="[52]"></a>SystemInit</STRONG> (Thumb, 320 bytes, Stack size 0 bytes, system_lpc17xx.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[46]"></a>enable_timer</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, lib_timer.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_IRQHandler
-<LI><a href="#[1c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EINT0_IRQHandler
-<LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_timer1_frequency
+<P><STRONG><a name="[51]"></a>update_timer1_frequency</STRONG> (Thumb, 68 bytes, Stack size 8 bytes, irq_timer.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = update_timer1_frequency
+</UL>
+<BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;reset_timer
+<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enable_timer
+<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disable_timer
+</UL>
+<BR>[Called By]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
 </UL>
 
-<P><STRONG><a name="[44]"></a>disable_timer</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, lib_timer.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_IRQHandler
-<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_timer1_frequency
-<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
+<P><STRONG><a name="[b]"></a>TIMER0_IRQHandler</STRONG> (Thumb, 124 bytes, Stack size 16 bytes, irq_timer.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 192 + Unknown Stack Size
+<LI>Call Chain = TIMER0_IRQHandler &rArr; drawUI &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
-
-<P><STRONG><a name="[45]"></a>reset_timer</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, lib_timer.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_IRQHandler
-<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;update_timer1_frequency
+<BR>[Calls]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handleGhostTimer
+<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disable_timer
+<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disable_RIT
+<LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawPowerPills
+<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
+<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawUI
 </UL>
-
-<P><STRONG><a name="[5f]"></a>init_timer</STRONG> (Thumb, 132 bytes, Stack size 0 bytes, lib_timer.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_IRQHandler
-<LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<BR>[Address Reference Count : 1]<UL><LI> startup_lpc17xx.o(RESET)
 </UL>
-
+<P><STRONG><a name="[c]"></a>TIMER1_IRQHandler</STRONG> (Thumb, 62 bytes, Stack size 0 bytes, irq_timer.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_lpc17xx.o(RESET)
+</UL>
 <P><STRONG><a name="[62]"></a>GetASCIICode</STRONG> (Thumb, 42 bytes, Stack size 0 bytes, asciilib.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PutChar
-<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
+<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
 </UL>
 
-<P><STRONG><a name="[56]"></a>LCD_Initialization</STRONG> (Thumb, 4466 bytes, Stack size 36 bytes, glcd.o(.text))
+<P><STRONG><a name="[53]"></a>LCD_Initialization</STRONG> (Thumb, 4466 bytes, Stack size 36 bytes, glcd.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = LCD_Initialization
 </UL>
 <BR>[Called By]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[59]"></a>LCD_Clear</STRONG> (Thumb, 292 bytes, Stack size 28 bytes, glcd.o(.text))
+<P><STRONG><a name="[56]"></a>LCD_Clear</STRONG> (Thumb, 292 bytes, Stack size 28 bytes, glcd.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = LCD_Clear
 </UL>
 <BR>[Called By]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TouchPanel_Calibrate
 <LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[c3]"></a>LCD_GetPoint</STRONG> (Thumb, 356 bytes, Stack size 28 bytes, glcd.o(.text), UNUSED)
+<P><STRONG><a name="[c7]"></a>LCD_GetPoint</STRONG> (Thumb, 356 bytes, Stack size 28 bytes, glcd.o(.text), UNUSED)
 
-<P><STRONG><a name="[4d]"></a>LCD_SetPoint</STRONG> (Thumb, 322 bytes, Stack size 32 bytes, glcd.o(.text))
+<P><STRONG><a name="[47]"></a>LCD_SetPoint</STRONG> (Thumb, 322 bytes, Stack size 32 bytes, glcd.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = LCD_SetPoint
 </UL>
-<BR>[Called By]<UL><LI><a href="#[1c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EINT0_IRQHandler
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateGhost
+<BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateGhost
+<LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RIT_IRQHandler
 <LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TP_DrawPoint
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PutChar
 <LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
-<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawGhost
+<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawGhost
 <LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
-<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawPacMan
-<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawMazeFromGrid
+<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
+<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawPacMan
+<LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawMazeFromGrid
 <LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawPowerPills
-<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawPill
-<LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fillCell
-<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
+<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawPill
+<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fillCell
+<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
 </UL>
 
 <P><STRONG><a name="[60]"></a>LCD_DrawLine</STRONG> (Thumb, 224 bytes, Stack size 40 bytes, glcd.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
+<BR><BR>[Calls]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DeleteCross
 <LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawCross
@@ -614,23 +626,23 @@ Global Symbols
 
 <P><STRONG><a name="[61]"></a>PutChar</STRONG> (Thumb, 102 bytes, Stack size 56 bytes, glcd.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetASCIICode
-<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
+<LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
 </UL>
 
-<P><STRONG><a name="[48]"></a>GUI_Text</STRONG> (Thumb, 158 bytes, Stack size 64 bytes, glcd.o(.text))
+<P><STRONG><a name="[45]"></a>GUI_Text</STRONG> (Thumb, 158 bytes, Stack size 64 bytes, glcd.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = GUI_Text &rArr; LCD_SetPoint
 </UL>
 <BR>[Calls]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GetASCIICode
-<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
+<LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
 </UL>
-<BR>[Called By]<UL><LI><a href="#[1c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EINT0_IRQHandler
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateGhost
+<BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateGhost
+<LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RIT_IRQHandler
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TouchPanel_Calibrate
 <LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER0_IRQHandler
 <LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
-<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initMazeGrid
-<LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawUI
+<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
+<LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initMazeGrid
+<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawUI
 </UL>
 
 <P><STRONG><a name="[64]"></a>LPC17xx_SPI_SetSpeed</STRONG> (Thumb, 52 bytes, Stack size 4 bytes, touchpanel.o(.text))
@@ -639,7 +651,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADS7843_SPI_Init
 </UL>
 
-<P><STRONG><a name="[57]"></a>TP_Init</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, touchpanel.o(.text))
+<P><STRONG><a name="[54]"></a>TP_Init</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, touchpanel.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = TP_Init &rArr; ADS7843_SPI_Init &rArr; LPC17xx_SPI_SetSpeed
 </UL>
 <BR>[Calls]<UL><LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADS7843_SPI_Init
@@ -672,7 +684,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[6b]"></a>TP_DrawPoint</STRONG> (Thumb, 32 bytes, Stack size 16 bytes, touchpanel.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
+<BR><BR>[Calls]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
 </UL>
 
 <P><STRONG><a name="[6c]"></a>DrawCross</STRONG> (Thumb, 434 bytes, Stack size 24 bytes, touchpanel.o(.text), UNUSED)
@@ -716,36 +728,40 @@ Global Symbols
 <LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DeleteCross
 <LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DrawCross
 <LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DelayUS
-<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Clear
-<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
+<LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Clear
+<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
 </UL>
 
-<P><STRONG><a name="[27]"></a>RIT_IRQHandler</STRONG> (Thumb, 278 bytes, Stack size 8 bytes, irq_rit.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 248 + Unknown Stack Size
+<P><STRONG><a name="[27]"></a>RIT_IRQHandler</STRONG> (Thumb, 324 bytes, Stack size 24 bytes, irq_rit.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 264 + Unknown Stack Size
 <LI>Call Chain = RIT_IRQHandler &rArr; movePacMan &rArr; drawUI &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;updateGhost
 <LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_start_conversion
-<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
+<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enable_timer
+<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disable_timer
+<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
+<LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
+<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_lpc17xx.o(RESET)
 </UL>
-<P><STRONG><a name="[5b]"></a>enable_RIT</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, lib_rit.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[1c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EINT0_IRQHandler
-<LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-</UL>
-
-<P><STRONG><a name="[54]"></a>disable_RIT</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, lib_rit.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
-</UL>
-
-<P><STRONG><a name="[c4]"></a>reset_RIT</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, lib_rit.o(.text), UNUSED)
-
-<P><STRONG><a name="[5a]"></a>init_RIT</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, lib_rit.o(.text))
+<P><STRONG><a name="[58]"></a>enable_RIT</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, lib_rit.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[5c]"></a>joystick_init</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, lib_joystick.o(.text))
+<P><STRONG><a name="[4f]"></a>disable_RIT</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, lib_rit.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER0_IRQHandler
+<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
+</UL>
+
+<P><STRONG><a name="[c8]"></a>reset_RIT</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, lib_rit.o(.text), UNUSED)
+
+<P><STRONG><a name="[57]"></a>init_RIT</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, lib_rit.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[59]"></a>joystick_init</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, lib_joystick.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
@@ -757,17 +773,9 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_IRQHandler
 </UL>
 
-<P><STRONG><a name="[c5]"></a>LED_Out</STRONG> (Thumb, 68 bytes, Stack size 8 bytes, funct_led.o(.text), UNUSED)
+<P><STRONG><a name="[c9]"></a>LED_Out</STRONG> (Thumb, 68 bytes, Stack size 8 bytes, funct_led.o(.text), UNUSED)
 
-<P><STRONG><a name="[1c]"></a>EINT0_IRQHandler</STRONG> (Thumb, 196 bytes, Stack size 24 bytes, irq_button.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = EINT0_IRQHandler &rArr; GUI_Text &rArr; LCD_SetPoint
-</UL>
-<BR>[Calls]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enable_timer
-<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawGhost
-<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enable_RIT
-<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
-<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
-</UL>
+<P><STRONG><a name="[1c]"></a>EINT0_IRQHandler</STRONG> (Thumb, 68 bytes, Stack size 0 bytes, irq_button.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_lpc17xx.o(RESET)
 </UL>
 <P><STRONG><a name="[1d]"></a>EINT1_IRQHandler</STRONG> (Thumb, 56 bytes, Stack size 0 bytes, irq_button.o(.text))
@@ -776,37 +784,36 @@ Global Symbols
 <P><STRONG><a name="[1e]"></a>EINT2_IRQHandler</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, irq_button.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_lpc17xx.o(RESET)
 </UL>
-<P><STRONG><a name="[58]"></a>BUTTON_init</STRONG> (Thumb, 124 bytes, Stack size 0 bytes, lib_button.o(.text))
+<P><STRONG><a name="[55]"></a>BUTTON_init</STRONG> (Thumb, 124 bytes, Stack size 0 bytes, lib_button.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[c6]"></a>findNextMoveBFS</STRONG> (Thumb, 154 bytes, Stack size 20 bytes, ghost.o(.text), UNUSED)
+<P><STRONG><a name="[ca]"></a>findNextMoveBFS</STRONG> (Thumb, 154 bytes, Stack size 20 bytes, ghost.o(.text), UNUSED)
 
-<P><STRONG><a name="[5d]"></a>initGhost</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, ghost.o(.text))
+<P><STRONG><a name="[5a]"></a>initGhost</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, ghost.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[7a]"></a>updateGhost</STRONG> (Thumb, 584 bytes, Stack size 48 bytes, ghost.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = updateGhost &rArr; GUI_Text &rArr; LCD_SetPoint
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawPill
-<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
-<LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fillCell
-<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
+<BR>[Calls]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawPill
+<LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
+<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fillCell
+<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Text
 </UL>
 <BR>[Called By]<UL><LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RIT_IRQHandler
 </UL>
 
-<P><STRONG><a name="[5e]"></a>drawGhost</STRONG> (Thumb, 148 bytes, Stack size 40 bytes, ghost.o(.text))
+<P><STRONG><a name="[5b]"></a>drawGhost</STRONG> (Thumb, 148 bytes, Stack size 40 bytes, ghost.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = drawGhost &rArr; LCD_SetPoint
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
+<BR>[Calls]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_SetPoint
 </UL>
-<BR>[Called By]<UL><LI><a href="#[1c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EINT0_IRQHandler
-<LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<BR>[Called By]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[49]"></a>handleGhostTimer</STRONG> (Thumb, 54 bytes, Stack size 0 bytes, ghost.o(.text))
+<P><STRONG><a name="[5f]"></a>handleGhostTimer</STRONG> (Thumb, 54 bytes, Stack size 0 bytes, ghost.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIMER0_IRQHandler
 </UL>
 
@@ -815,20 +822,20 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LED_Off
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LED_On
-<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;reset_timer
-<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enable_timer
-<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_timer
-<LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disable_timer
+<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;reset_timer
+<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;enable_timer
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_timer
+<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disable_timer
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_lpc17xx.o(RESET)
 </UL>
-<P><STRONG><a name="[c7]"></a>ADC_init</STRONG> (Thumb, 84 bytes, Stack size 0 bytes, lib_adc.o(.text), UNUSED)
+<P><STRONG><a name="[cb]"></a>ADC_init</STRONG> (Thumb, 84 bytes, Stack size 0 bytes, lib_adc.o(.text), UNUSED)
 
 <P><STRONG><a name="[79]"></a>ADC_start_conversion</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, lib_adc.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RIT_IRQHandler
 </UL>
 
-<P><STRONG><a name="[4b]"></a>__2sprintf</STRONG> (Thumb, 34 bytes, Stack size 32 bytes, noretval__2sprintf.o(.text))
+<P><STRONG><a name="[44]"></a>__2sprintf</STRONG> (Thumb, 34 bytes, Stack size 32 bytes, noretval__2sprintf.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136 + Unknown Stack Size
 <LI>Call Chain = __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
@@ -836,9 +843,9 @@ Global Symbols
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_char_common
 </UL>
 <BR>[Called By]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
-<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initMazeGrid
-<LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawUI
+<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;movePacMan
+<LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initMazeGrid
+<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;drawUI
 </UL>
 
 <P><STRONG><a name="[83]"></a>_printf_pre_padding</STRONG> (Thumb, 44 bytes, Stack size 16 bytes, _printf_pad.o(.text))
@@ -889,17 +896,11 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Read_Ads7846
 </UL>
 
-<P><STRONG><a name="[c8]"></a>__aeabi_memclr8</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rt_memclr_w.o(.text), UNUSED)
+<P><STRONG><a name="[cc]"></a>__aeabi_memclr8</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rt_memclr_w.o(.text), UNUSED)
 
-<P><STRONG><a name="[c9]"></a>__rt_memclr_w</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rt_memclr_w.o(.text), UNUSED)
+<P><STRONG><a name="[cd]"></a>__rt_memclr_w</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rt_memclr_w.o(.text), UNUSED)
 
-<P><STRONG><a name="[ca]"></a>_memset_w</STRONG> (Thumb, 74 bytes, Stack size 4 bytes, rt_memclr_w.o(.text), UNUSED)
-
-<P><STRONG><a name="[cb]"></a>__use_two_region_memory</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
-
-<P><STRONG><a name="[cc]"></a>__rt_heap_escrow$2region</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
-
-<P><STRONG><a name="[cd]"></a>__rt_heap_expand$2region</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
+<P><STRONG><a name="[ce]"></a>_memset_w</STRONG> (Thumb, 74 bytes, Stack size 4 bytes, rt_memclr_w.o(.text), UNUSED)
 
 <P><STRONG><a name="[7e]"></a>_printf_int_common</STRONG> (Thumb, 178 bytes, Stack size 32 bytes, _printf_intcommon.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = _printf_int_common &rArr; _printf_post_padding
@@ -916,11 +917,11 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 </UL>
 
 <P><STRONG><a name="[2e]"></a>_sputc</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, _sputc.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<BR><BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> noretval__2sprintf.o(.text)
 </UL>
@@ -943,15 +944,13 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
 </UL>
 
-<P><STRONG><a name="[ce]"></a>__user_libspace</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, libspace.o(.text), UNUSED)
+<P><STRONG><a name="[cf]"></a>__user_libspace</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, libspace.o(.text), UNUSED)
 
 <P><STRONG><a name="[85]"></a>__user_perproc_libspace</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, libspace.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__user_setup_stackheap
 </UL>
 
-<P><STRONG><a name="[cf]"></a>__user_perthread_libspace</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, libspace.o(.text), UNUSED)
-
-<P><STRONG><a name="[d0]"></a>__semihosting_library_function</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, indicate_semi.o(.text), UNUSED)
+<P><STRONG><a name="[d0]"></a>__user_perthread_libspace</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, libspace.o(.text), UNUSED)
 
 <P><STRONG><a name="[42]"></a>_sys_exit</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, sys_exit.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_exit_exit
@@ -1111,7 +1110,7 @@ Local Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LPC17xx_SPI_SetSpeed
 </UL>
-<BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TP_Init
+<BR>[Called By]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TP_Init
 </UL>
 
 <P><STRONG><a name="[66]"></a>DelayUS</STRONG> (Thumb, 58 bytes, Stack size 12 bytes, touchpanel.o(.text), UNUSED)

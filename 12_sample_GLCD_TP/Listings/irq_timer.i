@@ -2272,11 +2272,14 @@ extern __attribute__((__nothrow__)) int _fisatty(FILE * ) __attribute__((__nonnu
 extern __attribute__((__nothrow__)) void __use_no_semihosting_swi(void);
 extern __attribute__((__nothrow__)) void __use_no_semihosting(void);
 # 16 "Source/timer/IRQ_timer.c" 2
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
+# 17 "Source/timer/IRQ_timer.c" 2
 extern volatile int countdown;
 extern volatile powerPillsSpawned;
-extern volatile gamePaused;
+extern volatile _Bool gamePaused;
 extern void drawUI(void);
-# 32 "Source/timer/IRQ_timer.c"
+extern volatile gameOver;
+# 33 "Source/timer/IRQ_timer.c"
 uint16_t SinTable[45] =
 {
     410, 467, 523, 576, 627, 673, 714, 749, 778,
@@ -2313,6 +2316,10 @@ void TIMER0_IRQHandler (void)
         // If countdown reached 0, you can show "Game Over!" or handle end condition here.
         // For now, just keep it simple.
     GUI_Text((240/2)-30, (320/2)-20, (uint8_t *)"GAME OVER!", 0xF800, 0x0000);
+    gameOver=1;
+    disable_timer(0);
+    disable_RIT(0);
+
     }
 
   // *** ADD THIS LINE! ***
@@ -2328,7 +2335,7 @@ void TIMER0_IRQHandler (void)
     ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->IR = 1; // Clear interrupt flag
     return;
 }
-# 93 "Source/timer/IRQ_timer.c"
+# 98 "Source/timer/IRQ_timer.c"
 void TIMER1_IRQHandler(void) {
 
   static int ticks = 0;

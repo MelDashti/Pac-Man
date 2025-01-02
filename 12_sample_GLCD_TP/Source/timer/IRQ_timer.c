@@ -13,11 +13,12 @@
 #include "../GLCD/GLCD.h" 
 #include "../TouchPanel/TouchPanel.h"
 #include <stdio.h> /*for sprintf*/
+#include <stdbool.h>
 extern volatile int countdown;
 extern volatile powerPillsSpawned;
-extern volatile gamePaused;
+extern volatile bool gamePaused;
 extern void drawUI(void);
-
+extern volatile gameOver;
 
 /******************************************************************************
 ** Function name:		Timer0_IRQHandler
@@ -65,6 +66,10 @@ void TIMER0_IRQHandler (void)
         // If countdown reached 0, you can show "Game Over!" or handle end condition here.
         // For now, just keep it simple.
 				GUI_Text((240/2)-30, (320/2)-20, (uint8_t *)"GAME OVER!", Red, Black);
+				gameOver=true;
+				disable_timer(0);
+				disable_RIT(0);
+			
     }
 		
 		// *** ADD THIS LINE! ***
