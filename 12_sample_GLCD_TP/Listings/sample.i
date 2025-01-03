@@ -2379,10 +2379,89 @@ extern __attribute__((__nothrow__)) char const *__C_library_version_string(void)
 extern __attribute__((__nothrow__)) int __C_library_version_number(void);
 # 11 "Source/sample.c" 2
 
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\time.h" 1 3
+# 82 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\time.h" 3
+typedef unsigned int clock_t;
+typedef unsigned int time_t;
+
+
+
+
+
+
+struct tm {
+    int tm_sec;
+
+    int tm_min;
+    int tm_hour;
+    int tm_mday;
+    int tm_mon;
+    int tm_year;
+    int tm_wday;
+    int tm_yday;
+    int tm_isdst;
+    union {
+        struct {
+            int __extra_1, __extra_2;
+        };
+        struct {
+            long __extra_1_long, __extra_2_long;
+        };
+        struct {
+            char *__extra_1_cptr, *__extra_2_cptr;
+        };
+        struct {
+            void *__extra_1_vptr, *__extra_2_vptr;
+        };
+    };
+};
+# 127 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\time.h" 3
+extern __attribute__((__nothrow__)) clock_t clock(void);
+
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) double difftime(time_t , time_t );
+
+
+
+
+extern __attribute__((__nothrow__)) time_t mktime(struct tm * ) __attribute__((__nonnull__(1)));
+# 156 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\time.h" 3
+extern __attribute__((__nothrow__)) time_t time(time_t * );
+# 166 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\time.h" 3
+extern __attribute__((__nothrow__)) char *asctime(const struct tm * ) __attribute__((__nonnull__(1)));
+extern __attribute__((__nothrow__)) char *_asctime_r(const struct tm * ,
+                                char * __restrict ) __attribute__((__nonnull__(1,2)));
+# 178 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\time.h" 3
+extern __attribute__((__nothrow__)) char *ctime(const time_t * ) __attribute__((__nonnull__(1)));
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) struct tm *gmtime(const time_t * ) __attribute__((__nonnull__(1)));
+
+
+
+
+
+extern __attribute__((__nothrow__)) struct tm *localtime(const time_t * ) __attribute__((__nonnull__(1)));
+extern __attribute__((__nothrow__)) struct tm *_localtime_r(const time_t * __restrict ,
+                                       struct tm * __restrict ) __attribute__((__nonnull__(1,2)));
+# 203 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\time.h" 3
+extern __attribute__((__nothrow__)) size_t strftime(char * __restrict , size_t ,
+                       const char * __restrict ,
+                       const struct tm * __restrict ) __attribute__((__nonnull__(1,3,4)));
+# 13 "Source/sample.c" 2
 
 
 extern uint8_t ScaleFlag;
-# 23 "Source/sample.c"
+# 24 "Source/sample.c"
 // Optionally define POWER_PILL if you want to add them later
 
 
@@ -2390,6 +2469,7 @@ extern uint8_t ScaleFlag;
 
 
 
+int pillCount=0;
 int score = 0;
 int lives = 1;
 volatile int countdown = 60; // Global for timer use
@@ -2460,17 +2540,28 @@ void drawPill(int row, int col, int offsetX, int offsetY, uint16_t color, int pi
 void initMazeGrid(void);
 void drawMazeFromGrid(int offsetX, int offsetY);
 
+void replace_zero(char *str) {
+  int i;
+ for (i = 0; str[i] != '\0'; i++) {
+        if (str[i] == '0') {
+            str[i] = 'O'; // Replace '0' with 'O' (capital letter O)
+        }
+    }
+}
 // Draw Score, Time, Lives
 void drawUI(void) {
     char buffer[20];
 
-    sprintf(buffer, "SCORE: %04d", score);
+    sprintf(buffer, "SCORE: %d", score);
+  replace_zero(buffer);
     GUI_Text(10, 0, (uint8_t *)buffer, 0xFFFF, 0x0000);
 
-    sprintf(buffer, "TIME: %02d", countdown);
+    sprintf(buffer, "TIME: %2d", countdown);
+  replace_zero(buffer);
     GUI_Text(240 - 100, 0, (uint8_t *)buffer, 0xFFFF, 0x0000);
 
     sprintf(buffer, "LIVES: %d", lives);
+  replace_zero(buffer);
     GUI_Text(10, 320 - 15, (uint8_t *)buffer, 0xFFFF, 0x0000);
 }
 
@@ -2508,8 +2599,8 @@ void drawPill(int row, int col, int offsetX, int offsetY, uint16_t color, int pi
 }
 
 void initMazeGrid(void) {
+  srand(time(0));
     int r, c;
-    int pillCount = 0;
 
     for (r = 0; r < 29; r++) {
         for (c = 0; c < 28; c++) {
@@ -2536,8 +2627,8 @@ void initMazeGrid(void) {
   }
     char buffer[20];
 
-    sprintf(buffer, "PILLS: %02d", pillCount);
-    GUI_Text(20, 0, (uint8_t *)buffer, 0xFFFF, 0x0000);
+  // sprintf(buffer, "PILLS: %02d", pillCount);
+  // GUI_Text(20, 0, (uint8_t *)buffer, 0xFFFF, 0x0000);
 
     // Print out the pill count for debugging, giving error
     //printf("Total Pills: %d\n", pillCount);
@@ -2623,14 +2714,14 @@ _Bool movePacMan(void){
     int newCol = pacmanCol + pacmanDirCol;
 
   // Here we also check if we have won
-  if(pillsEaten >= totalPills){
+  if(pillsEaten >= pillCount){
     GUI_Text((240/2)-30, (320/2)-10, (uint8_t *)"Victory!", 0xFFE0, 0x0000);
 
     // Stop the game
     gamePaused=1;
     disable_RIT(); //
     disable_timer(0); // so countdown stops, etc.
-
+    __NVIC_DisableIRQ(EINT0_IRQn);
     return 0;
   }
     // here we check if its teleport location

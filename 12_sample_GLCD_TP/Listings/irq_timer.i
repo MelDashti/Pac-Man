@@ -2322,7 +2322,7 @@ void TIMER0_IRQHandler (void)
 
     }
 
-  // *** ADD THIS LINE! ***
+
     handleGhostTimer();
    // Random spawn of power pill logic
     // Only spawn if game not paused, and if we haven’t spawned all 6

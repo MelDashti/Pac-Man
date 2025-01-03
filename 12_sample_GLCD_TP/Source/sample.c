@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>   // For boolean data type
+#include <time.h> // for random power pill position we use this to generate random positions
 
 #ifdef SIMULATOR
 extern uint8_t ScaleFlag;
@@ -27,6 +28,7 @@ extern uint8_t ScaleFlag;
 #define CELL_WIDTH 8
 #define CELL_HEIGHT 10
 
+int pillCount=0;
 int score = 0;
 int lives = 1;
 volatile int countdown = 60; // Global for timer use
@@ -97,17 +99,28 @@ void drawPill(int row, int col, int offsetX, int offsetY, uint16_t color, int pi
 void initMazeGrid(void);
 void drawMazeFromGrid(int offsetX, int offsetY);
 
+void replace_zero(char *str) {
+  int i;  
+	for (i = 0; str[i] != '\0'; i++) {
+        if (str[i] == '0') {
+            str[i] = 'O'; // Replace '0' with 'O' (capital letter O)
+        }
+    }
+}
 // Draw Score, Time, Lives
 void drawUI(void) {
     char buffer[20];
 
-    sprintf(buffer, "SCORE: %04d", score);
+    sprintf(buffer, "SCORE: %4d", score);
+		replace_zero(buffer);
     GUI_Text(10, 0, (uint8_t *)buffer, White, Black);
 
-    sprintf(buffer, "TIME: %02d", countdown);
+    sprintf(buffer, "TIME: %2d", countdown);
+		replace_zero(buffer);
     GUI_Text(240 - 100, 0, (uint8_t *)buffer, White, Black);
 
     sprintf(buffer, "LIVES: %d", lives);
+		replace_zero(buffer);
     GUI_Text(10, 320 - 15, (uint8_t *)buffer, White, Black);
 }
 
@@ -145,8 +158,8 @@ void drawPill(int row, int col, int offsetX, int offsetY, uint16_t color, int pi
 }
 
 void initMazeGrid(void) {
+		srand(time(NULL));
     int r, c;
-    int pillCount = 0;
 
     for (r = 0; r < ROWS; r++) {
         for (c = 0; c < COLS; c++) {
@@ -173,8 +186,8 @@ void initMazeGrid(void) {
 		}
     char buffer[20];
 
-    sprintf(buffer, "PILLS: %02d", pillCount);
-    GUI_Text(20, 0, (uint8_t *)buffer, White, Black);
+  // sprintf(buffer, "PILLS: %02d", pillCount);
+  // GUI_Text(20, 0, (uint8_t *)buffer, White, Black);
 		
     // Print out the pill count for debugging, giving error
     //printf("Total Pills: %d\n", pillCount);
@@ -260,14 +273,14 @@ bool movePacMan(void){
     int newCol = pacmanCol + pacmanDirCol;
 			
 		// Here we also check if we have won
-		if(pillsEaten >= totalPills){
+		if(pillsEaten >= pillCount){
 				GUI_Text((240/2)-30, (320/2)-10, (uint8_t *)"Victory!", Yellow, Black);
 				
 				// Stop the game
 				gamePaused=true;
 				disable_RIT();      // 
 				disable_timer(0);   // so countdown stops, etc.
-
+				NVIC_DisableIRQ(EINT0_IRQn);
 				return false;
 		}
     // here we check if its teleport location

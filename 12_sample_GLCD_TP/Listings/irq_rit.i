@@ -1872,8 +1872,9 @@ void RIT_IRQHandler(void) {
                     disable_timer(0); // Pause the game timer
                 } else {
                     // Clear "PAUSE" text
-                    for (int y = (320 / 2) - 10; y < (320 / 2) - 10 + 16; y++) {
-                        for (int x = (240 / 2) - 23; x < (240 / 2) - 23 + 40; x++) {
+          int x, y;
+                    for (y = (320 / 2) - 10; y < (320 / 2) - 10 + 16; y++) {
+                        for (x = (240 / 2) - 23; x < (240 / 2) - 23 + 40; x++) {
                             LCD_SetPoint(x, y, 0x0000);
                         }
                     }
