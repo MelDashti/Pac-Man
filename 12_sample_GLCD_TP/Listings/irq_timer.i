@@ -1926,6 +1926,34 @@ extern volatile int countdown;
 extern void TIMER0_IRQHandler (void);
 extern void TIMER1_IRQHandler (void);
 # 13 "Source/timer/IRQ_timer.c" 2
+# 1 "./Source\\Ghost/ghost.h" 1
+
+
+
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
+# 5 "./Source\\Ghost/ghost.h" 2
+
+// ghost structure
+
+typedef struct {
+ int row;
+ int col;
+ _Bool isChasing;
+ _Bool isActive;
+ int respawnTimer;
+ int frightenedTimer;
+ int underlyingCell;
+
+}Ghost;
+
+extern Ghost blinky;
+
+// function declaration
+void initGhost(void);
+void updateGhost(void);
+void drawGhost(int offsetX, int offsetY);
+void ghostFrightenedMode(void);
+# 14 "Source/timer/IRQ_timer.c" 2
 # 1 "Source/timer\\../GLCD/GLCD.h" 1
 # 90 "Source/timer\\../GLCD/GLCD.h"
 void LCD_Initialization(void);
@@ -1935,7 +1963,7 @@ void LCD_SetPoint(uint16_t Xpos,uint16_t Ypos,uint16_t point);
 void LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
 void PutChar( uint16_t Xpos, uint16_t Ypos, uint8_t ASCI, uint16_t charColor, uint16_t bkColor );
 void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_t bkColor);
-# 14 "Source/timer/IRQ_timer.c" 2
+# 15 "Source/timer/IRQ_timer.c" 2
 # 1 "Source/timer\\../TouchPanel/TouchPanel.h" 1
 # 30 "Source/timer\\../TouchPanel/TouchPanel.h"
 typedef struct POINT
@@ -1969,7 +1997,7 @@ void DrawCross(uint16_t Xpos,uint16_t Ypos);
 void TP_DrawPoint(uint16_t Xpos,uint16_t Ypos);
 uint8_t setCalibrationMatrix( Coordinate * displayPtr,Coordinate * screenPtr,Matrix * matrixPtr);
 uint8_t getDisplayPoint(Coordinate * displayPtr,Coordinate * screenPtr,Matrix * matrixPtr );
-# 15 "Source/timer/IRQ_timer.c" 2
+# 16 "Source/timer/IRQ_timer.c" 2
 # 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 1 3
 # 68 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
     typedef __builtin_va_list __va_list;
@@ -2271,15 +2299,15 @@ extern __attribute__((__nothrow__)) int _fisatty(FILE * ) __attribute__((__nonnu
 
 extern __attribute__((__nothrow__)) void __use_no_semihosting_swi(void);
 extern __attribute__((__nothrow__)) void __use_no_semihosting(void);
-# 16 "Source/timer/IRQ_timer.c" 2
-# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
 # 17 "Source/timer/IRQ_timer.c" 2
+
 extern volatile int countdown;
 extern volatile powerPillsSpawned;
 extern volatile _Bool gamePaused;
 extern void drawUI(void);
 extern volatile gameOver;
-# 33 "Source/timer/IRQ_timer.c"
+extern handleGhostTimer();
+# 35 "Source/timer/IRQ_timer.c"
 uint16_t SinTable[45] =
 {
     410, 467, 523, 576, 627, 673, 714, 749, 778,
@@ -2322,8 +2350,10 @@ void TIMER0_IRQHandler (void)
 
     }
 
-
+  if(!blinky.isChasing){
     handleGhostTimer();
+  }
+
    // Random spawn of power pill logic
     // Only spawn if game not paused, and if we haven’t spawned all 6
     if (!gamePaused && powerPillsSpawned < 6) {
@@ -2335,7 +2365,7 @@ void TIMER0_IRQHandler (void)
     ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->IR = 1; // Clear interrupt flag
     return;
 }
-# 98 "Source/timer/IRQ_timer.c"
+# 102 "Source/timer/IRQ_timer.c"
 void TIMER1_IRQHandler(void) {
 
   static int ticks = 0;

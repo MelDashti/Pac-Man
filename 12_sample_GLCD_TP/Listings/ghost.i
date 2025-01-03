@@ -31,6 +31,7 @@ extern Ghost blinky;
 void initGhost(void);
 void updateGhost(void);
 void drawGhost(int offsetX, int offsetY);
+void ghostFrightenedMode(void);
 # 2 "Source/Ghost/ghost.c" 2
 # 1 "./Source\\GLCD/GLCD.h" 1
 # 26 "./Source\\GLCD/GLCD.h"
@@ -2023,9 +2024,7 @@ extern volatile _Bool gamePaused;
 extern int offsetX;
 extern int offsetY;
 
-
 Ghost blinky;
-
 
 
 // For BFS we store row/col in a queue
@@ -2099,6 +2098,12 @@ void initGhost(void)
     blinky.frightenedTimer = 0;
    blinky.underlyingCell = 0;
 }
+
+void ghostFrightenedMode(void){
+  blinky.isChasing = 0;
+  blinky.frightenedTimer = 10;
+}
+
 void updateGhost(void)
 {
     if (!blinky.isActive || gamePaused) {
@@ -2205,7 +2210,7 @@ void handleGhostTimer(void)
     if (blinky.frightenedTimer > 0) {
         blinky.frightenedTimer--;
         if (blinky.frightenedTimer <= 0) {
-            blinky.isChasing = 1;
+            blinky.isChasing = 1; // Reset to chase mode after frightened expires
         }
     }
 }

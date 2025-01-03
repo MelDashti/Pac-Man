@@ -1818,6 +1818,7 @@ extern Ghost blinky;
 void initGhost(void);
 void updateGhost(void);
 void drawGhost(int offsetX, int offsetY);
+void ghostFrightenedMode(void);
 # 4 "Source/RIT/IRQ_RIT.c" 2
 # 1 "Source/RIT\\../joystick/joystick.h" 1
 # 11 "Source/RIT\\../joystick/joystick.h"

@@ -1829,6 +1829,7 @@ extern Ghost blinky;
 void initGhost(void);
 void updateGhost(void);
 void drawGhost(int offsetX, int offsetY);
+void ghostFrightenedMode(void);
 # 5 "Source/sample.c" 2
 # 1 "Source\\RIT/RIT.h" 1
 # 14 "Source\\RIT/RIT.h"
@@ -2469,6 +2470,7 @@ extern uint8_t ScaleFlag;
 
 
 
+
 int pillCount=0;
 int score = 0;
 int lives = 1;
@@ -2484,9 +2486,6 @@ int pillsEaten = 0;
 
 int offsetX;
 int offsetY;
-
-extern void initGhost(void);
-extern void drawGhost(int offsetX, int offsetY);
 
 volatile int mazeGrid[29][28];
 
@@ -2552,7 +2551,7 @@ void replace_zero(char *str) {
 void drawUI(void) {
     char buffer[20];
 
-    sprintf(buffer, "SCORE: %d", score);
+    sprintf(buffer, "SCORE: %4d", score);
   replace_zero(buffer);
     GUI_Text(10, 0, (uint8_t *)buffer, 0xFFFF, 0x0000);
 
@@ -2738,8 +2737,7 @@ _Bool movePacMan(void){
             score += 50;
       pillsEaten++;
             mazeGrid[pacmanRow][pacmanCol] = 0;
-      blinky.isChasing = 0;
-      blinky.frightenedTimer = 10;
+      ghostFrightenedMode();
         }
         drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
         drawUI();
@@ -2756,6 +2754,7 @@ _Bool movePacMan(void){
         } else if(mazeGrid[pacmanRow][pacmanCol] == 3) {
             score += 50;
             mazeGrid[pacmanRow][pacmanCol] = 0;
+      ghostFrightenedMode();
         }
         drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
         drawUI();
@@ -2777,6 +2776,7 @@ _Bool movePacMan(void){
         update_timer1_frequency(523);
         pillsEaten++;
                 mazeGrid[newRow][newCol] = 0;
+        ghostFrightenedMode();
             }
 
       // check for extra lives

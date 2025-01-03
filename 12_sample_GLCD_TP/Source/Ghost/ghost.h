@@ -22,5 +22,6 @@ extern Ghost blinky;
 void initGhost(void);
 void updateGhost(void);
 void drawGhost(int offsetX, int offsetY);
+void ghostFrightenedMode(void);
 
 #endif

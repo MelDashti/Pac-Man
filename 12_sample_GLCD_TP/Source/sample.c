@@ -28,6 +28,7 @@ extern uint8_t ScaleFlag;
 #define CELL_WIDTH 8
 #define CELL_HEIGHT 10
 
+
 int pillCount=0;
 int score = 0;
 int lives = 1;
@@ -43,9 +44,6 @@ int pillsEaten = 0;
 
 int offsetX; 
 int offsetY;
-
-extern void initGhost(void);
-extern void drawGhost(int offsetX, int offsetY);
 
 volatile int mazeGrid[ROWS][COLS];
 
@@ -297,8 +295,7 @@ bool movePacMan(void){
             score += 50;
 						pillsEaten++;
             mazeGrid[pacmanRow][pacmanCol] = EMPTY;
-						blinky.isChasing = false;
-						blinky.frightenedTimer = 10;
+						ghostFrightenedMode();
         }
         drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
         drawUI();
@@ -315,6 +312,7 @@ bool movePacMan(void){
         } else if(mazeGrid[pacmanRow][pacmanCol] == POWER_PILL) {
             score += 50;
             mazeGrid[pacmanRow][pacmanCol] = EMPTY;
+						ghostFrightenedMode();
         }
         drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
         drawUI();
@@ -336,6 +334,7 @@ bool movePacMan(void){
 								update_timer1_frequency(523);
 								pillsEaten++;
                 mazeGrid[newRow][newCol] = EMPTY;
+								ghostFrightenedMode();
             }
 						
 						// check for extra lives

@@ -20,9 +20,7 @@ extern volatile bool gamePaused;
 extern int offsetX;
 extern int offsetY;
 
-
 Ghost blinky;
-
 
 
 // For BFS we store row/col in a queue
@@ -96,6 +94,12 @@ void initGhost(void)
     blinky.frightenedTimer = 0;
 	  blinky.underlyingCell = EMPTY; 
 }
+
+void ghostFrightenedMode(void){
+		blinky.isChasing = false;
+		blinky.frightenedTimer = 10;
+}
+
 void updateGhost(void) 
 {
     if (!blinky.isActive || gamePaused) {
@@ -202,7 +206,7 @@ void handleGhostTimer(void)
     if (blinky.frightenedTimer > 0) {
         blinky.frightenedTimer--;
         if (blinky.frightenedTimer <= 0) {
-            blinky.isChasing = true;
+            blinky.isChasing = true;  // Reset to chase mode after frightened expires
         }
     }
 }

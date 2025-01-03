@@ -10,6 +10,7 @@
 #include <string.h>
 #include "LPC17xx.h"
 #include "timer.h"
+#include "Ghost/ghost.h"
 #include "../GLCD/GLCD.h" 
 #include "../TouchPanel/TouchPanel.h"
 #include <stdio.h> /*for sprintf*/
@@ -19,6 +20,7 @@ extern volatile powerPillsSpawned;
 extern volatile bool gamePaused;
 extern void drawUI(void);
 extern volatile gameOver;
+extern handleGhostTimer();
 
 /******************************************************************************
 ** Function name:		Timer0_IRQHandler
@@ -72,8 +74,10 @@ void TIMER0_IRQHandler (void)
 			
     }
 		
-		
-    handleGhostTimer();
+		if(!blinky.isChasing){
+				handleGhostTimer();
+		}
+			
 		 // Random spawn of power pill logic 
     // Only spawn if game not paused, and if we haven’t spawned all 6
     if (!gamePaused && powerPillsSpawned < 6) {
