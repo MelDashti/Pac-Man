@@ -248,20 +248,36 @@ void drawMazeFromGrid(int offsetX, int offsetY) {
 void drawPacMan(int row, int col, int offsetX, int offsetY) {
     int startX = offsetX + col * CELL_WIDTH;
     int startY = offsetY + row * CELL_HEIGHT;
-    int radius = 3; // small radius
-		int dy, dx;
+    int centerX = startX + (CELL_WIDTH / 2);
+    int centerY = startY + (CELL_HEIGHT / 2);
+    const int radius = 3; // Slightly larger
+    int dx, dy;
+
+    // Animation variables
+    static int frame = 0;
+    frame = (frame + 1) % 20; // Cycle through 20 frames
+    float mouthAngle = (frame < 10) ? (frame * 3.6f) : ((20 - frame) * 3.6f); // Opens and closes
+
+    // Draw Pac-Man body
     for (dy = -radius; dy <= radius; dy++) {
         for (dx = -radius; dx <= radius; dx++) {
-            if (dx*dx + dy*dy <= radius*radius) {
-                int drawX = startX + (CELL_WIDTH/2) + dx;
-                int drawY = startY + (CELL_HEIGHT/2) + dy;
-                if (drawX >= 0 && drawX < 240 && drawY >= 0 && drawY < 320) {
-                    LCD_SetPoint(drawX, drawY, Yellow);
+            if (dx * dx + dy * dy <= radius * radius) {
+                // Calculate angle for the current point
+                float angle = atan2f(dy, dx) * 180.0f / 3.14159f;
+
+                // Skip drawing in the mouth area
+                if (!(angle > -mouthAngle && angle < mouthAngle)) {
+                    int drawX = centerX + dx;
+                    int drawY = centerY + dy;
+                    if (drawX >= 0 && drawX < 240 && drawY >= 0 && drawY < 320) {
+                        LCD_SetPoint(drawX, drawY, Yellow);
+                    }
                 }
             }
         }
     }
 }
+
 
 
 

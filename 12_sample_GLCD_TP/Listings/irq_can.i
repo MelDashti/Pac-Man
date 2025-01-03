@@ -1,11 +1,11 @@
-# 1 "Source/timer/lib_timer.c"
+# 1 "Source/CAN/IRQ_CAN.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 393 "<built-in>" 3
 # 1 "<command line>" 1
 # 1 "<built-in>" 2
-# 1 "Source/timer/lib_timer.c" 2
-# 10 "Source/timer/lib_timer.c"
+# 1 "Source/CAN/IRQ_CAN.c" 2
+# 16 "Source/CAN/IRQ_CAN.c"
 # 1 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 1
 # 41 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 typedef enum IRQn
@@ -1782,199 +1782,150 @@ typedef struct
        uint32_t RESERVED8;
   volatile uint32_t Module_ID;
 } LPC_EMAC_TypeDef;
-# 11 "Source/timer/lib_timer.c" 2
-# 1 "Source/timer\\timer.h" 1
-# 13 "Source/timer\\timer.h"
-# 1 "Source/timer\\../music/music.h" 1
-
-
-
-
-//Default: 1.65
-
-
-
-
-
-
-
-typedef char BOOL;
-
-
-
-typedef enum note_durations
+# 17 "Source/CAN/IRQ_CAN.c" 2
+# 1 "Source/CAN\\CAN.h" 1
+# 19 "Source/CAN\\CAN.h"
+# 1 "Source/CAN\\../TouchPanel/TouchPanel.h" 1
+# 30 "Source/CAN\\../TouchPanel/TouchPanel.h"
+typedef struct POINT
 {
- time_semibiscroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 64.0f + 0.5), // 1/128
- time_biscroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 32.0f + 0.5), // 1/64
- time_semicroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 16.0f + 0.5), // 1/32
- time_croma = (unsigned int)(0x17D7840 * 1 * 1.6 / 8.0f + 0.5), // 1/16
- time_semiminima = (unsigned int)(0x17D7840 * 1 * 1.6 / 4.0f + 0.5), // 1/4
- time_minima = (unsigned int)(0x17D7840 * 1 * 1.6 / 2.0f + 0.5), // 1/2
- time_semibreve = (unsigned int)(0x17D7840 * 1 * 1.6 + 0.5), // 1
-} NOTE_DURATION;
+   uint16_t x;
+   uint16_t y;
+}Coordinate;
 
-typedef enum frequencies
+
+typedef struct Matrix
 {
- a2b = 5351, // 103Hz k=5351 a2b
- b2 = 4500, // 123Hz k=4500 b2
- c3b = 4370, // 127Hz k)4370 c3b
- c3 = 4240, // 131Hz k=4240 c3
- d3 = 3779, // 147Hz k=3779 d3
- e3 = 3367, // 165Hz k=3367 e3
- f3 = 3175, // 175Hz k=3175 f3
- g3 = 2834, // 196Hz k=2834 g3
- a3b = 2670, // 208Hz k=2670 a4b
- a3 = 2525, // 220Hz k=2525 a3
- b3 = 2249, // 247Hz k=2249 b3
- c4 = 2120, // 262Hz k=2120 c4
- d4 = 1890, // 294Hz k=1890 d4
- e4 = 1684, // 330Hz k=1684 e4
- f4 = 1592, // 349Hz k=1592 f4
- g4 = 1417, // 392Hz k=1417 g4
- a4 = 1263, // 440Hz k=1263 a4
- b4 = 1125, // 494Hz k=1125 b4
- c5 = 1062, // 523Hz k=1062 c5
- pause = 0 // DO NOT SOUND
-} FREQUENCY;
+long double An,
+            Bn,
+            Cn,
+            Dn,
+            En,
+            Fn,
+            Divider ;
+} Matrix ;
 
 
-typedef struct
-{
- FREQUENCY freq;
- NOTE_DURATION duration;
-} NOTE;
-
-void playNote(NOTE note);
-BOOL isNotePlaying(void);
-# 14 "Source/timer\\timer.h" 2
+extern Coordinate ScreenSample[3];
+extern Coordinate DisplaySample[3];
+extern Matrix matrix ;
+extern Coordinate display ;
+# 76 "Source/CAN\\../TouchPanel/TouchPanel.h"
+void TP_Init(void);
+Coordinate *Read_Ads7846(void);
+void TouchPanel_Calibrate(void);
+void DrawCross(uint16_t Xpos,uint16_t Ypos);
+void TP_DrawPoint(uint16_t Xpos,uint16_t Ypos);
+uint8_t setCalibrationMatrix( Coordinate * displayPtr,Coordinate * screenPtr,Matrix * matrixPtr);
+uint8_t getDisplayPoint(Coordinate * displayPtr,Coordinate * screenPtr,Matrix * matrixPtr );
+void TP_DrawPoint_Magnifier(Coordinate * displayPtr);
+# 20 "Source/CAN\\CAN.h" 2
 
 
 
-extern unsigned int init_timer( char timer_num, unsigned int timerInterval );
-extern void enable_timer( char timer_num );
-extern void disable_timer( char timer_num );
-extern void reset_timer( char timer_num );
 
 
-extern void TIMER0_IRQHandler (void);
-extern void TIMER1_IRQHandler (void);
-# 12 "Source/timer/lib_timer.c" 2
-# 24 "Source/timer/lib_timer.c"
-void enable_timer( char timer_num )
-{
-  if ( timer_num == 0 )
-  {
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR = 1;
+
+extern uint32_t result;
+extern uint8_t icr;
+
+typedef struct {
+  unsigned int id;
+  unsigned char data[8];
+  unsigned char len;
+  unsigned char format;
+  unsigned char type;
+} CAN_msg;
+
+
+void CAN_setup (uint32_t ctrl);
+void CAN_start (uint32_t ctrl);
+void CAN_waitReady (uint32_t ctrl);
+void CAN_wrMsg (uint32_t ctrl, CAN_msg *msg);
+void CAN_rdMsg (uint32_t ctrl, CAN_msg *msg);
+void CAN_wrFilter (uint32_t ctrl, uint32_t id, uint8_t filter_type);
+void CAN_Init (void);
+
+extern CAN_msg CAN_TxMsg;
+extern CAN_msg CAN_RxMsg;
+# 18 "Source/CAN/IRQ_CAN.c" 2
+# 1 "Source/CAN\\../GLCD/GLCD.h" 1
+# 90 "Source/CAN\\../GLCD/GLCD.h"
+void LCD_Initialization(void);
+void LCD_Clear(uint16_t Color);
+uint16_t LCD_GetPoint(uint16_t Xpos,uint16_t Ypos);
+void LCD_SetPoint(uint16_t Xpos,uint16_t Ypos,uint16_t point);
+void LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
+void PutChar( uint16_t Xpos, uint16_t Ypos, uint8_t ASCI, uint16_t charColor, uint16_t bkColor );
+void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_t bkColor);
+# 19 "Source/CAN/IRQ_CAN.c" 2
+
+extern uint8_t icr ; //icr and result must be global in order to work with both real and simulated landtiger.
+extern uint32_t result;
+extern CAN_msg CAN_TxMsg;
+extern CAN_msg CAN_RxMsg;
+
+static int puntiRicevuti1 = 0;
+static int puntiInviati1 = 0;
+
+static int puntiRicevuti2 = 0;
+static int puntiInviati2 = 0;
+
+uint16_t val_RxCoordX = 0;
+uint16_t val_RxCoordY = 0;
+
+
+
+
+void CAN_IRQHandler (void) {
+
+
+ icr = 0;
+  icr = (((LPC_CAN_TypeDef *) ((0x40000000UL) + 0x44000) )->ICR | icr) & 0xFF;
+
+  if (icr & (1 << 0)) {
+  CAN_rdMsg (1, &CAN_RxMsg);
+    ((LPC_CAN_TypeDef *) ((0x40000000UL) + 0x44000) )->CMR = (1 << 2);
+
+  val_RxCoordX = (CAN_RxMsg.data[0] << 8) ;
+  val_RxCoordX = val_RxCoordX | CAN_RxMsg.data[1];
+
+  val_RxCoordY = (CAN_RxMsg.data[2] << 8);
+  val_RxCoordY = val_RxCoordY | CAN_RxMsg.data[3];
+
+  display.x = val_RxCoordX;
+  display.y = val_RxCoordY-140;
+  TP_DrawPoint_Magnifier(&display);
+
+  puntiRicevuti1++;
   }
-  else
-  {
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR = 1;
-  }
-  return;
-}
-# 46 "Source/timer/lib_timer.c"
-void disable_timer( char timer_num )
-{
-  if ( timer_num == 0 )
-  {
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR = 0;
-  }
-  else
-  {
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR = 0;
-  }
-  return;
-}
-# 68 "Source/timer/lib_timer.c"
-void reset_timer( char timer_num )
-{
-  uint32_t regVal;
+ if (icr & (1 << 1)) {
+  // do nothing in this example
+  puntiInviati1++;
+ }
 
-  if ( timer_num == 0 )
-  {
- regVal = ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR;
- regVal |= 0x02;
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR = regVal;
-  }
-  else
-  {
- regVal = ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR;
- regVal |= 0x02;
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR = regVal;
-  }
-  return;
-}
 
-unsigned int init_timer ( char timer_num, unsigned int TimerInterval )
-{
-  if ( timer_num == 0 )
-  {
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->MR0 = TimerInterval;
+ icr = 0;
+ icr = (((LPC_CAN_TypeDef *) ((0x40000000UL) + 0x48000) )->ICR | icr) & 0xFF;
 
-// <<< Use Configuration Wizard in Context Menu >>>
-// <h> timer0 MCR
-// <e.0> MR0I
-// <i> 1 Interrupt on MR0: an interrupt is generated when MR0 matches the value in the TC. 0
-// <i> 0 This interrupt is disabled
-// </e>
-// <e.1> MR0R
-// <i> 1 Reset on MR0: the TC will be reset if MR0 matches it.
-// <i> 0 Feature disabled.
-// </e>
-// <e.2> MR0S
-// <i> 1 Stop on MR0: the TC and PC will be stopped and TCR[0] will be set to 0 if MR0 matches the TC
-// <i> 0 Feature disabled.
-// </e>
-// <e.3> MR1I
-// <i> 1 Interrupt on MR1: an interrupt is generated when MR0 matches the value in the TC. 0
-// <i> 0 This interrupt is disabled
-// </e>
-// <e.4> MR1R
-// <i> 1 Reset on MR1: the TC will be reset if MR0 matches it.
-// <i> 0 Feature disabled.
-// </e>
-// <e.5> MR1S
-// <i> 1 Stop on MR1: the TC and PC will be stopped and TCR[1] will be set to 0 if MR1 matches the TC
-// <i> 0 Feature disabled.
-// </e>
-// <e.6> MR2I
-// <i> 1 Interrupt on MR2: an interrupt is generated when MR2 matches the value in the TC.
-// <i> 0 This interrupt is disabled
-// </e>
-// <e.7> MR2R
-// <i> 1 Reset on MR2: the TC will be reset if MR2 matches it.
-// <i> 0 Feature disabled.
-// </e>
-// <e.8> MR2S
-// <i> 1 Stop on MR2: the TC and PC will be stopped and TCR[2] will be set to 0 if MR2 matches the TC
-// <i> 0 Feature disabled.
-// </e>
-// <e.9> MR3I
-// <i> 1 Interrupt on MR3: an interrupt is generated when MR3 matches the value in the TC.
-// <i> 0 This interrupt is disabled
-// </e>
-// <e.10> MR3R
-// <i> 1 Reset on MR3: the TC will be reset if MR3 matches it.
-// <i> 0 Feature disabled.
-// </e>
-// <e.11> MR3S
-// <i> 1 Stop on MR3: the TC and PC will be stopped and TCR[3] will be set to 0 if MR3 matches the TC
-// <i> 0 Feature disabled.
-// </e>
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->MCR = 3;
-// </h>
-// <<< end of configuration section >>>
+ if (icr & (1 << 0)) {
+  CAN_rdMsg (2, &CAN_RxMsg);
+    ((LPC_CAN_TypeDef *) ((0x40000000UL) + 0x48000) )->CMR = (1 << 2);
 
- __NVIC_EnableIRQ(TIMER0_IRQn);
- return (1);
-  }
-  else if ( timer_num == 1 )
-  {
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->MR0 = TimerInterval;
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->MCR = 7;
+  val_RxCoordX = (CAN_RxMsg.data[0] << 8) ;
+  val_RxCoordX = val_RxCoordX | CAN_RxMsg.data[1];
 
- __NVIC_EnableIRQ(TIMER1_IRQn);
- return (1);
-  }
-  return (0);
+  val_RxCoordY = (CAN_RxMsg.data[2] << 8);
+  val_RxCoordY = val_RxCoordY | CAN_RxMsg.data[3];
+
+  display.x = val_RxCoordX;
+  display.y = val_RxCoordY+140;
+  TP_DrawPoint_Magnifier(&display);
+
+  puntiRicevuti2++;
+ }
+ if (icr & (1 << 1)) {
+  // do nothing in this example
+  puntiInviati2++;
+ }
 }

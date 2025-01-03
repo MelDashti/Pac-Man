@@ -1,11 +1,75 @@
-# 1 "Source/timer/lib_timer.c"
+# 1 "Source/music/music.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 393 "<built-in>" 3
 # 1 "<command line>" 1
 # 1 "<built-in>" 2
-# 1 "Source/timer/lib_timer.c" 2
-# 10 "Source/timer/lib_timer.c"
+# 1 "Source/music/music.c" 2
+# 1 "Source/music\\music.h" 1
+
+
+
+
+//Default: 1.65
+
+
+
+
+
+
+
+typedef char BOOL;
+
+
+
+typedef enum note_durations
+{
+ time_semibiscroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 64.0f + 0.5), // 1/128
+ time_biscroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 32.0f + 0.5), // 1/64
+ time_semicroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 16.0f + 0.5), // 1/32
+ time_croma = (unsigned int)(0x17D7840 * 1 * 1.6 / 8.0f + 0.5), // 1/16
+ time_semiminima = (unsigned int)(0x17D7840 * 1 * 1.6 / 4.0f + 0.5), // 1/4
+ time_minima = (unsigned int)(0x17D7840 * 1 * 1.6 / 2.0f + 0.5), // 1/2
+ time_semibreve = (unsigned int)(0x17D7840 * 1 * 1.6 + 0.5), // 1
+} NOTE_DURATION;
+
+typedef enum frequencies
+{
+ a2b = 5351, // 103Hz k=5351 a2b
+ b2 = 4500, // 123Hz k=4500 b2
+ c3b = 4370, // 127Hz k)4370 c3b
+ c3 = 4240, // 131Hz k=4240 c3
+ d3 = 3779, // 147Hz k=3779 d3
+ e3 = 3367, // 165Hz k=3367 e3
+ f3 = 3175, // 175Hz k=3175 f3
+ g3 = 2834, // 196Hz k=2834 g3
+ a3b = 2670, // 208Hz k=2670 a4b
+ a3 = 2525, // 220Hz k=2525 a3
+ b3 = 2249, // 247Hz k=2249 b3
+ c4 = 2120, // 262Hz k=2120 c4
+ d4 = 1890, // 294Hz k=1890 d4
+ e4 = 1684, // 330Hz k=1684 e4
+ f4 = 1592, // 349Hz k=1592 f4
+ g4 = 1417, // 392Hz k=1417 g4
+ a4 = 1263, // 440Hz k=1263 a4
+ b4 = 1125, // 494Hz k=1125 b4
+ c5 = 1062, // 523Hz k=1062 c5
+ pause = 0 // DO NOT SOUND
+} FREQUENCY;
+
+
+typedef struct
+{
+ FREQUENCY freq;
+ NOTE_DURATION duration;
+} NOTE;
+
+void playNote(NOTE note);
+BOOL isNotePlaying(void);
+# 2 "Source/music/music.c" 2
+
+# 1 "Source/music\\../timer/timer.h" 1
+# 14 "Source/music\\../timer/timer.h"
 # 1 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 1
 # 41 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 typedef enum IRQn
@@ -1782,72 +1846,7 @@ typedef struct
        uint32_t RESERVED8;
   volatile uint32_t Module_ID;
 } LPC_EMAC_TypeDef;
-# 11 "Source/timer/lib_timer.c" 2
-# 1 "Source/timer\\timer.h" 1
-# 13 "Source/timer\\timer.h"
-# 1 "Source/timer\\../music/music.h" 1
-
-
-
-
-//Default: 1.65
-
-
-
-
-
-
-
-typedef char BOOL;
-
-
-
-typedef enum note_durations
-{
- time_semibiscroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 64.0f + 0.5), // 1/128
- time_biscroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 32.0f + 0.5), // 1/64
- time_semicroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 16.0f + 0.5), // 1/32
- time_croma = (unsigned int)(0x17D7840 * 1 * 1.6 / 8.0f + 0.5), // 1/16
- time_semiminima = (unsigned int)(0x17D7840 * 1 * 1.6 / 4.0f + 0.5), // 1/4
- time_minima = (unsigned int)(0x17D7840 * 1 * 1.6 / 2.0f + 0.5), // 1/2
- time_semibreve = (unsigned int)(0x17D7840 * 1 * 1.6 + 0.5), // 1
-} NOTE_DURATION;
-
-typedef enum frequencies
-{
- a2b = 5351, // 103Hz k=5351 a2b
- b2 = 4500, // 123Hz k=4500 b2
- c3b = 4370, // 127Hz k)4370 c3b
- c3 = 4240, // 131Hz k=4240 c3
- d3 = 3779, // 147Hz k=3779 d3
- e3 = 3367, // 165Hz k=3367 e3
- f3 = 3175, // 175Hz k=3175 f3
- g3 = 2834, // 196Hz k=2834 g3
- a3b = 2670, // 208Hz k=2670 a4b
- a3 = 2525, // 220Hz k=2525 a3
- b3 = 2249, // 247Hz k=2249 b3
- c4 = 2120, // 262Hz k=2120 c4
- d4 = 1890, // 294Hz k=1890 d4
- e4 = 1684, // 330Hz k=1684 e4
- f4 = 1592, // 349Hz k=1592 f4
- g4 = 1417, // 392Hz k=1417 g4
- a4 = 1263, // 440Hz k=1263 a4
- b4 = 1125, // 494Hz k=1125 b4
- c5 = 1062, // 523Hz k=1062 c5
- pause = 0 // DO NOT SOUND
-} FREQUENCY;
-
-
-typedef struct
-{
- FREQUENCY freq;
- NOTE_DURATION duration;
-} NOTE;
-
-void playNote(NOTE note);
-BOOL isNotePlaying(void);
-# 14 "Source/timer\\timer.h" 2
-
+# 15 "Source/music\\../timer/timer.h" 2
 
 
 extern unsigned int init_timer( char timer_num, unsigned int timerInterval );
@@ -1858,123 +1857,22 @@ extern void reset_timer( char timer_num );
 
 extern void TIMER0_IRQHandler (void);
 extern void TIMER1_IRQHandler (void);
-# 12 "Source/timer/lib_timer.c" 2
-# 24 "Source/timer/lib_timer.c"
-void enable_timer( char timer_num )
-{
-  if ( timer_num == 0 )
-  {
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR = 1;
-  }
-  else
-  {
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR = 1;
-  }
-  return;
-}
-# 46 "Source/timer/lib_timer.c"
-void disable_timer( char timer_num )
-{
-  if ( timer_num == 0 )
-  {
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR = 0;
-  }
-  else
-  {
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR = 0;
-  }
-  return;
-}
-# 68 "Source/timer/lib_timer.c"
-void reset_timer( char timer_num )
-{
-  uint32_t regVal;
+# 4 "Source/music/music.c" 2
 
-  if ( timer_num == 0 )
-  {
- regVal = ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR;
- regVal |= 0x02;
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR = regVal;
-  }
-  else
-  {
- regVal = ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR;
- regVal |= 0x02;
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR = regVal;
-  }
-  return;
+void playNote(NOTE note)
+{
+ if(note.freq != pause)
+ {
+  reset_timer(0);
+  init_timer(0, note.freq);
+  enable_timer(0);
+ }
+ reset_timer(1);
+ init_timer(1, note.duration);
+ enable_timer(1);
 }
 
-unsigned int init_timer ( char timer_num, unsigned int TimerInterval )
+BOOL isNotePlaying(void)
 {
-  if ( timer_num == 0 )
-  {
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->MR0 = TimerInterval;
-
-// <<< Use Configuration Wizard in Context Menu >>>
-// <h> timer0 MCR
-// <e.0> MR0I
-// <i> 1 Interrupt on MR0: an interrupt is generated when MR0 matches the value in the TC. 0
-// <i> 0 This interrupt is disabled
-// </e>
-// <e.1> MR0R
-// <i> 1 Reset on MR0: the TC will be reset if MR0 matches it.
-// <i> 0 Feature disabled.
-// </e>
-// <e.2> MR0S
-// <i> 1 Stop on MR0: the TC and PC will be stopped and TCR[0] will be set to 0 if MR0 matches the TC
-// <i> 0 Feature disabled.
-// </e>
-// <e.3> MR1I
-// <i> 1 Interrupt on MR1: an interrupt is generated when MR0 matches the value in the TC. 0
-// <i> 0 This interrupt is disabled
-// </e>
-// <e.4> MR1R
-// <i> 1 Reset on MR1: the TC will be reset if MR0 matches it.
-// <i> 0 Feature disabled.
-// </e>
-// <e.5> MR1S
-// <i> 1 Stop on MR1: the TC and PC will be stopped and TCR[1] will be set to 0 if MR1 matches the TC
-// <i> 0 Feature disabled.
-// </e>
-// <e.6> MR2I
-// <i> 1 Interrupt on MR2: an interrupt is generated when MR2 matches the value in the TC.
-// <i> 0 This interrupt is disabled
-// </e>
-// <e.7> MR2R
-// <i> 1 Reset on MR2: the TC will be reset if MR2 matches it.
-// <i> 0 Feature disabled.
-// </e>
-// <e.8> MR2S
-// <i> 1 Stop on MR2: the TC and PC will be stopped and TCR[2] will be set to 0 if MR2 matches the TC
-// <i> 0 Feature disabled.
-// </e>
-// <e.9> MR3I
-// <i> 1 Interrupt on MR3: an interrupt is generated when MR3 matches the value in the TC.
-// <i> 0 This interrupt is disabled
-// </e>
-// <e.10> MR3R
-// <i> 1 Reset on MR3: the TC will be reset if MR3 matches it.
-// <i> 0 Feature disabled.
-// </e>
-// <e.11> MR3S
-// <i> 1 Stop on MR3: the TC and PC will be stopped and TCR[3] will be set to 0 if MR3 matches the TC
-// <i> 0 Feature disabled.
-// </e>
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->MCR = 3;
-// </h>
-// <<< end of configuration section >>>
-
- __NVIC_EnableIRQ(TIMER0_IRQn);
- return (1);
-  }
-  else if ( timer_num == 1 )
-  {
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->MR0 = TimerInterval;
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->MCR = 7;
-
- __NVIC_EnableIRQ(TIMER1_IRQn);
- return (1);
-  }
-  return (0);
+ return ((((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR != 0) || (((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR != 0));
 }

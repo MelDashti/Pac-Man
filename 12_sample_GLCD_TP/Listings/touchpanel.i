@@ -1827,6 +1827,7 @@ void DrawCross(uint16_t Xpos,uint16_t Ypos);
 void TP_DrawPoint(uint16_t Xpos,uint16_t Ypos);
 uint8_t setCalibrationMatrix( Coordinate * displayPtr,Coordinate * screenPtr,Matrix * matrixPtr);
 uint8_t getDisplayPoint(Coordinate * displayPtr,Coordinate * screenPtr,Matrix * matrixPtr );
+void TP_DrawPoint_Magnifier(Coordinate * displayPtr);
 # 26 "Source/TouchPanel/TouchPanel.c" 2
 
 
@@ -1952,6 +1953,16 @@ int Read_Y(void)
   return i;
 }
 # 231 "Source/TouchPanel/TouchPanel.c"
+void TP_DrawPoint_Magnifier(Coordinate * display)
+{
+  int mosse[6][2]={{1,1},{-1,-1},{1,0},{-1,0},{0,1},{0,-1}};
+ int i=0;
+ TP_DrawPoint(display->x,display->y);
+ for(i=0;i<6;i++)
+   TP_DrawPoint(display->x+mosse[i][0],display->y+mosse[i][1]);
+
+}
+# 249 "Source/TouchPanel/TouchPanel.c"
 void TP_GetAdXY(int *x,int *y)
 {
   int adx,ady;
@@ -1961,12 +1972,12 @@ void TP_GetAdXY(int *x,int *y)
   *x=adx;
   *y=ady;
 }
-# 250 "Source/TouchPanel/TouchPanel.c"
+# 268 "Source/TouchPanel/TouchPanel.c"
 void TP_DrawPoint(uint16_t Xpos,uint16_t Ypos)
 {
   LCD_SetPoint(Xpos,Ypos,0xFFFF);
 }
-# 264 "Source/TouchPanel/TouchPanel.c"
+# 282 "Source/TouchPanel/TouchPanel.c"
 void DrawCross(uint16_t Xpos,uint16_t Ypos)
 {
   LCD_DrawLine(Xpos-15,Ypos,Xpos-2,Ypos,0xffff);
@@ -1986,7 +1997,7 @@ void DrawCross(uint16_t Xpos,uint16_t Ypos)
   LCD_DrawLine(Xpos+7,Ypos-15,Xpos+15,Ypos-15,(uint16_t)( (( 184 >> 3 ) << 11 ) | (( 158 >> 2 ) << 5 ) | ( 131 >> 3 )));
   LCD_DrawLine(Xpos+15,Ypos-15,Xpos+15,Ypos-7,(uint16_t)( (( 184 >> 3 ) << 11 ) | (( 158 >> 2 ) << 5 ) | ( 131 >> 3 )));
 }
-# 293 "Source/TouchPanel/TouchPanel.c"
+# 311 "Source/TouchPanel/TouchPanel.c"
 void DeleteCross(uint16_t Xpos,uint16_t Ypos)
 {
   LCD_DrawLine(Xpos-15,Ypos,Xpos-2,Ypos,0x0000);
@@ -2006,7 +2017,7 @@ void DeleteCross(uint16_t Xpos,uint16_t Ypos)
   LCD_DrawLine(Xpos+7,Ypos-15,Xpos+15,Ypos-15,(uint16_t)( (( 0 >> 3 ) << 11 ) | (( 0 >> 2 ) << 5 ) | ( 0 >> 3 )));
   LCD_DrawLine(Xpos+15,Ypos-15,Xpos+15,Ypos-7,(uint16_t)( (( 0 >> 3 ) << 11 ) | (( 0 >> 2 ) << 5 ) | ( 0 >> 3 )));
 }
-# 321 "Source/TouchPanel/TouchPanel.c"
+# 339 "Source/TouchPanel/TouchPanel.c"
 Coordinate *Read_Ads7846(void)
 {
   static Coordinate screen;
@@ -2072,7 +2083,7 @@ Coordinate *Read_Ads7846(void)
  }
   return 0;
 }
-# 395 "Source/TouchPanel/TouchPanel.c"
+# 413 "Source/TouchPanel/TouchPanel.c"
 uint8_t setCalibrationMatrix( Coordinate * displayPtr,
                           Coordinate * screenPtr,
                           Matrix * matrixPtr)
@@ -2105,7 +2116,7 @@ uint8_t setCalibrationMatrix( Coordinate * displayPtr,
   }
   return( retTHRESHOLD ) ;
 }
-# 436 "Source/TouchPanel/TouchPanel.c"
+# 454 "Source/TouchPanel/TouchPanel.c"
 uint8_t getDisplayPoint(Coordinate * displayPtr,
                      Coordinate * screenPtr,
                      Matrix * matrixPtr )
@@ -2136,7 +2147,7 @@ uint8_t getDisplayPoint(Coordinate * displayPtr,
  }
   return(retTHRESHOLD);
 }
-# 477 "Source/TouchPanel/TouchPanel.c"
+# 495 "Source/TouchPanel/TouchPanel.c"
 void TouchPanel_Calibrate(void)
 {
   uint8_t i;

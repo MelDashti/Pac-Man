@@ -19,7 +19,8 @@ extern int lives;
 extern volatile bool gamePaused;
 extern int offsetX;
 extern int offsetY;
-
+#define CELL_WIDTH 8
+#define CELL_HEIGHT 10
 Ghost blinky;
 
 
@@ -168,29 +169,70 @@ void updateGhost(void)
     }
 }
 
-
-void drawGhost(int offsetX, int offsetY) 
-{
+void drawGhost(int offsetX, int offsetY) {
     if (!blinky.isActive) return;
-
-    int radius = 3;
-    uint16_t color = blinky.isChasing ? Red : Blue;
     
-    int startX = offsetX + blinky.col * 8;  // if each cell is 8 px wide
-    int startY = offsetY + blinky.row * 10; // if each cell is 10 px tall
-    int dy, dx;
-    for (dy = -radius; dy <= radius; dy++) {
-        for (dx = -radius; dx <= radius; dx++) {
-            if (dx*dx + dy*dy <= radius*radius) {
-                int drawX = startX + 4 + dx;  // offset to center in the cell
-                int drawY = startY + 5 + dy;
+    uint16_t color = blinky.isChasing ? Red : Blue;
+    int startX = offsetX + blinky.col * CELL_WIDTH;
+    int startY = offsetY + blinky.row * CELL_HEIGHT;
+
+    const int width = 3;  // Fixed ghost half-width
+    const int height = 4; // Fixed ghost height
+    const int waveHeight = 2; // Height of the wavy bottom
+    const int eyeRadius = 1;
+    const int eyeOffsetX = 1;
+    const int eyeOffsetY = -1;
+
+    int dx, dy;
+
+    // Draw main body (rounded top)
+    for (dy = -height; dy <= 0; dy++) {
+        for (dx = -width; dx <= width; dx++) {
+            if ((dx * dx) / (float)(width * width) + 
+                (dy * dy) / (float)(height * height) <= 1.0f) {
+                int drawX = startX + (CELL_WIDTH / 2) + dx;
+                int drawY = startY + (CELL_HEIGHT / 2) + dy;
                 if (drawX >= 0 && drawX < 240 && drawY >= 0 && drawY < 320) {
                     LCD_SetPoint(drawX, drawY, color);
                 }
             }
         }
     }
+
+    // Draw wavy bottom
+    for (dy = 1; dy <= waveHeight; dy++) {
+        for (dx = -width; dx <= width; dx++) {
+            int waveOffset = (dx + dy) % 2; // Alternating wave pattern
+            int drawX = startX + (CELL_WIDTH / 2) + dx;
+            int drawY = startY + (CELL_HEIGHT / 2) + dy + waveOffset;
+            if (drawX >= 0 && drawX < 240 && drawY >= 0 && drawY < 320) {
+                LCD_SetPoint(drawX, drawY, color);
+            }
+        }
+    }
+
+    // Draw eyes
+    for (dy = -eyeRadius; dy <= eyeRadius; dy++) {
+        for (dx = -eyeRadius; dx <= eyeRadius; dx++) {
+            if (dx * dx + dy * dy <= eyeRadius * eyeRadius) {
+                // Left eye
+                int leftEyeX = startX + (CELL_WIDTH / 2) - eyeOffsetX + dx;
+                int leftEyeY = startY + (CELL_HEIGHT / 2) + eyeOffsetY + dy;
+                if (leftEyeX >= 0 && leftEyeX < 240 && leftEyeY >= 0 && leftEyeY < 320) {
+                    LCD_SetPoint(leftEyeX, leftEyeY, White);
+                }
+
+                // Right eye
+                int rightEyeX = startX + (CELL_WIDTH / 2) + eyeOffsetX + dx;
+                int rightEyeY = startY + (CELL_HEIGHT / 2) + eyeOffsetY + dy;
+                if (rightEyeX >= 0 && rightEyeX < 240 && rightEyeY >= 0 && rightEyeY < 320) {
+                    LCD_SetPoint(rightEyeX, rightEyeY, White);
+                }
+            }
+        }
+    }
 }
+
 
 void handleGhostTimer(void) 
 {

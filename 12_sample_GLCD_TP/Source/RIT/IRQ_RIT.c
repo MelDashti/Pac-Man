@@ -79,6 +79,8 @@ void RIT_IRQHandler(void) {
         }
 
         ADC_start_conversion();
+				// play sound
+				
         movePacMan();
         updateGhost();
     }
