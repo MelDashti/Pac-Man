@@ -382,8 +382,9 @@ int main(void) {
     TP_Init();
 		BUTTON_init();
     LCD_Clear(Black);
-	//	init_RIT(0x004C4B40);	// 50ms
-		init_RIT(0x000F4240 );	// 50ms
+		init_RIT(0x01538400); // 300ms for board
+	  //init_RIT(0x004C4B40);	// 50ms
+		//init_RIT(0x000F4240 );	// 10ms for emulator 
 		enable_RIT();
 		//ADC_init();
     joystick_init(); // NEW: Initialize joystick
@@ -403,10 +404,11 @@ int main(void) {
     // ready message
     GUI_Text((240/2)-23, (320/2)-10, (uint8_t *)"READY", Yellow, Black);
 
-    init_timer(0, 0x1312D0);
+    init_timer(0, 0x00B6F1A0); // for board
+		//init_timer(0, 0x1312D0); // for emulator 
     //enable_timer(0);
-		init_timer(1, 0x1312D0);
-		enable_timer(1);
+		//init_timer(1, 0x1312D0);
+		//enable_timer(1);
     // Set initial direction to nothing
     pacmanDirRow = 0;
     pacmanDirCol = 0;
