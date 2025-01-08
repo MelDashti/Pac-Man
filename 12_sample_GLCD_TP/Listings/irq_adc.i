@@ -2008,6 +2008,8 @@ extern void reset_timer( char timer_num );
 
 extern void TIMER0_IRQHandler (void);
 extern void TIMER1_IRQHandler (void);
+extern void TIMER2_IRQHandler (void);
+extern void TIMER3_IRQHandler (void);
 # 15 "Source/adc/IRQ_adc.c" 2
 
 
@@ -2019,9 +2021,9 @@ unsigned short AD_last = 0xFF;
 
 
 
-const int freqs[8]={4240,3779,3367,3175,2834,2525,2249,2120};
+//const int freqs[8]={4240,3779,3367,3175,2834,2525,2249,2120};
 # 37 "Source/adc/IRQ_adc.c"
-//const int freqs[8]={2120,1890,1684,1592,1417,1263,1125,1062};
+const int freqs[8]={2120,1890,1684,1592,1417,1263,1125,1062};
 # 50 "Source/adc/IRQ_adc.c"
 void ADC_IRQHandler(void) {
 

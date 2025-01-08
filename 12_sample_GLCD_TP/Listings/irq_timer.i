@@ -1989,6 +1989,8 @@ extern void reset_timer( char timer_num );
 
 extern void TIMER0_IRQHandler (void);
 extern void TIMER1_IRQHandler (void);
+extern void TIMER2_IRQHandler (void);
+extern void TIMER3_IRQHandler (void);
 # 13 "Source/timer/IRQ_timer.c" 2
 # 1 "./Source\\Ghost/ghost.h" 1
 
@@ -2372,9 +2374,15 @@ extern volatile _Bool gamePaused;
 extern void drawUI(void);
 extern volatile gameOver;
 extern handleGhostTimer();
-# 35 "Source/timer/IRQ_timer.c"
-uint16_t SinTable[45] =
-{
+# 50 "Source/timer/IRQ_timer.c"
+extern volatile int countdown;
+extern volatile powerPillsSpawned;
+extern volatile _Bool gamePaused;
+extern void drawUI(void);
+extern volatile gameOver;
+extern handleGhostTimer();
+
+uint16_t SinTable[45] = {
     410, 467, 523, 576, 627, 673, 714, 749, 778,
     799, 813, 819, 817, 807, 789, 764, 732, 694,
     650, 602, 550, 495, 438, 381, 324, 270, 217,
@@ -2382,67 +2390,61 @@ uint16_t SinTable[45] =
     20 , 41 , 70 , 105, 146, 193, 243, 297, 353
 };
 
-// Update Timer1 frequency for different sound effects
-void update_timer1_frequency(uint32_t frequency) {
-    if (frequency == 0) {
-        // Disable sound
-        disable_timer(1);
-        ((LPC_DAC_TypeDef *) ((0x40080000UL) + 0x0C000) )->DACR = 0;
-        return;
-    }
+// Original sine wave/DAC logic
+void TIMER0_IRQHandler(void) {
+    static int sineticks = 0;
 
-    disable_timer(1);
-    // Calculate match value for desired frequency
-    // Clock = 25MHz, Table size = 45 samples
-    uint32_t matchValue = 25000000 / (frequency * 45);
-    ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->MR0 = matchValue;
-    reset_timer(1);
-    enable_timer(1);
+    static int currentValue;
+
+    currentValue = SinTable[sineticks];
+    currentValue -= 410;
+    currentValue /= 1;
+    currentValue += 410;
+    ((LPC_DAC_TypeDef *) ((0x40080000UL) + 0x0C000) )->DACR = currentValue << 6;
+
+    sineticks++;
+    if (sineticks == 45) sineticks = 0;
+
+    ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->IR = 1; // Clear interrupt flag
+    return;
 }
-void TIMER0_IRQHandler (void)
-{
+
+// Original disable timer logic
+void TIMER1_IRQHandler(void) {
+    disable_timer(0);
+    ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->IR = 1; // Clear interrupt flag
+    return;
+}
+
+// Game logic (moved from original Timer 0)
+void TIMER2_IRQHandler(void) {
     // Decrement the countdown if it's greater than 0
     if (countdown > 0) {
         countdown--;
         drawUI(); // Update the displayed countdown
     } else {
-        // If countdown reached 0, you can show "Game Over!" or handle end condition here.
-        // For now, just keep it simple.
-    GUI_Text((240/2)-30, (320/2)-20, (uint8_t *)"GAME OVER!", 0xF800, 0x0000);
-    gameOver=1;
-    disable_timer(0);
-    disable_RIT(0);
-
+        // If countdown reached 0, show "Game Over!"
+        GUI_Text((240/2)-30, (320/2)-20, (uint8_t *)"GAME OVER!", 0xF800, 0x0000);
+        gameOver = 1;
+        disable_timer(2); // Changed from 0 to 2 since this is now Timer 2
+        disable_RIT(0);
     }
 
-  if(!blinky.isChasing){
-    handleGhostTimer();
-  }
+    if (!blinky.isChasing) {
+        handleGhostTimer();
+    }
 
-   // Random spawn of power pill logic
-    // Only spawn if game not paused, and if we haven’t spawned all 6
+    // Random spawn of power pill logic
     if (!gamePaused && powerPillsSpawned < 6) {
-        // e.g. a small chance each second. You decide the probability; here 1 in 5:
-    drawPowerPills();
+        drawPowerPills();
     }
 
-
-    ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->IR = 1; // Clear interrupt flag
+    ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x10000) )->IR = 1; // Clear interrupt flag
     return;
 }
-# 102 "Source/timer/IRQ_timer.c"
-void TIMER1_IRQHandler(void) {
 
-  static int ticks = 0;
-
-
-    ((LPC_DAC_TypeDef *) ((0x40080000UL) + 0x0C000) )->DACR = (SinTable[ticks] << 6);
-
-
-    ticks++;
-    if (ticks == 45) ticks = 0;
-
-
-    ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->IR = 1;
+// Simple interrupt clearing (moved from original Timer 1)
+void TIMER3_IRQHandler(void) {
+    ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x14000) )->IR = 1; // Clear interrupt flag
     return;
 }

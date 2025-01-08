@@ -1858,51 +1858,69 @@ extern void reset_timer( char timer_num );
 
 extern void TIMER0_IRQHandler (void);
 extern void TIMER1_IRQHandler (void);
+extern void TIMER2_IRQHandler (void);
+extern void TIMER3_IRQHandler (void);
 # 12 "Source/timer/lib_timer.c" 2
 # 24 "Source/timer/lib_timer.c"
-void enable_timer( char timer_num )
-{
-  if ( timer_num == 0 )
-  {
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR = 1;
-  }
-  else
-  {
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR = 1;
-  }
-  return;
+void enable_timer(char timer_num) {
+    switch(timer_num) {
+        case 0:
+            ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR = 1;
+            break;
+        case 1:
+            ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR = 1;
+            break;
+        case 2:
+            ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x10000) )->TCR = 1;
+            break;
+        case 3:
+            ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x14000) )->TCR = 1;
+            break;
+    }
 }
-# 46 "Source/timer/lib_timer.c"
-void disable_timer( char timer_num )
-{
-  if ( timer_num == 0 )
-  {
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR = 0;
-  }
-  else
-  {
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR = 0;
-  }
-  return;
+# 50 "Source/timer/lib_timer.c"
+void disable_timer(char timer_num) {
+    switch(timer_num) {
+        case 0:
+            ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR = 0;
+            break;
+        case 1:
+            ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR = 0;
+            break;
+        case 2:
+            ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x10000) )->TCR = 0;
+            break;
+        case 3:
+            ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x14000) )->TCR = 0;
+            break;
+    }
 }
-# 68 "Source/timer/lib_timer.c"
-void reset_timer( char timer_num )
-{
-  uint32_t regVal;
+# 76 "Source/timer/lib_timer.c"
+void reset_timer(char timer_num) {
+    uint32_t regVal;
 
-  if ( timer_num == 0 )
-  {
- regVal = ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR;
- regVal |= 0x02;
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR = regVal;
-  }
-  else
-  {
- regVal = ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR;
- regVal |= 0x02;
- ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR = regVal;
-  }
-  return;
+    switch(timer_num) {
+        case 0:
+            regVal = ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR;
+            regVal |= 0x02;
+            ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR = regVal;
+            break;
+        case 1:
+            regVal = ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR;
+            regVal |= 0x02;
+            ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR = regVal;
+            break;
+        case 2:
+            regVal = ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x10000) )->TCR;
+            regVal |= 0x02;
+            ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x10000) )->TCR = regVal;
+            break;
+        case 3:
+            regVal = ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x14000) )->TCR;
+            regVal |= 0x02;
+            ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x14000) )->TCR = regVal;
+            break;
+    }
 }
 
 unsigned int init_timer ( char timer_num, unsigned int TimerInterval )
@@ -1976,5 +1994,17 @@ unsigned int init_timer ( char timer_num, unsigned int TimerInterval )
  __NVIC_EnableIRQ(TIMER1_IRQn);
  return (1);
   }
+ else if (timer_num == 2){
+  ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x10000) )->MR0 = TimerInterval;
+  ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x10000) )->MCR = 3; // Like timer 0: Interrupt and reset on MR0
+  __NVIC_EnableIRQ(TIMER2_IRQn);
+  return(1);
+ }
+ else if (timer_num == 3){
+  ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x14000) )->MR0 = TimerInterval;
+  ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x14000) )->MCR = 7; // Like timer 1: Interrupt, reset and stop on MR0
+    __NVIC_EnableIRQ(TIMER3_IRQn);
+  return(1);
+ }
   return (0);
 }

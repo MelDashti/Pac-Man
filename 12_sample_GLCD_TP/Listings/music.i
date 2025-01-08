@@ -1857,6 +1857,8 @@ extern void reset_timer( char timer_num );
 
 extern void TIMER0_IRQHandler (void);
 extern void TIMER1_IRQHandler (void);
+extern void TIMER2_IRQHandler (void);
+extern void TIMER3_IRQHandler (void);
 # 4 "Source/music/music.c" 2
 
 void playNote(NOTE note)

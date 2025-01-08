@@ -1841,7 +1841,68 @@ extern void reset_RIT( void );
 extern void RIT_IRQHandler (void);
 # 6 "Source/RIT/IRQ_RIT.c" 2
 
+# 1 "Source/RIT\\../music/music.h" 1
 
+
+
+
+//Default: 1.65
+
+
+
+
+
+
+
+typedef char BOOL;
+
+
+
+typedef enum note_durations
+{
+ time_semibiscroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 64.0f + 0.5), // 1/128
+ time_biscroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 32.0f + 0.5), // 1/64
+ time_semicroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 16.0f + 0.5), // 1/32
+ time_croma = (unsigned int)(0x17D7840 * 1 * 1.6 / 8.0f + 0.5), // 1/16
+ time_semiminima = (unsigned int)(0x17D7840 * 1 * 1.6 / 4.0f + 0.5), // 1/4
+ time_minima = (unsigned int)(0x17D7840 * 1 * 1.6 / 2.0f + 0.5), // 1/2
+ time_semibreve = (unsigned int)(0x17D7840 * 1 * 1.6 + 0.5), // 1
+} NOTE_DURATION;
+
+typedef enum frequencies
+{
+ a2b = 5351, // 103Hz k=5351 a2b
+ b2 = 4500, // 123Hz k=4500 b2
+ c3b = 4370, // 127Hz k)4370 c3b
+ c3 = 4240, // 131Hz k=4240 c3
+ d3 = 3779, // 147Hz k=3779 d3
+ e3 = 3367, // 165Hz k=3367 e3
+ f3 = 3175, // 175Hz k=3175 f3
+ g3 = 2834, // 196Hz k=2834 g3
+ a3b = 2670, // 208Hz k=2670 a4b
+ a3 = 2525, // 220Hz k=2525 a3
+ b3 = 2249, // 247Hz k=2249 b3
+ c4 = 2120, // 262Hz k=2120 c4
+ d4 = 1890, // 294Hz k=1890 d4
+ e4 = 1684, // 330Hz k=1684 e4
+ f4 = 1592, // 349Hz k=1592 f4
+ g4 = 1417, // 392Hz k=1417 g4
+ a4 = 1263, // 440Hz k=1263 a4
+ b4 = 1125, // 494Hz k=1125 b4
+ c5 = 1062, // 523Hz k=1062 c5
+ pause = 0 // DO NOT SOUND
+} FREQUENCY;
+
+
+typedef struct
+{
+ FREQUENCY freq;
+ NOTE_DURATION duration;
+} NOTE;
+
+void playNote(NOTE note);
+BOOL isNotePlaying(void);
+# 8 "Source/RIT/IRQ_RIT.c" 2
 
 // here we define the shared variable
 volatile _Bool debouncing = 0;
@@ -1856,7 +1917,83 @@ extern int offsetY;
 
 
 
-void RIT_IRQHandler(void) {
+
+
+
+
+//SHORTENING UNDERTALE: TOO MANY REPETITIONS
+NOTE song[] =
+{
+ // 1
+ {d3, time_semicroma},
+ {d3, time_semicroma},
+ {d4, time_croma},
+ {a3, time_croma},
+ {pause, time_semicroma},
+ {a3b, time_semicroma},
+ {pause, time_semicroma},
+ {g3, time_croma},
+ {f3, time_semicroma*2},
+ {d3, time_semicroma},
+ {f3, time_semicroma},
+ {g3, time_semicroma},
+ // 2
+ {c3, time_semicroma},
+ {c3, time_semicroma},
+ {d4, time_croma},
+ {a3, time_croma},
+ {pause, time_semicroma},
+ {a3b, time_semicroma},
+ {pause, time_semicroma},
+ {g3, time_croma},
+ {f3, time_semicroma*2},
+ {d3, time_semicroma},
+ {f3, time_semicroma},
+ {g3, time_semicroma},
+ // 3
+ {c3b, time_semicroma},
+ {c3b, time_semicroma},
+ {d4, time_croma},
+ {a3, time_croma},
+ {pause, time_semicroma},
+ {a3b, time_semicroma},
+ {pause, time_semicroma},
+ {g3, time_croma},
+ {f3, time_semicroma*2},
+ {d3, time_semicroma},
+ {f3, time_semicroma},
+ {g3, time_semicroma},
+ // 4
+ {a2b, time_semicroma},
+ {a2b, time_semicroma},
+ {d4, time_croma},
+ {a3, time_croma},
+ {pause, time_semicroma},
+ {a3b, time_semicroma},
+ {pause, time_semicroma},
+ {g3, time_croma},
+ {f3, time_semicroma*2},
+ {d3, time_semicroma},
+ {f3, time_semicroma},
+ {g3, time_semicroma},
+ // 5
+
+};
+
+void RIT_IRQHandler (void)
+{
+ static int currentNote = 0;
+ static int ticks = 0;
+ if(!isNotePlaying())
+ {
+  ++ticks;
+  if(ticks == 1)
+  {
+   ticks = 0;
+   playNote(song[currentNote++]);
+  }
+ }
+
     static _Bool buttonPressed = 0; // Track button state
     static int debounceCounter = 0; // Counter for debounce delay
 
@@ -1870,7 +2007,7 @@ void RIT_IRQHandler(void) {
                 if (gamePaused) {
                     // Display "PAUSE" text
                     GUI_Text((240 / 2) - 23, (320 / 2) - 10, (uint8_t *)"PAUSE", 0xFFE0, 0x0000);
-                    disable_timer(0); // Pause the game timer
+                    disable_timer(2); // Pause the game timer
                 } else {
                     // Clear "PAUSE" text
           int x, y;
@@ -1879,7 +2016,7 @@ void RIT_IRQHandler(void) {
                             LCD_SetPoint(x, y, 0x0000);
                         }
                     }
-                    enable_timer(0); // Resume the game timer
+                    enable_timer(2); // Resume the game timer
                 }
             }
         } else { // Button released
