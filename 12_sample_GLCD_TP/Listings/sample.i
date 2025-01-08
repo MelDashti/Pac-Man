@@ -1945,6 +1945,18 @@ typedef struct
 
 void playNote(NOTE note);
 BOOL isNotePlaying(void);
+// Remove the initializers
+
+
+
+
+
+
+extern NOTE pacman_wakka[2];
+extern NOTE power_pill_sound[3];
+extern NOTE death_sound[6];
+extern NOTE game_start[4];
+extern NOTE victory_sound[5];
 # 14 "Source\\timer/timer.h" 2
 
 
@@ -2527,9 +2539,253 @@ extern __attribute__((__nothrow__)) size_t strftime(char * __restrict , size_t ,
                        const struct tm * __restrict ) __attribute__((__nonnull__(1,3,4)));
 # 13 "Source/sample.c" 2
 
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 1 3
+# 290 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 3
+extern __attribute__((__nothrow__)) double acos(double );
+
+
+
+extern __attribute__((__nothrow__)) double asin(double );
+
+
+
+
+
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double atan(double );
+
+
+
+extern __attribute__((__nothrow__)) double atan2(double , double );
+
+
+
+
+
+extern __attribute__((__nothrow__)) double cos(double );
+
+
+
+
+extern __attribute__((__nothrow__)) double sin(double );
+
+
+
+
+
+extern void __use_accurate_range_reduction(void);
+
+
+
+extern __attribute__((__nothrow__)) double tan(double );
+
+
+
+
+
+extern __attribute__((__nothrow__)) double cosh(double );
+
+
+
+
+extern __attribute__((__nothrow__)) double sinh(double );
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double tanh(double );
+
+
+
+extern __attribute__((__nothrow__)) double exp(double );
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) double frexp(double , int * ) __attribute__((__nonnull__(2)));
+
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) double ldexp(double , int );
+
+
+
+
+extern __attribute__((__nothrow__)) double log(double );
+
+
+
+
+
+extern __attribute__((__nothrow__)) double log10(double );
+
+
+
+extern __attribute__((__nothrow__)) double modf(double , double * ) __attribute__((__nonnull__(2)));
+
+
+
+
+
+extern __attribute__((__nothrow__)) double pow(double , double );
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) double sqrt(double );
+# 410 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 3
+    static __inline double _sqrt(double __x) { return sqrt(__x); }
+# 427 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 3
+    static __inline float _sqrtf(float __x) { return (float)sqrt(__x); }
+
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double ceil(double );
+
+
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double fabs(double );
+
+
+
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double floor(double );
+
+
+
+extern __attribute__((__nothrow__)) double fmod(double , double );
+# 740 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 3
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float fabsf(float);
+static __inline __attribute__((__nothrow__)) __attribute__((__const__)) float _fabsf(float __f) { return fabsf(__f); }
+extern __attribute__((__nothrow__)) float sinf(float );
+extern __attribute__((__nothrow__)) float cosf(float );
+extern __attribute__((__nothrow__)) float tanf(float );
+extern __attribute__((__nothrow__)) float acosf(float );
+extern __attribute__((__nothrow__)) float asinf(float );
+extern __attribute__((__nothrow__)) float atanf(float );
+extern __attribute__((__nothrow__)) float atan2f(float , float );
+extern __attribute__((__nothrow__)) float sinhf(float );
+extern __attribute__((__nothrow__)) float coshf(float );
+extern __attribute__((__nothrow__)) float tanhf(float );
+extern __attribute__((__nothrow__)) float expf(float );
+extern __attribute__((__nothrow__)) float logf(float );
+extern __attribute__((__nothrow__)) float log10f(float );
+extern __attribute__((__nothrow__)) float powf(float , float );
+extern __attribute__((__nothrow__)) float sqrtf(float );
+extern __attribute__((__nothrow__)) float ldexpf(float , int );
+extern __attribute__((__nothrow__)) float frexpf(float , int * ) __attribute__((__nonnull__(2)));
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float ceilf(float );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float floorf(float );
+extern __attribute__((__nothrow__)) float fmodf(float , float );
+extern __attribute__((__nothrow__)) float modff(float , float * ) __attribute__((__nonnull__(2)));
+# 780 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 3
+__attribute__((__nothrow__)) long double acosl(long double );
+__attribute__((__nothrow__)) long double asinl(long double );
+__attribute__((__nothrow__)) long double atanl(long double );
+__attribute__((__nothrow__)) long double atan2l(long double , long double );
+__attribute__((__nothrow__)) long double ceill(long double );
+__attribute__((__nothrow__)) long double cosl(long double );
+__attribute__((__nothrow__)) long double coshl(long double );
+__attribute__((__nothrow__)) long double expl(long double );
+__attribute__((__nothrow__)) long double fabsl(long double );
+__attribute__((__nothrow__)) long double floorl(long double );
+__attribute__((__nothrow__)) long double fmodl(long double , long double );
+__attribute__((__nothrow__)) long double frexpl(long double , int* ) __attribute__((__nonnull__(2)));
+__attribute__((__nothrow__)) long double ldexpl(long double , int );
+__attribute__((__nothrow__)) long double logl(long double );
+__attribute__((__nothrow__)) long double log10l(long double );
+__attribute__((__nothrow__)) long double modfl(long double , long double * ) __attribute__((__nonnull__(2)));
+__attribute__((__nothrow__)) long double powl(long double , long double );
+__attribute__((__nothrow__)) long double sinl(long double );
+__attribute__((__nothrow__)) long double sinhl(long double );
+__attribute__((__nothrow__)) long double sqrtl(long double );
+__attribute__((__nothrow__)) long double tanl(long double );
+__attribute__((__nothrow__)) long double tanhl(long double );
+# 840 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 3
+extern __attribute__((__nothrow__)) double exp2(double );
+extern __attribute__((__nothrow__)) float exp2f(float );
+__attribute__((__nothrow__)) long double exp2l(long double );
+extern __attribute__((__nothrow__)) double fdim(double , double );
+extern __attribute__((__nothrow__)) float fdimf(float , float );
+__attribute__((__nothrow__)) long double fdiml(long double , long double );
+# 855 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 3
+extern __attribute__((__nothrow__)) double fma(double , double , double );
+extern __attribute__((__nothrow__)) float fmaf(float , float , float );
+
+static __inline __attribute__((__nothrow__)) long double fmal(long double __x, long double __y, long double __z) { return (long double)fma((double)__x, (double)__y, (double)__z); }
+
+
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double fmax(double , double );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float fmaxf(float , float );
+__attribute__((__nothrow__)) long double fmaxl(long double , long double );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double fmin(double , double );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float fminf(float , float );
+__attribute__((__nothrow__)) long double fminl(long double , long double );
+extern __attribute__((__nothrow__)) double log2(double );
+extern __attribute__((__nothrow__)) float log2f(float );
+__attribute__((__nothrow__)) long double log2l(long double );
+extern __attribute__((__nothrow__)) long lrint(double );
+extern __attribute__((__nothrow__)) long lrintf(float );
+
+static __inline __attribute__((__nothrow__)) long lrintl(long double __x) { return lrint((double)__x); }
+
+
+extern __attribute__((__nothrow__)) long long llrint(double );
+extern __attribute__((__nothrow__)) long long llrintf(float );
+
+static __inline __attribute__((__nothrow__)) long long llrintl(long double __x) { return llrint((double)__x); }
+
+
+extern __attribute__((__nothrow__)) long lround(double );
+extern __attribute__((__nothrow__)) long lroundf(float );
+
+static __inline __attribute__((__nothrow__)) long lroundl(long double __x) { return lround((double)__x); }
+
+
+extern __attribute__((__nothrow__)) long long llround(double );
+extern __attribute__((__nothrow__)) long long llroundf(float );
+
+static __inline __attribute__((__nothrow__)) long long llroundl(long double __x) { return llround((double)__x); }
+
+
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double nan(const char * );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float nanf(const char * );
+
+static __inline __attribute__((__nothrow__)) __attribute__((__const__)) long double nanl(const char *__t) { return (long double)nan(__t); }
+# 908 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 3
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double nearbyint(double );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float nearbyintf(float );
+__attribute__((__nothrow__)) long double nearbyintl(long double );
+extern __attribute__((__nothrow__)) double remquo(double , double , int * );
+extern __attribute__((__nothrow__)) float remquof(float , float , int * );
+
+static __inline long double remquol(long double __x, long double __y, int *__q) { return (long double)remquo((double)__x, (double)__y, __q); }
+
+
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double round(double );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float roundf(float );
+__attribute__((__nothrow__)) long double roundl(long double );
+extern __attribute__((__nothrow__)) double tgamma(double );
+extern __attribute__((__nothrow__)) float tgammaf(float );
+__attribute__((__nothrow__)) long double tgammal(long double );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double trunc(double );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float truncf(float );
+__attribute__((__nothrow__)) long double truncl(long double );
+# 15 "Source/sample.c" 2
 
 extern uint8_t ScaleFlag;
-# 24 "Source/sample.c"
+# 25 "Source/sample.c"
 // Optionally define POWER_PILL if you want to add them later
 
 
@@ -2813,6 +3069,7 @@ _Bool movePacMan(void){
         pacmanCol = 0;
         // Check if there's a pill at the new position
         if(mazeGrid[pacmanRow][pacmanCol] == 2) {
+        playSoundEffect(pacman_wakka, sizeof(pacman_wakka)/sizeof(pacman_wakka[0]));
             score += 10;
       pillsEaten++;
             mazeGrid[pacmanRow][pacmanCol] = 0;
@@ -2821,6 +3078,7 @@ _Bool movePacMan(void){
       pillsEaten++;
             mazeGrid[pacmanRow][pacmanCol] = 0;
       ghostFrightenedMode();
+        playSoundEffect(power_pill_sound, sizeof(power_pill_sound)/sizeof(power_pill_sound[0]));
         }
         drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
         drawUI();
@@ -2893,7 +3151,7 @@ int main(void) {
    init_RIT(0x004C4B40); // 50ms
   //init_RIT(0x000F4240 ); // 10ms for emulator
   enable_RIT();
-  ADC_init();
+
     joystick_init(); // NEW: Initialize joystick
 
 
@@ -2910,9 +3168,11 @@ int main(void) {
 
     // ready message
     GUI_Text((240/2)-23, (320/2)-10, (uint8_t *)"READY", 0xFFE0, 0x0000);
-
+  playSoundEffect(game_start, sizeof(game_start)/sizeof(game_start[0]));
     //init_timer(0, 0x00B6F1A0); // for board
   init_timer(2, 0x1312D0); // for emulator
+
+
     //enable_timer(0);
   //init_timer(1, 0x1312D0);
   //enable_timer(1);
@@ -2920,9 +3180,16 @@ int main(void) {
     pacmanDirRow = 0;
     pacmanDirCol = 0;
 
+  init_timer(3, 0x1312D0); // Adjust this value based on your desired music timing
+  enable_timer(3);
+
   ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->PCON |= 0x1;
     ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->PCON &= ~(0x2);
 
+  // DAC Related.
+  ((LPC_PINCON_TypeDef *) ((0x40000000UL) + 0x2C000) )->PINSEL1 |= (1<<21);
+  ((LPC_PINCON_TypeDef *) ((0x40000000UL) + 0x2C000) )->PINSEL1 &= ~(1<<20);
+  ((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00000) )->FIODIR |= (1<<26);
   while (1) {
     __asm("wfi");}
     return 0;

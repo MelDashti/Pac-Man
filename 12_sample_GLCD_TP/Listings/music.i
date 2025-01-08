@@ -66,6 +66,18 @@ typedef struct
 
 void playNote(NOTE note);
 BOOL isNotePlaying(void);
+// Remove the initializers
+
+
+
+
+
+
+extern NOTE pacman_wakka[2];
+extern NOTE power_pill_sound[3];
+extern NOTE death_sound[6];
+extern NOTE game_start[4];
+extern NOTE victory_sound[5];
 # 2 "Source/music/music.c" 2
 
 # 1 "Source/music\\../timer/timer.h" 1
@@ -1878,3 +1890,45 @@ BOOL isNotePlaying(void)
 {
  return ((((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR != 0) || (((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR != 0));
 }
+
+static NOTE* current_sound;
+static int current_sound_length = 0;
+
+void playSoundEffect(NOTE* sound, int length) {
+    current_sound = sound;
+    current_sound_length = length;
+}
+
+NOTE pacman_wakka[] = {
+    {e4, time_semibiscroma},
+    {pause, time_semibiscroma}
+};
+
+NOTE power_pill_sound[] = {
+    {b4, time_semicroma},
+    {e4, time_semicroma},
+    {b4, time_semicroma}
+};
+
+NOTE death_sound[] = {
+    {b4, time_semicroma},
+    {b3, time_semicroma},
+    {a3, time_semicroma},
+    {g3, time_semicroma},
+    {f3, time_semiminima},
+    {pause, time_semicroma}
+};
+
+NOTE game_start[] = {
+    {c4, time_semicroma},
+    {e4, time_semicroma},
+    {g4, time_semicroma},
+    {c5, time_semiminima}
+};
+
+NOTE victory_sound[] = {
+    {c4, time_semicroma},
+    {e4, time_semicroma},
+    {g4, time_semicroma},
+    {c5, time_semicroma},
+};

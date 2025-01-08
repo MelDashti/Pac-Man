@@ -10,7 +10,8 @@
 #include <stdlib.h>
 #include <stdbool.h>   // For boolean data type
 #include <time.h> // for random power pill position we use this to generate random positions
-
+#include <../music/music.h>
+#include <math.h>
 #ifdef SIMULATOR
 extern uint8_t ScaleFlag;
 #endif
@@ -304,6 +305,7 @@ bool movePacMan(void){
         pacmanCol = 0;
         // Check if there's a pill at the new position
         if(mazeGrid[pacmanRow][pacmanCol] == PILL) {
+				    playSoundEffect(pacman_wakka, sizeof(pacman_wakka)/sizeof(pacman_wakka[0]));	
             score += 10;
 						pillsEaten++;
             mazeGrid[pacmanRow][pacmanCol] = EMPTY;
@@ -312,6 +314,7 @@ bool movePacMan(void){
 						pillsEaten++;
             mazeGrid[pacmanRow][pacmanCol] = EMPTY;
 						ghostFrightenedMode();
+				    playSoundEffect(power_pill_sound, sizeof(power_pill_sound)/sizeof(power_pill_sound[0]));
         }
         drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
         drawUI();
@@ -384,7 +387,7 @@ int main(void) {
 	  init_RIT(0x004C4B40);	// 50ms
 		//init_RIT(0x000F4240 );	// 10ms for emulator 
 		enable_RIT();
-		ADC_init();
+
     joystick_init(); // NEW: Initialize joystick
 		
 		
@@ -401,9 +404,11 @@ int main(void) {
 
     // ready message
     GUI_Text((240/2)-23, (320/2)-10, (uint8_t *)"READY", Yellow, Black);
-
+		playSoundEffect(game_start, sizeof(game_start)/sizeof(game_start[0]));
     //init_timer(0, 0x00B6F1A0); // for board
 		init_timer(2, 0x1312D0); // for emulator 
+		
+		
     //enable_timer(0);
 		//init_timer(1, 0x1312D0);
 		//enable_timer(1);
@@ -411,9 +416,16 @@ int main(void) {
     pacmanDirRow = 0;
     pacmanDirCol = 0;
 
+		init_timer(3, 0x1312D0); // Adjust this value based on your desired music timing
+		enable_timer(3);
+
 		LPC_SC->PCON |= 0x1;  /* Enter power-down mode */
     LPC_SC->PCON &= ~(0x2);
 
+		// DAC Related. 
+		LPC_PINCON->PINSEL1 |= (1<<21);
+		LPC_PINCON->PINSEL1 &= ~(1<<20);
+		LPC_GPIO0->FIODIR |= (1<<26);
 		while (1) {
 				__ASM("wfi");}
     return 0;

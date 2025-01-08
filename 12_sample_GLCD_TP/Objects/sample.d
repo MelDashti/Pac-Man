@@ -5,4 +5,4 @@
   Source\GLCD\GLCD.h Source\joystick\joystick.h Source\Ghost\ghost.h \
   Source\RIT\RIT.h Source\button_EXINT\button.h \
   Source\TouchPanel\TouchPanel.h Source\timer\timer.h \
-  Source\timer\..\music\music.h
+  Source\timer\..\music\music.h Source\CMSIS_core\..\music\music.h

@@ -16,86 +16,10 @@ extern volatile bool gamePaused;
 extern volatile bool gameOver;
 extern int offsetX;
 extern int offsetY;
-#define RIT_SEMIMINIMA 8
-#define RIT_MINIMA 16
-#define RIT_INTERA 32
 
-#define UPTICKS 1
-
-
-//SHORTENING UNDERTALE: TOO MANY REPETITIONS
-NOTE song[] = 
-{
-	// 1
-	{d3, time_semicroma},
-	{d3, time_semicroma},
-	{d4, time_croma},
-	{a3, time_croma},
-	{pause, time_semicroma},
-	{a3b, time_semicroma},
-	{pause, time_semicroma},
-	{g3, time_croma},
-	{f3, time_semicroma*2},
-	{d3, time_semicroma},
-	{f3, time_semicroma},
-	{g3, time_semicroma},
-	// 2
-	{c3, time_semicroma},
-	{c3, time_semicroma},
-	{d4, time_croma},
-	{a3, time_croma},
-	{pause, time_semicroma},
-	{a3b, time_semicroma},
-	{pause, time_semicroma},
-	{g3, time_croma},
-	{f3, time_semicroma*2},
-	{d3, time_semicroma},
-	{f3, time_semicroma},
-	{g3, time_semicroma},
-	// 3
-	{c3b, time_semicroma},
-	{c3b, time_semicroma},
-	{d4, time_croma},
-	{a3, time_croma},
-	{pause, time_semicroma},
-	{a3b, time_semicroma},
-	{pause, time_semicroma},
-	{g3, time_croma},
-	{f3, time_semicroma*2},
-	{d3, time_semicroma},
-	{f3, time_semicroma},
-	{g3, time_semicroma},
-	// 4
-	{a2b, time_semicroma},
-	{a2b, time_semicroma},
-	{d4, time_croma},
-	{a3, time_croma},
-	{pause, time_semicroma},
-	{a3b, time_semicroma},
-	{pause, time_semicroma},
-	{g3, time_croma},
-	{f3, time_semicroma*2},
-	{d3, time_semicroma},
-	{f3, time_semicroma},
-	{g3, time_semicroma},
-	// 5
-	
-};
 
 void RIT_IRQHandler (void)
 {
-	static int currentNote = 0;
-	static int ticks = 0;
-	if(!isNotePlaying())
-	{
-		++ticks;
-		if(ticks == UPTICKS)
-		{
-			ticks = 0;
-			playNote(song[currentNote++]);
-		}
-	}
-	
     static bool buttonPressed = false;  // Track button state
     static int debounceCounter = 0;     // Counter for debounce delay
 
@@ -107,6 +31,7 @@ void RIT_IRQHandler (void)
                 gamePaused = !gamePaused;  // Toggle pause state
 
                 if (gamePaused) {
+										enable_timer(3);
                     // Display "PAUSE" text
                     GUI_Text((240 / 2) - 23, (320 / 2) - 10, (uint8_t *)"PAUSE", Yellow, Black);
                     disable_timer(2);  // Pause the game timer
@@ -154,7 +79,6 @@ void RIT_IRQHandler (void)
             pacmanDirCol = 1;  // Move right
         }
 
-        ADC_start_conversion();
 				// play sound
 				
         movePacMan();

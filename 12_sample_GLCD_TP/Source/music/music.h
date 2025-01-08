@@ -58,6 +58,17 @@ typedef struct
 
 void playNote(NOTE note);
 BOOL isNotePlaying(void);
+// Remove the initializers
+#define PACMAN_WAKKA_SIZE 2
+#define POWER_PILL_SOUND_SIZE 3
+#define DEATH_SOUND_SIZE 6
+#define GAME_START_SIZE 4
+#define VICTORY_SOUND_SIZE 5
 
+extern NOTE pacman_wakka[PACMAN_WAKKA_SIZE];
+extern NOTE power_pill_sound[POWER_PILL_SOUND_SIZE];
+extern NOTE death_sound[DEATH_SOUND_SIZE];
+extern NOTE game_start[GAME_START_SIZE];
+extern NOTE victory_sound[VICTORY_SOUND_SIZE];
 #endif
 /* EOF */

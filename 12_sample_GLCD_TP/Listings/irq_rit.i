@@ -1902,6 +1902,18 @@ typedef struct
 
 void playNote(NOTE note);
 BOOL isNotePlaying(void);
+// Remove the initializers
+
+
+
+
+
+
+extern NOTE pacman_wakka[2];
+extern NOTE power_pill_sound[3];
+extern NOTE death_sound[6];
+extern NOTE game_start[4];
+extern NOTE victory_sound[5];
 # 8 "Source/RIT/IRQ_RIT.c" 2
 
 // here we define the shared variable
@@ -1916,84 +1928,8 @@ extern int offsetX;
 extern int offsetY;
 
 
-
-
-
-
-
-//SHORTENING UNDERTALE: TOO MANY REPETITIONS
-NOTE song[] =
-{
- // 1
- {d3, time_semicroma},
- {d3, time_semicroma},
- {d4, time_croma},
- {a3, time_croma},
- {pause, time_semicroma},
- {a3b, time_semicroma},
- {pause, time_semicroma},
- {g3, time_croma},
- {f3, time_semicroma*2},
- {d3, time_semicroma},
- {f3, time_semicroma},
- {g3, time_semicroma},
- // 2
- {c3, time_semicroma},
- {c3, time_semicroma},
- {d4, time_croma},
- {a3, time_croma},
- {pause, time_semicroma},
- {a3b, time_semicroma},
- {pause, time_semicroma},
- {g3, time_croma},
- {f3, time_semicroma*2},
- {d3, time_semicroma},
- {f3, time_semicroma},
- {g3, time_semicroma},
- // 3
- {c3b, time_semicroma},
- {c3b, time_semicroma},
- {d4, time_croma},
- {a3, time_croma},
- {pause, time_semicroma},
- {a3b, time_semicroma},
- {pause, time_semicroma},
- {g3, time_croma},
- {f3, time_semicroma*2},
- {d3, time_semicroma},
- {f3, time_semicroma},
- {g3, time_semicroma},
- // 4
- {a2b, time_semicroma},
- {a2b, time_semicroma},
- {d4, time_croma},
- {a3, time_croma},
- {pause, time_semicroma},
- {a3b, time_semicroma},
- {pause, time_semicroma},
- {g3, time_croma},
- {f3, time_semicroma*2},
- {d3, time_semicroma},
- {f3, time_semicroma},
- {g3, time_semicroma},
- // 5
-
-};
-
 void RIT_IRQHandler (void)
 {
- static int currentNote = 0;
- static int ticks = 0;
- if(!isNotePlaying())
- {
-  ++ticks;
-  if(ticks == 1)
-  {
-   ticks = 0;
-   playNote(song[currentNote++]);
-  }
- }
-
     static _Bool buttonPressed = 0; // Track button state
     static int debounceCounter = 0; // Counter for debounce delay
 
@@ -2005,6 +1941,7 @@ void RIT_IRQHandler (void)
                 gamePaused = !gamePaused; // Toggle pause state
 
                 if (gamePaused) {
+          enable_timer(3);
                     // Display "PAUSE" text
                     GUI_Text((240 / 2) - 23, (320 / 2) - 10, (uint8_t *)"PAUSE", 0xFFE0, 0x0000);
                     disable_timer(2); // Pause the game timer
@@ -2052,7 +1989,6 @@ void RIT_IRQHandler (void)
             pacmanDirCol = 1; // Move right
         }
 
-        ADC_start_conversion();
     // play sound
 
         movePacMan();

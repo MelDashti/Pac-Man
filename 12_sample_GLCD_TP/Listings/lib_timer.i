@@ -1846,6 +1846,18 @@ typedef struct
 
 void playNote(NOTE note);
 BOOL isNotePlaying(void);
+// Remove the initializers
+
+
+
+
+
+
+extern NOTE pacman_wakka[2];
+extern NOTE power_pill_sound[3];
+extern NOTE death_sound[6];
+extern NOTE game_start[4];
+extern NOTE victory_sound[5];
 # 14 "Source/timer\\timer.h" 2
 
 

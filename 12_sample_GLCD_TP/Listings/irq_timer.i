@@ -1977,6 +1977,18 @@ typedef struct
 
 void playNote(NOTE note);
 BOOL isNotePlaying(void);
+// Remove the initializers
+
+
+
+
+
+
+extern NOTE pacman_wakka[2];
+extern NOTE power_pill_sound[3];
+extern NOTE death_sound[6];
+extern NOTE game_start[4];
+extern NOTE victory_sound[5];
 # 14 "Source/timer\\timer.h" 2
 
 
@@ -2381,6 +2393,66 @@ extern volatile _Bool gamePaused;
 extern void drawUI(void);
 extern volatile gameOver;
 extern handleGhostTimer();
+# 64 "Source/timer/IRQ_timer.c"
+//SHORTENING UNDERTALE: TOO MANY REPETITIONS
+NOTE song[] =
+{
+ // 1
+ {d3, time_semicroma},
+ {d3, time_semicroma},
+ {d4, time_croma},
+ {a3, time_croma},
+ {pause, time_semicroma},
+ {a3b, time_semicroma},
+ {pause, time_semicroma},
+ {g3, time_croma},
+ {f3, time_semicroma*2},
+ {d3, time_semicroma},
+ {f3, time_semicroma},
+ {g3, time_semicroma},
+ // 2
+ {c3, time_semicroma},
+ {c3, time_semicroma},
+ {d4, time_croma},
+ {a3, time_croma},
+ {pause, time_semicroma},
+ {a3b, time_semicroma},
+ {pause, time_semicroma},
+ {g3, time_croma},
+ {f3, time_semicroma*2},
+ {d3, time_semicroma},
+ {f3, time_semicroma},
+ {g3, time_semicroma},
+ // 3
+ {c3b, time_semicroma},
+ {c3b, time_semicroma},
+ {d4, time_croma},
+ {a3, time_croma},
+ {pause, time_semicroma},
+ {a3b, time_semicroma},
+ {pause, time_semicroma},
+ {g3, time_croma},
+ {f3, time_semicroma*2},
+ {d3, time_semicroma},
+ {f3, time_semicroma},
+ {g3, time_semicroma},
+ // 4
+ {a2b, time_semicroma},
+ {a2b, time_semicroma},
+ {d4, time_croma},
+ {a3, time_croma},
+ {pause, time_semicroma},
+ {a3b, time_semicroma},
+ {pause, time_semicroma},
+ {g3, time_croma},
+ {f3, time_semicroma*2},
+ {d3, time_semicroma},
+ {f3, time_semicroma},
+ {g3, time_semicroma},
+ // 5
+
+};
+
 
 uint16_t SinTable[45] = {
     410, 467, 523, 576, 627, 673, 714, 749, 778,
@@ -2443,8 +2515,28 @@ void TIMER2_IRQHandler(void) {
     return;
 }
 
-// Simple interrupt clearing (moved from original Timer 1)
 void TIMER3_IRQHandler(void) {
+    static int currentNote = 0;
+    static int ticks = 0;
+
+    if(!isNotePlaying()) {
+        ++ticks;
+        if(ticks == 1) {
+            ticks = 0;
+            playNote(song[currentNote++]);
+        }
+    }
+
+    // If we've played all notes, you might want to either:
+    // Option 1: Loop the song
+    if(currentNote >= sizeof(song)/sizeof(song[0])) {
+        currentNote = 0;
+    }
+
+    // Or Option 2: Stop playing
+
+
+
+
     ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x14000) )->IR = 1; // Clear interrupt flag
-    return;
 }

@@ -17,8 +17,6 @@
 ".\objects\irq_button.o"
 ".\objects\lib_button.o"
 ".\objects\ghost.o"
-".\objects\irq_adc.o"
-".\objects\lib_adc.o"
 ".\objects\music.o"
 ".\objects\irq_can.o"
 ".\objects\lib_can.o"
