@@ -1915,16 +1915,123 @@ typedef struct
 } LPC_EMAC_TypeDef;
 # 12 "Source/timer/IRQ_timer.c" 2
 # 1 "Source/timer\\timer.h" 1
-# 14 "Source/timer\\timer.h"
-extern uint32_t init_timer( uint8_t timer_num, uint32_t timerInterval );
-extern void enable_timer( uint8_t timer_num );
-extern void disable_timer( uint8_t timer_num );
-extern void reset_timer( uint8_t timer_num );
-extern volatile int countdown;
+# 13 "Source/timer\\timer.h"
+# 1 "Source/timer\\../music/music.h" 1
+
+
+
+
+//Default: 1.65
+
+
+
+
+
+
+
+typedef char BOOL;
+
+
+
+typedef enum note_durations
+{
+ time_semibiscroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 64.0f + 0.5), // 1/128
+ time_biscroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 32.0f + 0.5), // 1/64
+ time_semicroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 16.0f + 0.5), // 1/32
+ time_croma = (unsigned int)(0x17D7840 * 1 * 1.6 / 8.0f + 0.5), // 1/16
+ time_semiminima = (unsigned int)(0x17D7840 * 1 * 1.6 / 4.0f + 0.5), // 1/4
+ time_minima = (unsigned int)(0x17D7840 * 1 * 1.6 / 2.0f + 0.5), // 1/2
+ time_semibreve = (unsigned int)(0x17D7840 * 1 * 1.6 + 0.5), // 1
+} NOTE_DURATION;
+
+typedef enum frequencies
+{
+ a2b = 5351, // 103Hz k=5351 a2b
+ b2 = 4500, // 123Hz k=4500 b2
+ c3b = 4370, // 127Hz k)4370 c3b
+ c3 = 4240, // 131Hz k=4240 c3
+ d3 = 3779, // 147Hz k=3779 d3
+ e3 = 3367, // 165Hz k=3367 e3
+ f3 = 3175, // 175Hz k=3175 f3
+ g3 = 2834, // 196Hz k=2834 g3
+ a3b = 2670, // 208Hz k=2670 a4b
+ a3 = 2525, // 220Hz k=2525 a3
+ b3 = 2249, // 247Hz k=2249 b3
+ c4 = 2120, // 262Hz k=2120 c4
+ d4 = 1890, // 294Hz k=1890 d4
+ e4 = 1684, // 330Hz k=1684 e4
+ f4 = 1592, // 349Hz k=1592 f4
+ g4 = 1417, // 392Hz k=1417 g4
+ a4 = 1263, // 440Hz k=1263 a4
+ b4 = 1125, // 494Hz k=1125 b4
+ c5 = 1062, // 523Hz k=1062 c5
+ pause = 0 // DO NOT SOUND
+} FREQUENCY;
+
+
+typedef struct
+{
+ FREQUENCY freq;
+ NOTE_DURATION duration;
+} NOTE;
+
+void playNote(NOTE note);
+BOOL isNotePlaying(void);
+// Remove the initializers
+
+
+
+
+
+
+extern NOTE pacman_wakka[2];
+extern NOTE power_pill_sound[3];
+extern NOTE death_sound[6];
+extern NOTE game_start[4];
+extern NOTE victory_sound[5];
+# 14 "Source/timer\\timer.h" 2
+
+
+
+extern unsigned int init_timer( char timer_num, unsigned int timerInterval );
+extern void enable_timer( char timer_num );
+extern void disable_timer( char timer_num );
+extern void reset_timer( char timer_num );
+
 
 extern void TIMER0_IRQHandler (void);
 extern void TIMER1_IRQHandler (void);
+extern void TIMER2_IRQHandler (void);
+extern void TIMER3_IRQHandler (void);
 # 13 "Source/timer/IRQ_timer.c" 2
+# 1 "./Source\\Ghost/ghost.h" 1
+
+
+
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
+# 5 "./Source\\Ghost/ghost.h" 2
+
+// ghost structure
+
+typedef struct {
+ int row;
+ int col;
+ _Bool isChasing;
+ _Bool isActive;
+ int respawnTimer;
+ int frightenedTimer;
+ int underlyingCell;
+
+}Ghost;
+
+extern Ghost blinky;
+
+// function declaration
+void initGhost(void);
+void updateGhost(void);
+void drawGhost(int offsetX, int offsetY);
+void ghostFrightenedMode(void);
+# 14 "Source/timer/IRQ_timer.c" 2
 # 1 "Source/timer\\../GLCD/GLCD.h" 1
 # 90 "Source/timer\\../GLCD/GLCD.h"
 void LCD_Initialization(void);
@@ -1934,7 +2041,7 @@ void LCD_SetPoint(uint16_t Xpos,uint16_t Ypos,uint16_t point);
 void LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
 void PutChar( uint16_t Xpos, uint16_t Ypos, uint8_t ASCI, uint16_t charColor, uint16_t bkColor );
 void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_t bkColor);
-# 14 "Source/timer/IRQ_timer.c" 2
+# 15 "Source/timer/IRQ_timer.c" 2
 # 1 "Source/timer\\../TouchPanel/TouchPanel.h" 1
 # 30 "Source/timer\\../TouchPanel/TouchPanel.h"
 typedef struct POINT
@@ -1968,7 +2075,8 @@ void DrawCross(uint16_t Xpos,uint16_t Ypos);
 void TP_DrawPoint(uint16_t Xpos,uint16_t Ypos);
 uint8_t setCalibrationMatrix( Coordinate * displayPtr,Coordinate * screenPtr,Matrix * matrixPtr);
 uint8_t getDisplayPoint(Coordinate * displayPtr,Coordinate * screenPtr,Matrix * matrixPtr );
-# 15 "Source/timer/IRQ_timer.c" 2
+void TP_DrawPoint_Magnifier(Coordinate * displayPtr);
+# 16 "Source/timer/IRQ_timer.c" 2
 # 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 1 3
 # 68 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
     typedef __builtin_va_list __va_list;
@@ -2270,38 +2378,165 @@ extern __attribute__((__nothrow__)) int _fisatty(FILE * ) __attribute__((__nonnu
 
 extern __attribute__((__nothrow__)) void __use_no_semihosting_swi(void);
 extern __attribute__((__nothrow__)) void __use_no_semihosting(void);
-# 16 "Source/timer/IRQ_timer.c" 2
+# 17 "Source/timer/IRQ_timer.c" 2
+
 extern volatile int countdown;
 extern volatile powerPillsSpawned;
-extern volatile gamePaused;
+extern volatile _Bool gamePaused;
 extern void drawUI(void);
-# 33 "Source/timer/IRQ_timer.c"
-void TIMER0_IRQHandler (void)
+extern volatile gameOver;
+extern handleGhostTimer();
+# 50 "Source/timer/IRQ_timer.c"
+extern volatile int countdown;
+extern volatile powerPillsSpawned;
+extern volatile _Bool gamePaused;
+extern void drawUI(void);
+extern volatile gameOver;
+extern handleGhostTimer();
+# 64 "Source/timer/IRQ_timer.c"
+//SHORTENING UNDERTALE: TOO MANY REPETITIONS
+NOTE song[] =
 {
+ // 1
+ {d3, time_semicroma},
+ {d3, time_semicroma},
+ {d4, time_croma},
+ {a3, time_croma},
+ {pause, time_semicroma},
+ {a3b, time_semicroma},
+ {pause, time_semicroma},
+ {g3, time_croma},
+ {f3, time_semicroma*2},
+ {d3, time_semicroma},
+ {f3, time_semicroma},
+ {g3, time_semicroma},
+ // 2
+ {c3, time_semicroma},
+ {c3, time_semicroma},
+ {d4, time_croma},
+ {a3, time_croma},
+ {pause, time_semicroma},
+ {a3b, time_semicroma},
+ {pause, time_semicroma},
+ {g3, time_croma},
+ {f3, time_semicroma*2},
+ {d3, time_semicroma},
+ {f3, time_semicroma},
+ {g3, time_semicroma},
+ // 3
+ {c3b, time_semicroma},
+ {c3b, time_semicroma},
+ {d4, time_croma},
+ {a3, time_croma},
+ {pause, time_semicroma},
+ {a3b, time_semicroma},
+ {pause, time_semicroma},
+ {g3, time_croma},
+ {f3, time_semicroma*2},
+ {d3, time_semicroma},
+ {f3, time_semicroma},
+ {g3, time_semicroma},
+ // 4
+ {a2b, time_semicroma},
+ {a2b, time_semicroma},
+ {d4, time_croma},
+ {a3, time_croma},
+ {pause, time_semicroma},
+ {a3b, time_semicroma},
+ {pause, time_semicroma},
+ {g3, time_croma},
+ {f3, time_semicroma*2},
+ {d3, time_semicroma},
+ {f3, time_semicroma},
+ {g3, time_semicroma},
+ // 5
+
+};
+
+
+uint16_t SinTable[45] = {
+    410, 467, 523, 576, 627, 673, 714, 749, 778,
+    799, 813, 819, 817, 807, 789, 764, 732, 694,
+    650, 602, 550, 495, 438, 381, 324, 270, 217,
+    169, 125, 87 , 55 , 30 , 12 , 2 , 0 , 6 ,
+    20 , 41 , 70 , 105, 146, 193, 243, 297, 353
+};
+
+// Original sine wave/DAC logic
+void TIMER0_IRQHandler(void) {
+    static int sineticks = 0;
+
+    static int currentValue;
+
+    currentValue = SinTable[sineticks];
+    currentValue -= 410;
+    currentValue /= 1;
+    currentValue += 410;
+    ((LPC_DAC_TypeDef *) ((0x40080000UL) + 0x0C000) )->DACR = currentValue << 6;
+
+    sineticks++;
+    if (sineticks == 45) sineticks = 0;
+
+    ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->IR = 1; // Clear interrupt flag
+    return;
+}
+
+// Original disable timer logic
+void TIMER1_IRQHandler(void) {
+    disable_timer(0);
+    ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->IR = 1; // Clear interrupt flag
+    return;
+}
+
+// Game logic (moved from original Timer 0)
+void TIMER2_IRQHandler(void) {
     // Decrement the countdown if it's greater than 0
     if (countdown > 0) {
         countdown--;
         drawUI(); // Update the displayed countdown
     } else {
-        // If countdown reached 0, you can show "Game Over!" or handle end condition here.
-        // For now, just keep it simple.
-    GUI_Text((240/2)-30, (320/2)-20, (uint8_t *)"GAME OVER!", 0xF800, 0x0000);
+        // If countdown reached 0, show "Game Over!"
+        GUI_Text((240/2)-30, (320/2)-20, (uint8_t *)"GAME OVER!", 0xF800, 0x0000);
+        gameOver = 1;
+        disable_timer(2); // Changed from 0 to 2 since this is now Timer 2
+        disable_RIT(0);
     }
 
-   // Random spawn of power pill logic
-    // Only spawn if game not paused, and if we haven’t spawned all 6
+    if (!blinky.isChasing) {
+        handleGhostTimer();
+    }
+
+    // Random spawn of power pill logic
     if (!gamePaused && powerPillsSpawned < 6) {
-        // e.g. a small chance each second. You decide the probability; here 1 in 5:
-    drawPowerPills();
+        drawPowerPills();
     }
 
-
-    ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->IR = 1; // Clear interrupt flag
+    ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x10000) )->IR = 1; // Clear interrupt flag
     return;
 }
-# 66 "Source/timer/IRQ_timer.c"
-void TIMER1_IRQHandler (void)
-{
-  ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->IR = 1;
-  return;
+
+void TIMER3_IRQHandler(void) {
+    static int currentNote = 0;
+    static int ticks = 0;
+
+    if(!isNotePlaying()) {
+        ++ticks;
+        if(ticks == 1) {
+            ticks = 0;
+            playNote(song[currentNote++]);
+        }
+    }
+
+    // If we've played all notes, you might want to either:
+    // Option 1: Loop the song
+    if(currentNote >= sizeof(song)/sizeof(song[0])) {
+        currentNote = 0;
+    }
+
+    // Or Option 2: Stop playing
+
+
+
+
+    ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x14000) )->IR = 1; // Clear interrupt flag
 }

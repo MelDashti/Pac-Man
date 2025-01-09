@@ -219,6 +219,24 @@ int Read_Y(void)
   return i;     
 } 
 
+/*******************************************************************************
+* Function Name  : TP_DrawPoint Magnifier
+* Description    : display a pixel composition
+* Input          : - Xpos: Row Coordinate
+*                  - Ypos: Line Coordinate 
+* Output         : None
+* Return         : None
+* Attention		 : None
+*******************************************************************************/
+void TP_DrawPoint_Magnifier(Coordinate * display)
+{
+  int mosse[6][2]={{1,1},{-1,-1},{1,0},{-1,0},{0,1},{0,-1}};
+	int i=0;
+	TP_DrawPoint(display->x,display->y);
+	for(i=0;i<6;i++)
+			TP_DrawPoint(display->x+mosse[i][0],display->y+mosse[i][1]);
+			
+}	
 
 /*******************************************************************************
 * Function Name  : TP_GetAdXY

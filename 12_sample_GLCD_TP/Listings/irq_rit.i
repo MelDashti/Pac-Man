@@ -1792,6 +1792,34 @@ void LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t
 void PutChar( uint16_t Xpos, uint16_t Ypos, uint8_t ASCI, uint16_t charColor, uint16_t bkColor );
 void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_t bkColor);
 # 3 "Source/RIT/IRQ_RIT.c" 2
+# 1 "./Source\\Ghost/ghost.h" 1
+
+
+
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
+# 5 "./Source\\Ghost/ghost.h" 2
+
+// ghost structure
+
+typedef struct {
+ int row;
+ int col;
+ _Bool isChasing;
+ _Bool isActive;
+ int respawnTimer;
+ int frightenedTimer;
+ int underlyingCell;
+
+}Ghost;
+
+extern Ghost blinky;
+
+// function declaration
+void initGhost(void);
+void updateGhost(void);
+void drawGhost(int offsetX, int offsetY);
+void ghostFrightenedMode(void);
+# 4 "Source/RIT/IRQ_RIT.c" 2
 # 1 "Source/RIT\\../joystick/joystick.h" 1
 # 11 "Source/RIT\\../joystick/joystick.h"
 // joystick.h
@@ -1802,7 +1830,7 @@ void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_
 
 
 void joystick_init(void);
-# 4 "Source/RIT/IRQ_RIT.c" 2
+# 5 "Source/RIT/IRQ_RIT.c" 2
 # 1 "./Source\\RIT/RIT.h" 1
 # 14 "./Source\\RIT/RIT.h"
 extern uint32_t init_RIT( uint32_t RITInterval );
@@ -1811,70 +1839,161 @@ extern void disable_RIT( void );
 extern void reset_RIT( void );
 
 extern void RIT_IRQHandler (void);
-# 5 "Source/RIT/IRQ_RIT.c" 2
-# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
 # 6 "Source/RIT/IRQ_RIT.c" 2
+
+# 1 "Source/RIT\\../music/music.h" 1
+
+
+
+
+//Default: 1.65
+
+
+
+
+
+
+
+typedef char BOOL;
+
+
+
+typedef enum note_durations
+{
+ time_semibiscroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 64.0f + 0.5), // 1/128
+ time_biscroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 32.0f + 0.5), // 1/64
+ time_semicroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 16.0f + 0.5), // 1/32
+ time_croma = (unsigned int)(0x17D7840 * 1 * 1.6 / 8.0f + 0.5), // 1/16
+ time_semiminima = (unsigned int)(0x17D7840 * 1 * 1.6 / 4.0f + 0.5), // 1/4
+ time_minima = (unsigned int)(0x17D7840 * 1 * 1.6 / 2.0f + 0.5), // 1/2
+ time_semibreve = (unsigned int)(0x17D7840 * 1 * 1.6 + 0.5), // 1
+} NOTE_DURATION;
+
+typedef enum frequencies
+{
+ a2b = 5351, // 103Hz k=5351 a2b
+ b2 = 4500, // 123Hz k=4500 b2
+ c3b = 4370, // 127Hz k)4370 c3b
+ c3 = 4240, // 131Hz k=4240 c3
+ d3 = 3779, // 147Hz k=3779 d3
+ e3 = 3367, // 165Hz k=3367 e3
+ f3 = 3175, // 175Hz k=3175 f3
+ g3 = 2834, // 196Hz k=2834 g3
+ a3b = 2670, // 208Hz k=2670 a4b
+ a3 = 2525, // 220Hz k=2525 a3
+ b3 = 2249, // 247Hz k=2249 b3
+ c4 = 2120, // 262Hz k=2120 c4
+ d4 = 1890, // 294Hz k=1890 d4
+ e4 = 1684, // 330Hz k=1684 e4
+ f4 = 1592, // 349Hz k=1592 f4
+ g4 = 1417, // 392Hz k=1417 g4
+ a4 = 1263, // 440Hz k=1263 a4
+ b4 = 1125, // 494Hz k=1125 b4
+ c5 = 1062, // 523Hz k=1062 c5
+ pause = 0 // DO NOT SOUND
+} FREQUENCY;
+
+
+typedef struct
+{
+ FREQUENCY freq;
+ NOTE_DURATION duration;
+} NOTE;
+
+void playNote(NOTE note);
+BOOL isNotePlaying(void);
+// Remove the initializers
+
+
+
+
+
+
+extern NOTE pacman_wakka[2];
+extern NOTE power_pill_sound[3];
+extern NOTE death_sound[6];
+extern NOTE game_start[4];
+extern NOTE victory_sound[5];
+# 8 "Source/RIT/IRQ_RIT.c" 2
+
+// here we define the shared variable
+volatile _Bool debouncing = 0;
+
+
 extern volatile int pacmanDirRow;
 extern volatile int pacmanDirCol;
 extern volatile _Bool gamePaused;
-
-// Flags to track button state
-static _Bool upPressedFlag = 0;
-static _Bool downPressedFlag = 0;
-static _Bool leftPressedFlag = 0;
-static _Bool rightPressedFlag = 0;
-
-void RIT_IRQHandler(void) {
-    // Read joystick inputs (active low)
-    int upPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 29)); // Joystick UP
-    int downPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 26)); // Joystick DOWN
-    int leftPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 27)); // Joystick LEFT
-    int rightPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 28)); // Joystick RIGHT
-
- // only process the joystick if the game is not paused
+extern volatile _Bool gameOver;
+extern int offsetX;
+extern int offsetY;
 
 
-    // Handle UP
-    if (upPressed && !upPressedFlag) {
-        pacmanDirRow = -1;
-        pacmanDirCol = 0;
-        upPressedFlag = 1; // Mark as handled
-    } else if (!upPressed) {
-        upPressedFlag = 0; // Reset when released
+void RIT_IRQHandler (void)
+{
+    static _Bool buttonPressed = 0; // Track button state
+    static int debounceCounter = 0; // Counter for debounce delay
+
+    // Handle button debouncing
+    if (debouncing) {
+        if ((((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00040) )->FIOPIN & (1 << 10)) == 0) { // Button pressed
+            if (!buttonPressed) {
+                buttonPressed = 1; // Mark the button as pressed
+                gamePaused = !gamePaused; // Toggle pause state
+
+                if (gamePaused) {
+          enable_timer(3);
+                    // Display "PAUSE" text
+                    GUI_Text((240 / 2) - 23, (320 / 2) - 10, (uint8_t *)"PAUSE", 0xFFE0, 0x0000);
+                    disable_timer(2); // Pause the game timer
+                } else {
+                    // Clear "PAUSE" text
+          int x, y;
+                    for (y = (320 / 2) - 10; y < (320 / 2) - 10 + 16; y++) {
+                        for (x = (240 / 2) - 23; x < (240 / 2) - 23 + 40; x++) {
+                            LCD_SetPoint(x, y, 0x0000);
+                        }
+                    }
+                    enable_timer(2); // Resume the game timer
+                }
+            }
+        } else { // Button released
+            buttonPressed = 0; // Reset button state
+            debounceCounter++;
+            if (debounceCounter >= 2) { // 50 ms debounce delay
+                debouncing = 0; // End debouncing
+                debounceCounter = 0; // Reset debounce counter
+                __NVIC_EnableIRQ(EINT0_IRQn); // Re-enable EINT0 interrupt
+                ((LPC_PINCON_TypeDef *) ((0x40000000UL) + 0x2C000) )->PINSEL4 |= (1 << 20); // Restore P2.10 to EINT0 mode
+            }
+        }
     }
 
-    // Handle DOWN
-    if (downPressed && !downPressedFlag) {
-        pacmanDirRow = 1;
-        pacmanDirCol = 0;
-        downPressedFlag = 1;
-    } else if (!downPressed) {
-        downPressedFlag = 0;
-    }
-
-    // Handle LEFT
-    if (leftPressed && !leftPressedFlag) {
-        pacmanDirRow = 0;
-        pacmanDirCol = -1;
-        leftPressedFlag = 1;
-    } else if (!leftPressed) {
-        leftPressedFlag = 0;
-    }
-
-    // Handle RIGHT
-    if (rightPressed && !rightPressedFlag) {
-        pacmanDirRow = 0;
-        pacmanDirCol = 1;
-        rightPressedFlag = 1;
-    } else if (!rightPressed) {
-        rightPressedFlag = 0;
-    }
-
-    // Move Pacman in the current direction
+    // Handle joystick input
     if (!gamePaused) {
-    movePacMan();
-  }
+        int upPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 29)); // Joystick UP
+        int downPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 26)); // Joystick DOWN
+        int leftPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 27)); // Joystick LEFT
+        int rightPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 28)); // Joystick RIGHT
 
-    // Clear the RIT interrupt flag
-    ((LPC_RIT_TypeDef *) ((0x40080000UL) + 0x30000) )->RICTRL |= 0x1;
+        if (upPressed) {
+            pacmanDirRow = -1;
+            pacmanDirCol = 0; // Move up
+        } else if (downPressed) {
+            pacmanDirRow = 1;
+            pacmanDirCol = 0; // Move down
+        } else if (leftPressed) {
+            pacmanDirRow = 0;
+            pacmanDirCol = -1; // Move left
+        } else if (rightPressed) {
+            pacmanDirRow = 0;
+            pacmanDirCol = 1; // Move right
+        }
+
+    // play sound
+
+        movePacMan();
+        updateGhost();
+    }
+
+    ((LPC_RIT_TypeDef *) ((0x40080000UL) + 0x30000) )->RICTRL |= 0x1; // Clear RIT interrupt flag
 }

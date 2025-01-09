@@ -16,6 +16,10 @@
 ".\objects\lib_led.o"
 ".\objects\irq_button.o"
 ".\objects\lib_button.o"
+".\objects\ghost.o"
+".\objects\music.o"
+".\objects\irq_can.o"
+".\objects\lib_can.o"
 --strict --scatter ".\Objects\sample_GLCD_TP.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

@@ -19,17 +19,23 @@
 ** Returned value:		None
 **
 ******************************************************************************/
-void enable_timer( uint8_t timer_num )
-{
-  if ( timer_num == 0 )
-  {
-	LPC_TIM0->TCR = 1;
-  }
-  else
-  {
-	LPC_TIM1->TCR = 1;
-  }
-  return;
+
+
+void enable_timer(char timer_num) {
+    switch(timer_num) {
+        case 0:
+            LPC_TIM0->TCR = 1;
+            break;
+        case 1:
+            LPC_TIM1->TCR = 1;
+            break;
+        case 2:
+            LPC_TIM2->TCR = 1;
+            break;
+        case 3:
+            LPC_TIM3->TCR = 1;
+            break;
+    }
 }
 
 /******************************************************************************
@@ -41,17 +47,21 @@ void enable_timer( uint8_t timer_num )
 ** Returned value:		None
 **
 ******************************************************************************/
-void disable_timer( uint8_t timer_num )
-{
-  if ( timer_num == 0 )
-  {
-	LPC_TIM0->TCR = 0;
-  }
-  else
-  {
-	LPC_TIM1->TCR = 0;
-  }
-  return;
+void disable_timer(char timer_num) {
+    switch(timer_num) {
+        case 0:
+            LPC_TIM0->TCR = 0;
+            break;
+        case 1:
+            LPC_TIM1->TCR = 0;
+            break;
+        case 2:
+            LPC_TIM2->TCR = 0;
+            break;
+        case 3:
+            LPC_TIM3->TCR = 0;
+            break;
+    }
 }
 
 /******************************************************************************
@@ -63,26 +73,34 @@ void disable_timer( uint8_t timer_num )
 ** Returned value:		None
 **
 ******************************************************************************/
-void reset_timer( uint8_t timer_num )
-{
-  uint32_t regVal;
-
-  if ( timer_num == 0 )
-  {
-	regVal = LPC_TIM0->TCR;
-	regVal |= 0x02;
-	LPC_TIM0->TCR = regVal;
-  }
-  else
-  {
-	regVal = LPC_TIM1->TCR;
-	regVal |= 0x02;
-	LPC_TIM1->TCR = regVal;
-  }
-  return;
+void reset_timer(char timer_num) {
+    uint32_t regVal;
+    
+    switch(timer_num) {
+        case 0:
+            regVal = LPC_TIM0->TCR;
+            regVal |= 0x02;
+            LPC_TIM0->TCR = regVal;
+            break;
+        case 1:
+            regVal = LPC_TIM1->TCR;
+            regVal |= 0x02;
+            LPC_TIM1->TCR = regVal;
+            break;
+        case 2:
+            regVal = LPC_TIM2->TCR;
+            regVal |= 0x02;
+            LPC_TIM2->TCR = regVal;
+            break;
+        case 3:
+            regVal = LPC_TIM3->TCR;
+            regVal |= 0x02;
+            LPC_TIM3->TCR = regVal;
+            break;
+    }
 }
 
-uint32_t init_timer ( uint8_t timer_num, uint32_t TimerInterval )
+unsigned int init_timer ( char timer_num, unsigned int TimerInterval )
 {
   if ( timer_num == 0 )
   {
@@ -148,11 +166,23 @@ uint32_t init_timer ( uint8_t timer_num, uint32_t TimerInterval )
   else if ( timer_num == 1 )
   {
 	LPC_TIM1->MR0 = TimerInterval;
-	LPC_TIM1->MCR = 3;				/* Interrupt and Reset on MR1 */
+	LPC_TIM1->MCR = 7;				/* Interrupt reset and stop on MR1 */
 
 	NVIC_EnableIRQ(TIMER1_IRQn);
 	return (1);
   }
+	else if (timer_num == 2){
+		LPC_TIM2->MR0 = TimerInterval;
+		LPC_TIM2->MCR = 3;          // Like timer 0: Interrupt and reset on MR0
+		NVIC_EnableIRQ(TIMER2_IRQn);
+		return(1);
+	}
+	else if (timer_num == 3){
+		LPC_TIM3->MR0 = TimerInterval;
+		LPC_TIM3->MCR = 7;          // Like timer 1: Interrupt, reset and stop on MR0
+    NVIC_EnableIRQ(TIMER3_IRQn);
+		return(1);
+	}
   return (0);
 }
 

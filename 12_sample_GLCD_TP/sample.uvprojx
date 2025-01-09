@@ -695,6 +695,56 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Ghost</GroupName>
+          <Files>
+            <File>
+              <FileName>ghost.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Ghost\ghost.c</FilePath>
+            </File>
+            <File>
+              <FileName>ghost.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\Ghost\ghost.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>music</GroupName>
+          <Files>
+            <File>
+              <FileName>music.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\music\music.c</FilePath>
+            </File>
+            <File>
+              <FileName>music.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\music\music.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>CAN</GroupName>
+          <Files>
+            <File>
+              <FileName>CAN.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\CAN\CAN.h</FilePath>
+            </File>
+            <File>
+              <FileName>IRQ_CAN.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\CAN\IRQ_CAN.c</FilePath>
+            </File>
+            <File>
+              <FileName>lib_CAN.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\CAN\lib_CAN.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
@@ -1333,6 +1383,56 @@
               <FileName>lib_button.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\button_EXINT\lib_button.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Ghost</GroupName>
+          <Files>
+            <File>
+              <FileName>ghost.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Ghost\ghost.c</FilePath>
+            </File>
+            <File>
+              <FileName>ghost.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\Ghost\ghost.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>music</GroupName>
+          <Files>
+            <File>
+              <FileName>music.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\music\music.c</FilePath>
+            </File>
+            <File>
+              <FileName>music.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\music\music.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>CAN</GroupName>
+          <Files>
+            <File>
+              <FileName>CAN.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\CAN\CAN.h</FilePath>
+            </File>
+            <File>
+              <FileName>IRQ_CAN.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\CAN\IRQ_CAN.c</FilePath>
+            </File>
+            <File>
+              <FileName>lib_CAN.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\CAN\lib_CAN.c</FilePath>
             </File>
           </Files>
         </Group>

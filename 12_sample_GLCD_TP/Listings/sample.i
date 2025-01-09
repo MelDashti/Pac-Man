@@ -5,7 +5,6 @@
 # 1 "<command line>" 1
 # 1 "<built-in>" 2
 # 1 "Source/sample.c" 2
-
 # 1 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 1
 # 41 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 typedef enum IRQn
@@ -1782,7 +1781,7 @@ typedef struct
        uint32_t RESERVED8;
   volatile uint32_t Module_ID;
 } LPC_EMAC_TypeDef;
-# 3 "Source/sample.c" 2
+# 2 "Source/sample.c" 2
 # 1 "Source\\GLCD/GLCD.h" 1
 # 90 "Source\\GLCD/GLCD.h"
 void LCD_Initialization(void);
@@ -1792,7 +1791,7 @@ void LCD_SetPoint(uint16_t Xpos,uint16_t Ypos,uint16_t point);
 void LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
 void PutChar( uint16_t Xpos, uint16_t Ypos, uint8_t ASCI, uint16_t charColor, uint16_t bkColor );
 void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_t bkColor);
-# 4 "Source/sample.c" 2
+# 3 "Source/sample.c" 2
 # 1 "Source\\joystick/joystick.h" 1
 # 11 "Source\\joystick/joystick.h"
 // joystick.h
@@ -1803,6 +1802,34 @@ void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_
 
 
 void joystick_init(void);
+# 4 "Source/sample.c" 2
+# 1 "Source\\Ghost/ghost.h" 1
+
+
+
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
+# 5 "Source\\Ghost/ghost.h" 2
+
+// ghost structure
+
+typedef struct {
+ int row;
+ int col;
+ _Bool isChasing;
+ _Bool isActive;
+ int respawnTimer;
+ int frightenedTimer;
+ int underlyingCell;
+
+}Ghost;
+
+extern Ghost blinky;
+
+// function declaration
+void initGhost(void);
+void updateGhost(void);
+void drawGhost(int offsetX, int offsetY);
+void ghostFrightenedMode(void);
 # 5 "Source/sample.c" 2
 # 1 "Source\\RIT/RIT.h" 1
 # 14 "Source\\RIT/RIT.h"
@@ -1853,17 +1880,97 @@ void DrawCross(uint16_t Xpos,uint16_t Ypos);
 void TP_DrawPoint(uint16_t Xpos,uint16_t Ypos);
 uint8_t setCalibrationMatrix( Coordinate * displayPtr,Coordinate * screenPtr,Matrix * matrixPtr);
 uint8_t getDisplayPoint(Coordinate * displayPtr,Coordinate * screenPtr,Matrix * matrixPtr );
+void TP_DrawPoint_Magnifier(Coordinate * displayPtr);
 # 8 "Source/sample.c" 2
 # 1 "Source\\timer/timer.h" 1
-# 14 "Source\\timer/timer.h"
-extern uint32_t init_timer( uint8_t timer_num, uint32_t timerInterval );
-extern void enable_timer( uint8_t timer_num );
-extern void disable_timer( uint8_t timer_num );
-extern void reset_timer( uint8_t timer_num );
-extern volatile int countdown;
+# 13 "Source\\timer/timer.h"
+# 1 "Source\\timer\\../music/music.h" 1
+
+
+
+
+//Default: 1.65
+
+
+
+
+
+
+
+typedef char BOOL;
+
+
+
+typedef enum note_durations
+{
+ time_semibiscroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 64.0f + 0.5), // 1/128
+ time_biscroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 32.0f + 0.5), // 1/64
+ time_semicroma = (unsigned int)(0x17D7840 * 1 * 1.6 / 16.0f + 0.5), // 1/32
+ time_croma = (unsigned int)(0x17D7840 * 1 * 1.6 / 8.0f + 0.5), // 1/16
+ time_semiminima = (unsigned int)(0x17D7840 * 1 * 1.6 / 4.0f + 0.5), // 1/4
+ time_minima = (unsigned int)(0x17D7840 * 1 * 1.6 / 2.0f + 0.5), // 1/2
+ time_semibreve = (unsigned int)(0x17D7840 * 1 * 1.6 + 0.5), // 1
+} NOTE_DURATION;
+
+typedef enum frequencies
+{
+ a2b = 5351, // 103Hz k=5351 a2b
+ b2 = 4500, // 123Hz k=4500 b2
+ c3b = 4370, // 127Hz k)4370 c3b
+ c3 = 4240, // 131Hz k=4240 c3
+ d3 = 3779, // 147Hz k=3779 d3
+ e3 = 3367, // 165Hz k=3367 e3
+ f3 = 3175, // 175Hz k=3175 f3
+ g3 = 2834, // 196Hz k=2834 g3
+ a3b = 2670, // 208Hz k=2670 a4b
+ a3 = 2525, // 220Hz k=2525 a3
+ b3 = 2249, // 247Hz k=2249 b3
+ c4 = 2120, // 262Hz k=2120 c4
+ d4 = 1890, // 294Hz k=1890 d4
+ e4 = 1684, // 330Hz k=1684 e4
+ f4 = 1592, // 349Hz k=1592 f4
+ g4 = 1417, // 392Hz k=1417 g4
+ a4 = 1263, // 440Hz k=1263 a4
+ b4 = 1125, // 494Hz k=1125 b4
+ c5 = 1062, // 523Hz k=1062 c5
+ pause = 0 // DO NOT SOUND
+} FREQUENCY;
+
+
+typedef struct
+{
+ FREQUENCY freq;
+ NOTE_DURATION duration;
+} NOTE;
+
+void playNote(NOTE note);
+BOOL isNotePlaying(void);
+// Remove the initializers
+
+
+
+
+
+
+extern NOTE pacman_wakka[2];
+extern NOTE power_pill_sound[3];
+extern NOTE death_sound[6];
+extern NOTE game_start[4];
+extern NOTE victory_sound[5];
+# 14 "Source\\timer/timer.h" 2
+
+
+
+extern unsigned int init_timer( char timer_num, unsigned int timerInterval );
+extern void enable_timer( char timer_num );
+extern void disable_timer( char timer_num );
+extern void reset_timer( char timer_num );
+
 
 extern void TIMER0_IRQHandler (void);
 extern void TIMER1_IRQHandler (void);
+extern void TIMER2_IRQHandler (void);
+extern void TIMER3_IRQHandler (void);
 # 9 "Source/sample.c" 2
 # 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 1 3
 # 53 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdio.h" 3
@@ -2351,12 +2458,334 @@ extern __attribute__((__nothrow__)) void __use_no_heap_region(void);
 extern __attribute__((__nothrow__)) char const *__C_library_version_string(void);
 extern __attribute__((__nothrow__)) int __C_library_version_number(void);
 # 11 "Source/sample.c" 2
-# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
-# 12 "Source/sample.c" 2
 
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\time.h" 1 3
+# 82 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\time.h" 3
+typedef unsigned int clock_t;
+typedef unsigned int time_t;
+
+
+
+
+
+
+struct tm {
+    int tm_sec;
+
+    int tm_min;
+    int tm_hour;
+    int tm_mday;
+    int tm_mon;
+    int tm_year;
+    int tm_wday;
+    int tm_yday;
+    int tm_isdst;
+    union {
+        struct {
+            int __extra_1, __extra_2;
+        };
+        struct {
+            long __extra_1_long, __extra_2_long;
+        };
+        struct {
+            char *__extra_1_cptr, *__extra_2_cptr;
+        };
+        struct {
+            void *__extra_1_vptr, *__extra_2_vptr;
+        };
+    };
+};
+# 127 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\time.h" 3
+extern __attribute__((__nothrow__)) clock_t clock(void);
+
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) double difftime(time_t , time_t );
+
+
+
+
+extern __attribute__((__nothrow__)) time_t mktime(struct tm * ) __attribute__((__nonnull__(1)));
+# 156 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\time.h" 3
+extern __attribute__((__nothrow__)) time_t time(time_t * );
+# 166 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\time.h" 3
+extern __attribute__((__nothrow__)) char *asctime(const struct tm * ) __attribute__((__nonnull__(1)));
+extern __attribute__((__nothrow__)) char *_asctime_r(const struct tm * ,
+                                char * __restrict ) __attribute__((__nonnull__(1,2)));
+# 178 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\time.h" 3
+extern __attribute__((__nothrow__)) char *ctime(const time_t * ) __attribute__((__nonnull__(1)));
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) struct tm *gmtime(const time_t * ) __attribute__((__nonnull__(1)));
+
+
+
+
+
+extern __attribute__((__nothrow__)) struct tm *localtime(const time_t * ) __attribute__((__nonnull__(1)));
+extern __attribute__((__nothrow__)) struct tm *_localtime_r(const time_t * __restrict ,
+                                       struct tm * __restrict ) __attribute__((__nonnull__(1,2)));
+# 203 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\time.h" 3
+extern __attribute__((__nothrow__)) size_t strftime(char * __restrict , size_t ,
+                       const char * __restrict ,
+                       const struct tm * __restrict ) __attribute__((__nonnull__(1,3,4)));
+# 13 "Source/sample.c" 2
+
+# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 1 3
+# 290 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 3
+extern __attribute__((__nothrow__)) double acos(double );
+
+
+
+extern __attribute__((__nothrow__)) double asin(double );
+
+
+
+
+
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double atan(double );
+
+
+
+extern __attribute__((__nothrow__)) double atan2(double , double );
+
+
+
+
+
+extern __attribute__((__nothrow__)) double cos(double );
+
+
+
+
+extern __attribute__((__nothrow__)) double sin(double );
+
+
+
+
+
+extern void __use_accurate_range_reduction(void);
+
+
+
+extern __attribute__((__nothrow__)) double tan(double );
+
+
+
+
+
+extern __attribute__((__nothrow__)) double cosh(double );
+
+
+
+
+extern __attribute__((__nothrow__)) double sinh(double );
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double tanh(double );
+
+
+
+extern __attribute__((__nothrow__)) double exp(double );
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) double frexp(double , int * ) __attribute__((__nonnull__(2)));
+
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) double ldexp(double , int );
+
+
+
+
+extern __attribute__((__nothrow__)) double log(double );
+
+
+
+
+
+extern __attribute__((__nothrow__)) double log10(double );
+
+
+
+extern __attribute__((__nothrow__)) double modf(double , double * ) __attribute__((__nonnull__(2)));
+
+
+
+
+
+extern __attribute__((__nothrow__)) double pow(double , double );
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) double sqrt(double );
+# 410 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 3
+    static __inline double _sqrt(double __x) { return sqrt(__x); }
+# 427 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 3
+    static __inline float _sqrtf(float __x) { return (float)sqrt(__x); }
+
+
+
+
+
+
+
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double ceil(double );
+
+
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double fabs(double );
+
+
+
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double floor(double );
+
+
+
+extern __attribute__((__nothrow__)) double fmod(double , double );
+# 740 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 3
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float fabsf(float);
+static __inline __attribute__((__nothrow__)) __attribute__((__const__)) float _fabsf(float __f) { return fabsf(__f); }
+extern __attribute__((__nothrow__)) float sinf(float );
+extern __attribute__((__nothrow__)) float cosf(float );
+extern __attribute__((__nothrow__)) float tanf(float );
+extern __attribute__((__nothrow__)) float acosf(float );
+extern __attribute__((__nothrow__)) float asinf(float );
+extern __attribute__((__nothrow__)) float atanf(float );
+extern __attribute__((__nothrow__)) float atan2f(float , float );
+extern __attribute__((__nothrow__)) float sinhf(float );
+extern __attribute__((__nothrow__)) float coshf(float );
+extern __attribute__((__nothrow__)) float tanhf(float );
+extern __attribute__((__nothrow__)) float expf(float );
+extern __attribute__((__nothrow__)) float logf(float );
+extern __attribute__((__nothrow__)) float log10f(float );
+extern __attribute__((__nothrow__)) float powf(float , float );
+extern __attribute__((__nothrow__)) float sqrtf(float );
+extern __attribute__((__nothrow__)) float ldexpf(float , int );
+extern __attribute__((__nothrow__)) float frexpf(float , int * ) __attribute__((__nonnull__(2)));
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float ceilf(float );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float floorf(float );
+extern __attribute__((__nothrow__)) float fmodf(float , float );
+extern __attribute__((__nothrow__)) float modff(float , float * ) __attribute__((__nonnull__(2)));
+# 780 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 3
+__attribute__((__nothrow__)) long double acosl(long double );
+__attribute__((__nothrow__)) long double asinl(long double );
+__attribute__((__nothrow__)) long double atanl(long double );
+__attribute__((__nothrow__)) long double atan2l(long double , long double );
+__attribute__((__nothrow__)) long double ceill(long double );
+__attribute__((__nothrow__)) long double cosl(long double );
+__attribute__((__nothrow__)) long double coshl(long double );
+__attribute__((__nothrow__)) long double expl(long double );
+__attribute__((__nothrow__)) long double fabsl(long double );
+__attribute__((__nothrow__)) long double floorl(long double );
+__attribute__((__nothrow__)) long double fmodl(long double , long double );
+__attribute__((__nothrow__)) long double frexpl(long double , int* ) __attribute__((__nonnull__(2)));
+__attribute__((__nothrow__)) long double ldexpl(long double , int );
+__attribute__((__nothrow__)) long double logl(long double );
+__attribute__((__nothrow__)) long double log10l(long double );
+__attribute__((__nothrow__)) long double modfl(long double , long double * ) __attribute__((__nonnull__(2)));
+__attribute__((__nothrow__)) long double powl(long double , long double );
+__attribute__((__nothrow__)) long double sinl(long double );
+__attribute__((__nothrow__)) long double sinhl(long double );
+__attribute__((__nothrow__)) long double sqrtl(long double );
+__attribute__((__nothrow__)) long double tanl(long double );
+__attribute__((__nothrow__)) long double tanhl(long double );
+# 840 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 3
+extern __attribute__((__nothrow__)) double exp2(double );
+extern __attribute__((__nothrow__)) float exp2f(float );
+__attribute__((__nothrow__)) long double exp2l(long double );
+extern __attribute__((__nothrow__)) double fdim(double , double );
+extern __attribute__((__nothrow__)) float fdimf(float , float );
+__attribute__((__nothrow__)) long double fdiml(long double , long double );
+# 855 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 3
+extern __attribute__((__nothrow__)) double fma(double , double , double );
+extern __attribute__((__nothrow__)) float fmaf(float , float , float );
+
+static __inline __attribute__((__nothrow__)) long double fmal(long double __x, long double __y, long double __z) { return (long double)fma((double)__x, (double)__y, (double)__z); }
+
+
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double fmax(double , double );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float fmaxf(float , float );
+__attribute__((__nothrow__)) long double fmaxl(long double , long double );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double fmin(double , double );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float fminf(float , float );
+__attribute__((__nothrow__)) long double fminl(long double , long double );
+extern __attribute__((__nothrow__)) double log2(double );
+extern __attribute__((__nothrow__)) float log2f(float );
+__attribute__((__nothrow__)) long double log2l(long double );
+extern __attribute__((__nothrow__)) long lrint(double );
+extern __attribute__((__nothrow__)) long lrintf(float );
+
+static __inline __attribute__((__nothrow__)) long lrintl(long double __x) { return lrint((double)__x); }
+
+
+extern __attribute__((__nothrow__)) long long llrint(double );
+extern __attribute__((__nothrow__)) long long llrintf(float );
+
+static __inline __attribute__((__nothrow__)) long long llrintl(long double __x) { return llrint((double)__x); }
+
+
+extern __attribute__((__nothrow__)) long lround(double );
+extern __attribute__((__nothrow__)) long lroundf(float );
+
+static __inline __attribute__((__nothrow__)) long lroundl(long double __x) { return lround((double)__x); }
+
+
+extern __attribute__((__nothrow__)) long long llround(double );
+extern __attribute__((__nothrow__)) long long llroundf(float );
+
+static __inline __attribute__((__nothrow__)) long long llroundl(long double __x) { return llround((double)__x); }
+
+
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double nan(const char * );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float nanf(const char * );
+
+static __inline __attribute__((__nothrow__)) __attribute__((__const__)) long double nanl(const char *__t) { return (long double)nan(__t); }
+# 908 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\math.h" 3
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double nearbyint(double );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float nearbyintf(float );
+__attribute__((__nothrow__)) long double nearbyintl(long double );
+extern __attribute__((__nothrow__)) double remquo(double , double , int * );
+extern __attribute__((__nothrow__)) float remquof(float , float , int * );
+
+static __inline long double remquol(long double __x, long double __y, int *__q) { return (long double)remquo((double)__x, (double)__y, __q); }
+
+
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double round(double );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float roundf(float );
+__attribute__((__nothrow__)) long double roundl(long double );
+extern __attribute__((__nothrow__)) double tgamma(double );
+extern __attribute__((__nothrow__)) float tgammaf(float );
+__attribute__((__nothrow__)) long double tgammal(long double );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) double trunc(double );
+extern __attribute__((__nothrow__)) __attribute__((__const__)) float truncf(float );
+__attribute__((__nothrow__)) long double truncl(long double );
+# 15 "Source/sample.c" 2
 
 extern uint8_t ScaleFlag;
-# 23 "Source/sample.c"
+# 25 "Source/sample.c"
 // Optionally define POWER_PILL if you want to add them later
 
 
@@ -2364,6 +2793,8 @@ extern uint8_t ScaleFlag;
 
 
 
+
+int pillCount=0;
 int score = 0;
 int lives = 1;
 volatile int countdown = 60; // Global for timer use
@@ -2371,6 +2802,7 @@ volatile int powerPillsSpawned = 0;
 
 volatile int down_0 = 0; // For button debouncing
 volatile _Bool gamePaused = 1;
+volatile _Bool gameOver = 0;
 int totalPills = 240; // Track remaining pills
 int pillsEaten = 0;
 
@@ -2378,41 +2810,39 @@ int pillsEaten = 0;
 int offsetX;
 int offsetY;
 
-
-
-static int mazeGrid[29][28];
+volatile int mazeGrid[29][28];
 
 // Example maze layout (28 chars wide each line):
 // 'X' = wall, ' ' = empty space, 'G' = ghost house area
 static const char mazeDef[29][28 +1] = {
 "XXXXXXXXXXXXXXXXXXXXXXXXXXXX", // 28 'X'
-"X            XX            X",
-"X XXXX XXXXX XX XXXXX XXXX X",
-"X XXXX XXXXX XX XXXXX XXXX X",
-"X                          X",
+"X            XX           XX",
+"X XXXX XXXXX XX XXXXX XXXXXX",
+"X XXXX XXXXX XX XXXXX XXXXXX",
+"X     G              G     X",
 "X XXXX XX XXXXXXXX XX XXXX X",
 "X XXXX XX XXXXXXXX XX XXXX X",
 "X      XX    XX    XX      X",
 "XXXXXX XXXXX XX XXXXX XXXXXX",
 "XXXXXX XXXXX XX XXXXX XXXXXX",
-"XXXXXX XX          XX XXXXXX",
-"XXXXXX XX XXXXXXXX XX XXXXXX",
-"XXXXXX XX XGGGGGGX XX XXXXXX",
-"          XGGGGGGX          ",
-"XXXXXX XX XGGGGGGX XX XXXXXX",
-"XXXXXX XX XGGGGGGX XX     XX",
-"XXXXXX XX XXXXXXXX	XX XXX XX",
-"X      XX          XX XXX XX",
+"XXXXXX XXGGGGGGGGGGXX XXXXXX",
+"XXXXXX XXGXXXGGXXXGXX XXXXXX",
+"XXXXXX XXGXGGGGGGXGXX XXXXXX",
+"GGGG   GGGXGGGGGGXGG    GGGG",
+"XXXXXX XXGXGGGGGGXGXX XXXXXX",
+"XXXXXX XXGXGGGGGGXGXX     XX",
+"XXXXXX XXGXXXXXXXXGXX XXX XX",
+"X      XXGGGGGGGGGGXX XXX XX",
 "X XXXX XX XXXXXXXX XX XXX XX",
 "X XXXX XX XXXXXXXX XX XXX XX",
 "X XXXX XX          XX     XX",
 "X XXXX XX XXXXXXXX XX XXXXXX",
-"X            XX            X",
+"X     G      XX      G     X",
 "X XXXX XXXXX XX XXXXX XXXX X",
 "X XXXX XXXXX XX XXXXX XXXX X",
-"X   XX                XX   X",
-"XXX XX XX XXXXXXXX XX XX XXX",
-"X      XX    XX    XX      X",
+"X   XX                XXXX X",
+"XXX XX XX XXXXXXXX XX XXXX X",
+"XXX    XX    XX    XX      X",
 "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 };
 
@@ -2432,17 +2862,28 @@ void drawPill(int row, int col, int offsetX, int offsetY, uint16_t color, int pi
 void initMazeGrid(void);
 void drawMazeFromGrid(int offsetX, int offsetY);
 
+void replace_zero(char *str) {
+  int i;
+ for (i = 0; str[i] != '\0'; i++) {
+        if (str[i] == '0') {
+            str[i] = 'O'; // Replace '0' with 'O' (capital letter O)
+        }
+    }
+}
 // Draw Score, Time, Lives
 void drawUI(void) {
     char buffer[20];
 
-    sprintf(buffer, "SCORE: %04d", score);
+    sprintf(buffer, "SCORE: %4d", score);
+  replace_zero(buffer);
     GUI_Text(10, 0, (uint8_t *)buffer, 0xFFFF, 0x0000);
 
-    sprintf(buffer, "TIME: %02d", countdown);
+    sprintf(buffer, "TIME: %2d", countdown);
+  replace_zero(buffer);
     GUI_Text(240 - 100, 0, (uint8_t *)buffer, 0xFFFF, 0x0000);
 
     sprintf(buffer, "LIVES: %d", lives);
+  replace_zero(buffer);
     GUI_Text(10, 320 - 15, (uint8_t *)buffer, 0xFFFF, 0x0000);
 }
 
@@ -2480,8 +2921,8 @@ void drawPill(int row, int col, int offsetX, int offsetY, uint16_t color, int pi
 }
 
 void initMazeGrid(void) {
+  srand(time(0));
     int r, c;
-    int pillCount = 0;
 
     for (r = 0; r < 29; r++) {
         for (c = 0; c < 28; c++) {
@@ -2490,7 +2931,7 @@ void initMazeGrid(void) {
                 mazeGrid[r][c] = 1;
             } else if (cell == 'G') {
                 // Ghost house area as 1 so no pills appear inside
-                mazeGrid[r][c] = 1;
+                mazeGrid[r][c] = 0;
             } else {
                 // ' ' = empty floor, initially mark 0
                 mazeGrid[r][c] = 0;
@@ -2498,15 +2939,18 @@ void initMazeGrid(void) {
         }
     }
 
-    // Fill empty spaces with pills
-    for (r = 0; r < 29; r++) {
-        for (c = 0; c < 28; c++) {
-            if (mazeGrid[r][c] == 0) {
-                mazeGrid[r][c] = 2;
-                pillCount++;
-            }
-        }
+  for (r = 0; r < 29; r++) {
+    for (c = 0; c < 28; c++) {
+      if (mazeGrid[r][c] == 0 && mazeDef[r][c] != 'G') { // Check original maze definition
+        mazeGrid[r][c] = 2;
+        pillCount++;
+      }
     }
+  }
+    char buffer[20];
+
+  // sprintf(buffer, "PILLS: %02d", pillCount);
+  // GUI_Text(20, 0, (uint8_t *)buffer, 0xFFFF, 0x0000);
 
     // Print out the pill count for debugging, giving error
     //printf("Total Pills: %d\n", pillCount);
@@ -2569,20 +3013,38 @@ void drawMazeFromGrid(int offsetX, int offsetY) {
 void drawPacMan(int row, int col, int offsetX, int offsetY) {
     int startX = offsetX + col * 8;
     int startY = offsetY + row * 10;
-    int radius = 3; // small radius
-  int dy, dx;
+    int centerX = startX + (8 / 2);
+    int centerY = startY + (10 / 2);
+    const int radius = 3; // Slightly larger
+    int dx, dy;
+
+    // Animation variables
+    static int frame = 0;
+    frame = (frame + 1) % 20; // Cycle through 20 frames
+    float mouthAngle = (frame < 10) ? (frame * 3.6f) : ((20 - frame) * 3.6f); // Opens and closes
+
+    // Draw Pac-Man body
     for (dy = -radius; dy <= radius; dy++) {
         for (dx = -radius; dx <= radius; dx++) {
-            if (dx*dx + dy*dy <= radius*radius) {
-                int drawX = startX + (8/2) + dx;
-                int drawY = startY + (10/2) + dy;
-                if (drawX >= 0 && drawX < 240 && drawY >= 0 && drawY < 320) {
-                    LCD_SetPoint(drawX, drawY, 0xFFE0);
+            if (dx * dx + dy * dy <= radius * radius) {
+                // Calculate angle for the current point
+                float angle = atan2f(dy, dx) * 180.0f / 3.14159f;
+
+                // Skip drawing in the mouth area
+                if (!(angle > -mouthAngle && angle < mouthAngle)) {
+                    int drawX = centerX + dx;
+                    int drawY = centerY + dy;
+                    if (drawX >= 0 && drawX < 240 && drawY >= 0 && drawY < 320) {
+                        LCD_SetPoint(drawX, drawY, 0xFFE0);
+                    }
                 }
             }
         }
     }
 }
+
+
+
 
 _Bool movePacMan(void){
     // Here we calculate the new position based on the current position
@@ -2590,14 +3052,14 @@ _Bool movePacMan(void){
     int newCol = pacmanCol + pacmanDirCol;
 
   // Here we also check if we have won
-  if(pillsEaten >= totalPills){
+  if(pillsEaten >= pillCount){
     GUI_Text((240/2)-30, (320/2)-10, (uint8_t *)"Victory!", 0xFFE0, 0x0000);
 
     // Stop the game
     gamePaused=1;
     disable_RIT(); //
     disable_timer(0); // so countdown stops, etc.
-
+    __NVIC_DisableIRQ(EINT0_IRQn);
     return 0;
   }
     // here we check if its teleport location
@@ -2607,11 +3069,16 @@ _Bool movePacMan(void){
         pacmanCol = 0;
         // Check if there's a pill at the new position
         if(mazeGrid[pacmanRow][pacmanCol] == 2) {
+        playSoundEffect(pacman_wakka, sizeof(pacman_wakka)/sizeof(pacman_wakka[0]));
             score += 10;
+      pillsEaten++;
             mazeGrid[pacmanRow][pacmanCol] = 0;
         } else if(mazeGrid[pacmanRow][pacmanCol] == 3) {
             score += 50;
+      pillsEaten++;
             mazeGrid[pacmanRow][pacmanCol] = 0;
+      ghostFrightenedMode();
+        playSoundEffect(power_pill_sound, sizeof(power_pill_sound)/sizeof(power_pill_sound[0]));
         }
         drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
         drawUI();
@@ -2628,6 +3095,7 @@ _Bool movePacMan(void){
         } else if(mazeGrid[pacmanRow][pacmanCol] == 3) {
             score += 50;
             mazeGrid[pacmanRow][pacmanCol] = 0;
+      ghostFrightenedMode();
         }
         drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
         drawUI();
@@ -2647,6 +3115,7 @@ _Bool movePacMan(void){
                 score += 50;
         pillsEaten++;
                 mazeGrid[newRow][newCol] = 0;
+        ghostFrightenedMode();
             }
 
       // check for extra lives
@@ -2678,33 +3147,49 @@ int main(void) {
     TP_Init();
   BUTTON_init();
     LCD_Clear(0x0000);
-  //init_RIT(0x004C4B40); // 50ms
-  init_RIT(0x000F4240 ); // 50ms
-
+  //init_RIT(0x01538400); // 300ms for board
+   init_RIT(0x004C4B40); // 50ms
+  //init_RIT(0x000F4240 ); // 10ms for emulator
   enable_RIT();
+
     joystick_init(); // NEW: Initialize joystick
+
+
 
   offsetX = (240 - (28 * 8)) / 2;
     offsetY = (320 - (29 * 10)) / 2;
 
     initMazeGrid();
     drawMazeFromGrid(offsetX, offsetY);
-    drawUI();
+  drawUI();
     drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
+  initGhost(); // initializes the ghost blinky
+  drawGhost(offsetX, offsetY); // draws the initial ghost position
 
     // ready message
-    GUI_Text((240/2)-20, (320/2)-20, (uint8_t *)"READY!", 0xFFE0, 0x0000);
+    GUI_Text((240/2)-23, (320/2)-10, (uint8_t *)"READY", 0xFFE0, 0x0000);
+  playSoundEffect(game_start, sizeof(game_start)/sizeof(game_start[0]));
+    //init_timer(0, 0x00B6F1A0); // for board
+  init_timer(2, 0x1312D0); // for emulator
 
-    init_timer(0, 0x1312D0);
+
     //enable_timer(0);
-
+  //init_timer(1, 0x1312D0);
+  //enable_timer(1);
     // Set initial direction to nothing
     pacmanDirRow = 0;
     pacmanDirCol = 0;
 
+  init_timer(3, 0x1312D0); // Adjust this value based on your desired music timing
+  enable_timer(3);
+
   ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->PCON |= 0x1;
     ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->PCON &= ~(0x2);
 
+  // DAC Related.
+  ((LPC_PINCON_TypeDef *) ((0x40000000UL) + 0x2C000) )->PINSEL1 |= (1<<21);
+  ((LPC_PINCON_TypeDef *) ((0x40000000UL) + 0x2C000) )->PINSEL1 &= ~(1<<20);
+  ((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00000) )->FIODIR |= (1<<26);
   while (1) {
     __asm("wfi");}
     return 0;
