@@ -41,26 +41,26 @@ ARM Macro Assembler    Page 1
    24 00000000         ;   <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
    25 00000000         ; </h>
    26 00000000         
-   27 00000000 00000400 
+   27 00000000 00001000 
                        Stack_Size
-                               EQU              0x00000400
+                               EQU              0x00001000
    28 00000000         
    29 00000000                 AREA             STACK, NOINIT, READWRITE, ALIGN
 =3
    30 00000000         Stack_Mem
                                SPACE            Stack_Size
-   31 00000400         __initial_sp
-   32 00000400         
-   33 00000400         
-   34 00000400         ; <h> Heap Configuration
-   35 00000400         ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
-   36 00000400         ; </h>
-   37 00000400         
-   38 00000400 00000000 
+   31 00001000         __initial_sp
+   32 00001000         
+   33 00001000         
+   34 00001000         ; <h> Heap Configuration
+   35 00001000         ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
+   36 00001000         ; </h>
+   37 00001000         
+   38 00001000 00000000 
                        Heap_Size
                                EQU              0x00000000
-   39 00000400         
-   40 00000400                 AREA             HEAP, NOINIT, READWRITE, ALIGN=
+   39 00001000         
+   40 00001000                 AREA             HEAP, NOINIT, READWRITE, ALIGN=
 3
    41 00000000         __heap_base
 
@@ -419,16 +419,16 @@ ARM Macro Assembler    Page 7
   280 00000024                 END
               00000000 
               00000000 
-              00000400 
+              00001000 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931,A1950W --cpu=Cortex-M3 --depe
 nd=.\objects\startup_lpc17xx.d -o.\objects\startup_lpc17xx.o -I.\Source -I.\Sou
 rce\CMSIS_core -I.\Source\GLCD -I.\Source\timer -I.\Source\button_EXINT -I.\Sou
-rce\TouchPanel -I.\RTE\_SW_DEBUG -IC:\Users\meela\AppData\Local\Arm\Packs\ARM\C
-MSIS\6.1.0\CMSIS\Core\Include -IC:\Users\meela\AppData\Local\Arm\Packs\Keil\LPC
-1700_DFP\2.7.1\Device\Include --predefine="__EVAL SETA 1" --predefine="__UVISIO
-N_VERSION SETA 541" --predefine="LPC175x_6x SETA 1" --predefine="_RTE_ SETA 1" 
---list=.\listings\startup_lpc17xx.lst Source\startup_LPC17xx.s
+rce\TouchPanel -I.\RTE\_LandTiger_LPC1768__release_ -IC:\Keil_v5\ARM\PACK\ARM\C
+MSIS\6.1.0\CMSIS\Core\Include -IC:\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\2.7.1\Devi
+ce\Include --predefine="__UVISION_VERSION SETA 540" --predefine="LPC175x_6x SET
+A 1" --predefine="_RTE_ SETA 1" --list=.\listings\startup_lpc17xx.lst Source\st
+artup_LPC17xx.s
 
 
 
@@ -452,7 +452,7 @@ Symbol: Stack_Mem
       At line 270 in file Source\startup_LPC17xx.s
       At line 272 in file Source\startup_LPC17xx.s
 
-__initial_sp 00000400
+__initial_sp 00001000
 
 Symbol: __initial_sp
    Definitions
@@ -1040,7 +1040,7 @@ Symbol: Heap_Size
       At line 42 in file Source\startup_LPC17xx.s
       At line 271 in file Source\startup_LPC17xx.s
 
-Stack_Size 00000400
+Stack_Size 00001000
 
 Symbol: Stack_Size
    Definitions
@@ -1073,4 +1073,4 @@ Symbol: __use_two_region_memory
       None
 Comment: __use_two_region_memory unused
 2 symbols
-403 symbols in table
+402 symbols in table

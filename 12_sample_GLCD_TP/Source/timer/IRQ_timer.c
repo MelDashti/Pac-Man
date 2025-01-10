@@ -61,65 +61,6 @@ extern handleGhostTimer();
 #define UPTICKS 1
 
 
-//SHORTENING UNDERTALE: TOO MANY REPETITIONS
-NOTE song[] = 
-{
-	// 1
-	{d3, time_semicroma},
-	{d3, time_semicroma},
-	{d4, time_croma},
-	{a3, time_croma},
-	{pause, time_semicroma},
-	{a3b, time_semicroma},
-	{pause, time_semicroma},
-	{g3, time_croma},
-	{f3, time_semicroma*2},
-	{d3, time_semicroma},
-	{f3, time_semicroma},
-	{g3, time_semicroma},
-	// 2
-	{c3, time_semicroma},
-	{c3, time_semicroma},
-	{d4, time_croma},
-	{a3, time_croma},
-	{pause, time_semicroma},
-	{a3b, time_semicroma},
-	{pause, time_semicroma},
-	{g3, time_croma},
-	{f3, time_semicroma*2},
-	{d3, time_semicroma},
-	{f3, time_semicroma},
-	{g3, time_semicroma},
-	// 3
-	{c3b, time_semicroma},
-	{c3b, time_semicroma},
-	{d4, time_croma},
-	{a3, time_croma},
-	{pause, time_semicroma},
-	{a3b, time_semicroma},
-	{pause, time_semicroma},
-	{g3, time_croma},
-	{f3, time_semicroma*2},
-	{d3, time_semicroma},
-	{f3, time_semicroma},
-	{g3, time_semicroma},
-	// 4
-	{a2b, time_semicroma},
-	{a2b, time_semicroma},
-	{d4, time_croma},
-	{a3, time_croma},
-	{pause, time_semicroma},
-	{a3b, time_semicroma},
-	{pause, time_semicroma},
-	{g3, time_croma},
-	{f3, time_semicroma*2},
-	{d3, time_semicroma},
-	{f3, time_semicroma},
-	{g3, time_semicroma},
-	// 5
-	
-};
-
 
 uint16_t SinTable[45] = {
     410, 467, 523, 576, 627, 673, 714, 749, 778,
@@ -167,6 +108,7 @@ void TIMER2_IRQHandler(void) {
         gameOver = true;
         disable_timer(2);  // Changed from 0 to 2 since this is now Timer 2
         disable_RIT(0);
+				disable_timer(3);
     }
     
     if (!blinky.isChasing) {
@@ -182,28 +124,60 @@ void TIMER2_IRQHandler(void) {
     return;
 }
 
+static NOTE* currentBackgroundSong = NULL; // Background song
+static NOTE* currentEffect = NULL;         // Sound effect buffer
+static int   bgSongLength = 0;             // Background song length
+static int   effectLength = 0;             // Sound effect length
+static int   bgNoteIndex = 0;              // Background song index
+static int   effectNoteIndex = 0;          // Sound effect index
+static bool  effectPlaying = false;        // Flag for sound effect state
+static int   ticks = 0;                    // Tick counter for timing notes
+
+void playBackgroundMusic(NOTE* song, int length) {
+    currentBackgroundSong = song;
+    bgSongLength = length;
+    bgNoteIndex = 0;
+    effectPlaying = false; // Ensure no effect is playing
+    enable_timer(3);       // Start the timer
+}
+
+void playSoundEffect(NOTE* effect, int length) {
+    if (!effectPlaying) { // Only play if no other effect is playing
+        currentEffect = effect;
+        effectLength = length;
+        effectNoteIndex = 0;
+        effectPlaying = true;
+    }
+}
+
 void TIMER3_IRQHandler(void) {
-    static int currentNote = 0;
-    static int ticks = 0;
-    
-    if(!isNotePlaying()) {
+    if (!isNotePlaying()) {
         ++ticks;
-        if(ticks == UPTICKS) {
+
+        if (ticks == UPTICKS) {
             ticks = 0;
-            playNote(song[currentNote++]);
+
+            if (effectPlaying) {
+                // Play the current note of the sound effect
+                playNote(currentEffect[effectNoteIndex++]);
+
+                // Check if the effect is complete
+                if (effectNoteIndex >= effectLength) {
+                    effectPlaying = false; // Stop effect playback
+                    effectNoteIndex = 0;  // Reset effect index
+                }
+            } else if (currentBackgroundSong != NULL) {
+                // Play the current note of the background music
+                playNote(currentBackgroundSong[bgNoteIndex++]);
+
+                // Loop the background music
+                if (bgNoteIndex >= bgSongLength) {
+                    bgNoteIndex = 0;
+                }
+            }
         }
     }
-    
-    // If we've played all notes, you might want to either:
-    // Option 1: Loop the song
-    if(currentNote >= sizeof(song)/sizeof(song[0])) {
-        currentNote = 0;
-    }
-    
-    // Or Option 2: Stop playing
-    /*if(currentNote >= sizeof(song)/sizeof(song[0])) {
-        disable_timer(3);
-    }*/
-    
+
     LPC_TIM3->IR = 1; // Clear interrupt flag
 }
+

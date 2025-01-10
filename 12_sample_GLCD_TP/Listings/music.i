@@ -66,24 +66,12 @@ typedef struct
 
 void playNote(NOTE note);
 BOOL isNotePlaying(void);
-// Remove the initializers
-
-
-
-
-
-
-extern NOTE pacman_wakka[2];
-extern NOTE power_pill_sound[3];
-extern NOTE death_sound[6];
-extern NOTE game_start[4];
-extern NOTE victory_sound[5];
 # 2 "Source/music/music.c" 2
 
 # 1 "Source/music\\../timer/timer.h" 1
 # 14 "Source/music\\../timer/timer.h"
-# 1 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 1
-# 41 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
+# 1 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 1
+# 41 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 typedef enum IRQn
 {
 
@@ -135,7 +123,7 @@ typedef enum IRQn
   USBActivity_IRQn = 33,
   CANActivity_IRQn = 34,
 } IRQn_Type;
-# 106 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
+# 106 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 # 1 "./Source/CMSIS_core\\core_cm3.h" 1
 # 29 "./Source/CMSIS_core\\core_cm3.h" 3
 
@@ -143,8 +131,8 @@ typedef enum IRQn
 
 
 
-# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdint.h" 1 3
-# 56 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdint.h" 3
+# 1 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdint.h" 1 3
+# 56 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdint.h" 3
 typedef signed char int8_t;
 typedef signed short int int16_t;
 typedef signed int int32_t;
@@ -1045,9 +1033,9 @@ static __inline int32_t ITM_CheckChar (void)
     return (1);
   }
 }
-# 107 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 2
-# 1 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\system_LPC17xx.h" 1
-# 49 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\system_LPC17xx.h"
+# 107 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 2
+# 1 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\system_LPC17xx.h" 1
+# 49 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\system_LPC17xx.h"
 extern uint32_t SystemCoreClock;
 
 
@@ -1064,8 +1052,8 @@ extern void SystemInit (void);
 
 
 extern void SystemCoreClockUpdate (void);
-# 108 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 2
-# 120 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
+# 108 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 2
+# 120 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 typedef struct
 {
   volatile uint32_t FLASHCFG;
@@ -1890,45 +1878,3 @@ BOOL isNotePlaying(void)
 {
  return ((((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->TCR != 0) || (((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->TCR != 0));
 }
-
-static NOTE* current_sound;
-static int current_sound_length = 0;
-
-void playSoundEffect(NOTE* sound, int length) {
-    current_sound = sound;
-    current_sound_length = length;
-}
-
-NOTE pacman_wakka[] = {
-    {e4, time_semibiscroma},
-    {pause, time_semibiscroma}
-};
-
-NOTE power_pill_sound[] = {
-    {b4, time_semicroma},
-    {e4, time_semicroma},
-    {b4, time_semicroma}
-};
-
-NOTE death_sound[] = {
-    {b4, time_semicroma},
-    {b3, time_semicroma},
-    {a3, time_semicroma},
-    {g3, time_semicroma},
-    {f3, time_semiminima},
-    {pause, time_semicroma}
-};
-
-NOTE game_start[] = {
-    {c4, time_semicroma},
-    {e4, time_semicroma},
-    {g4, time_semicroma},
-    {c5, time_semiminima}
-};
-
-NOTE victory_sound[] = {
-    {c4, time_semicroma},
-    {e4, time_semicroma},
-    {g4, time_semicroma},
-    {c5, time_semicroma},
-};

@@ -83,12 +83,41 @@ static const char mazeDef[ROWS][COLS+1] = {
 };
 
 
+
+NOTE pacman_wakka[] = {
+    {e4, time_semibiscroma},
+    {pause, time_semibiscroma}
+};
+
+NOTE power_pill_sound[] = {
+    {b4, time_semicroma},
+    {e4, time_semicroma},
+    {b4, time_semicroma}
+};
+
+
+
+NOTE game_start[] = {
+    {c4, time_semicroma},
+    {e4, time_semicroma},
+    {g4, time_semicroma},
+    {c5, time_semiminima}
+};
+
+NOTE victory_sound[] = {
+    {c4, time_semicroma},
+    {e4, time_semicroma},
+    {g4, time_semicroma},
+    {c5, time_semicroma}
+};
+
 // // Pac-Man starting position 
 int pacmanRow = 1;
 int pacmanCol = 1;
 
 volatile int pacmanDirRow=0;
 volatile int pacmanDirCol=0;
+int lastLifeMilestone = 0; // Tracks the last score milestone where a life was added
 
 
 // forward declarations
@@ -98,28 +127,21 @@ void drawPill(int row, int col, int offsetX, int offsetY, uint16_t color, int pi
 void initMazeGrid(void);
 void drawMazeFromGrid(int offsetX, int offsetY);
 
-void replace_zero(char *str) {
-  int i;  
-	for (i = 0; str[i] != '\0'; i++) {
-        if (str[i] == '0') {
-            str[i] = 'O'; // Replace '0' with 'O' (capital letter O)
-        }
-    }
-}
+
 // Draw Score, Time, Lives
 void drawUI(void) {
-    char buffer[20];
+    char buffer[40];
 
     sprintf(buffer, "SCORE: %4d", score);
-		replace_zero(buffer);
+	//	replace_zero(buffer);
     GUI_Text(10, 0, (uint8_t *)buffer, White, Black);
 
     sprintf(buffer, "TIME: %2d", countdown);
-		replace_zero(buffer);
+	//	replace_zero(buffer);
     GUI_Text(240 - 100, 0, (uint8_t *)buffer, White, Black);
 
     sprintf(buffer, "LIVES: %d", lives);
-		replace_zero(buffer);
+	//	replace_zero(buffer);
     GUI_Text(10, 320 - 15, (uint8_t *)buffer, White, Black);
 }
 
@@ -290,11 +312,12 @@ bool movePacMan(void){
 		// Here we also check if we have won
 		if(pillsEaten >= pillCount){
 				GUI_Text((240/2)-30, (320/2)-10, (uint8_t *)"Victory!", Yellow, Black);
-				
 				// Stop the game
 				gamePaused=true;
 				disable_RIT();      // 
-				disable_timer(0);   // so countdown stops, etc.
+				disable_timer(2);   // so countdown stops, etc.
+				disable_timer(0);
+				disable_timer(3);
 				NVIC_DisableIRQ(EINT0_IRQn);
 				return false;
 		}
@@ -305,7 +328,7 @@ bool movePacMan(void){
         pacmanCol = 0;
         // Check if there's a pill at the new position
         if(mazeGrid[pacmanRow][pacmanCol] == PILL) {
-				    playSoundEffect(pacman_wakka, sizeof(pacman_wakka)/sizeof(pacman_wakka[0]));	
+				    
             score += 10;
 						pillsEaten++;
             mazeGrid[pacmanRow][pacmanCol] = EMPTY;
@@ -314,7 +337,6 @@ bool movePacMan(void){
 						pillsEaten++;
             mazeGrid[pacmanRow][pacmanCol] = EMPTY;
 						ghostFrightenedMode();
-				    playSoundEffect(power_pill_sound, sizeof(power_pill_sound)/sizeof(power_pill_sound[0]));
         }
         drawPacMan(pacmanRow, pacmanCol, offsetX, offsetY);
         drawUI();
@@ -344,20 +366,23 @@ bool movePacMan(void){
         if (pacmanRow != newRow || pacmanCol != newCol) {
             // Check for pills before moving
             if(mazeGrid[newRow][newCol] == PILL) {
+								playSoundEffect(pacman_wakka, sizeof(pacman_wakka) / sizeof(pacman_wakka[0]));
                 score += 10;
 								pillsEaten++;
                 mazeGrid[newRow][newCol] = EMPTY;
             } else if(mazeGrid[newRow][newCol] == POWER_PILL) {
+								playSoundEffect(power_pill_sound, sizeof(power_pill_sound) / sizeof(power_pill_sound[0]));
                 score += 50;
 								pillsEaten++;
                 mazeGrid[newRow][newCol] = EMPTY;
 								ghostFrightenedMode();
             }
 						
-						// check for extra lives
-						if(score>0 && score%1000==0){
-							lives++;
-							drawUI();
+						// Check for extra lives
+						if (score >= lastLifeMilestone + 1000) {
+								lives += 1;
+								lastLifeMilestone += 1000;
+								drawUI(); // Update the UI with the new life count
 						}
             
             fillCell(pacmanRow, pacmanCol, offsetX, offsetY, Black); // Clear old position
@@ -375,7 +400,6 @@ bool movePacMan(void){
     return false;
 }
 
-
 int main(void) {
 
     SystemInit();   
@@ -383,14 +407,12 @@ int main(void) {
     TP_Init();
 		BUTTON_init();
     LCD_Clear(Black);
-		//init_RIT(0x01538400); // 300ms for board
-	  init_RIT(0x004C4B40);	// 50ms
+		init_RIT(0x01538400); // 300ms for board
+	  //init_RIT(0x004C4B40);	// 50ms
 		//init_RIT(0x000F4240 );	// 10ms for emulator 
 		enable_RIT();
 
     joystick_init(); // NEW: Initialize joystick
-		
-		
 		
 		offsetX = (240 - (COLS * CELL_WIDTH)) / 2; 
     offsetY = (320 - (ROWS * CELL_HEIGHT)) / 2;
@@ -404,9 +426,8 @@ int main(void) {
 
     // ready message
     GUI_Text((240/2)-23, (320/2)-10, (uint8_t *)"READY", Yellow, Black);
-		playSoundEffect(game_start, sizeof(game_start)/sizeof(game_start[0]));
     //init_timer(0, 0x00B6F1A0); // for board
-		init_timer(2, 0x1312D0); // for emulator 
+		init_timer(2, 0x17D7840); // for emulator. matches the actual seconds in a clock.
 		
 		
     //enable_timer(0);
@@ -416,9 +437,10 @@ int main(void) {
     pacmanDirRow = 0;
     pacmanDirCol = 0;
 
-		init_timer(3, 0x1312D0); // Adjust this value based on your desired music timing
-		enable_timer(3);
+		init_timer(3, 0x004C4B40); // Adjust this value based on your desired music timing
 
+
+		
 		LPC_SC->PCON |= 0x1;  /* Enter power-down mode */
     LPC_SC->PCON &= ~(0x2);
 

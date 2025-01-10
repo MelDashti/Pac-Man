@@ -6,8 +6,8 @@
 # 1 "<built-in>" 2
 # 1 "Source/timer/lib_timer.c" 2
 # 10 "Source/timer/lib_timer.c"
-# 1 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 1
-# 41 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
+# 1 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 1
+# 41 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 typedef enum IRQn
 {
 
@@ -59,7 +59,7 @@ typedef enum IRQn
   USBActivity_IRQn = 33,
   CANActivity_IRQn = 34,
 } IRQn_Type;
-# 106 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
+# 106 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 # 1 "./Source/CMSIS_core\\core_cm3.h" 1
 # 29 "./Source/CMSIS_core\\core_cm3.h" 3
 
@@ -67,8 +67,8 @@ typedef enum IRQn
 
 
 
-# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdint.h" 1 3
-# 56 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdint.h" 3
+# 1 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdint.h" 1 3
+# 56 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdint.h" 3
 typedef signed char int8_t;
 typedef signed short int int16_t;
 typedef signed int int32_t;
@@ -969,9 +969,9 @@ static __inline int32_t ITM_CheckChar (void)
     return (1);
   }
 }
-# 107 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 2
-# 1 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\system_LPC17xx.h" 1
-# 49 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\system_LPC17xx.h"
+# 107 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 2
+# 1 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\system_LPC17xx.h" 1
+# 49 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\system_LPC17xx.h"
 extern uint32_t SystemCoreClock;
 
 
@@ -988,8 +988,8 @@ extern void SystemInit (void);
 
 
 extern void SystemCoreClockUpdate (void);
-# 108 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 2
-# 120 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
+# 108 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 2
+# 120 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 typedef struct
 {
   volatile uint32_t FLASHCFG;
@@ -1846,18 +1846,6 @@ typedef struct
 
 void playNote(NOTE note);
 BOOL isNotePlaying(void);
-// Remove the initializers
-
-
-
-
-
-
-extern NOTE pacman_wakka[2];
-extern NOTE power_pill_sound[3];
-extern NOTE death_sound[6];
-extern NOTE game_start[4];
-extern NOTE victory_sound[5];
 # 14 "Source/timer\\timer.h" 2
 
 
@@ -1994,7 +1982,7 @@ unsigned int init_timer ( char timer_num, unsigned int TimerInterval )
  ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x04000) )->MCR = 3;
 // </h>
 // <<< end of configuration section >>>
-
+ __NVIC_SetPriority(TIMER0_IRQn, 2);
  __NVIC_EnableIRQ(TIMER0_IRQn);
  return (1);
   }
@@ -2004,18 +1992,23 @@ unsigned int init_timer ( char timer_num, unsigned int TimerInterval )
  ((LPC_TIM_TypeDef *) ((0x40000000UL) + 0x08000) )->MCR = 7;
 
  __NVIC_EnableIRQ(TIMER1_IRQn);
+
  return (1);
   }
  else if (timer_num == 2){
+  ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->PCONP |= (1 << 22);
   ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x10000) )->MR0 = TimerInterval;
   ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x10000) )->MCR = 3; // Like timer 0: Interrupt and reset on MR0
   __NVIC_EnableIRQ(TIMER2_IRQn);
+
   return(1);
  }
  else if (timer_num == 3){
+  ((LPC_SC_TypeDef *) ((0x40080000UL) + 0x7C000) )->PCONP |= (1 << 23);
   ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x14000) )->MR0 = TimerInterval;
-  ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x14000) )->MCR = 7; // Like timer 1: Interrupt, reset and stop on MR0
+  ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x14000) )->MCR = 3; // keeps firing interrupts at the desired interval
     __NVIC_EnableIRQ(TIMER3_IRQn);
+  __NVIC_SetPriority(TIMER3_IRQn, 1);
   return(1);
  }
   return (0);

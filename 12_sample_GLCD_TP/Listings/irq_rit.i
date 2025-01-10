@@ -5,8 +5,8 @@
 # 1 "<command line>" 1
 # 1 "<built-in>" 2
 # 1 "Source/RIT/IRQ_RIT.c" 2
-# 1 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 1
-# 41 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
+# 1 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 1
+# 41 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 typedef enum IRQn
 {
 
@@ -58,7 +58,7 @@ typedef enum IRQn
   USBActivity_IRQn = 33,
   CANActivity_IRQn = 34,
 } IRQn_Type;
-# 106 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
+# 106 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 # 1 "./Source/CMSIS_core\\core_cm3.h" 1
 # 29 "./Source/CMSIS_core\\core_cm3.h" 3
 
@@ -66,8 +66,8 @@ typedef enum IRQn
 
 
 
-# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdint.h" 1 3
-# 56 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdint.h" 3
+# 1 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdint.h" 1 3
+# 56 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdint.h" 3
 typedef signed char int8_t;
 typedef signed short int int16_t;
 typedef signed int int32_t;
@@ -968,9 +968,9 @@ static __inline int32_t ITM_CheckChar (void)
     return (1);
   }
 }
-# 107 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 2
-# 1 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\system_LPC17xx.h" 1
-# 49 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\system_LPC17xx.h"
+# 107 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 2
+# 1 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\system_LPC17xx.h" 1
+# 49 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\system_LPC17xx.h"
 extern uint32_t SystemCoreClock;
 
 
@@ -987,8 +987,8 @@ extern void SystemInit (void);
 
 
 extern void SystemCoreClockUpdate (void);
-# 108 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 2
-# 120 "C:/Users/meela/AppData/Local/Arm/Packs/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
+# 108 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h" 2
+# 120 "C:/Keil_v5/ARM/PACK/Keil/LPC1700_DFP/2.7.1/Device/Include\\LPC17xx.h"
 typedef struct
 {
   volatile uint32_t FLASHCFG;
@@ -1796,7 +1796,7 @@ void GUI_Text(uint16_t Xpos, uint16_t Ypos, uint8_t *str,uint16_t Color, uint16_
 
 
 
-# 1 "C:\\Users\\meela\\AppData\\Local\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
+# 1 "C:\\Keil_v5\\ARM\\ARMCLANG\\bin\\..\\include\\stdbool.h" 1 3
 # 5 "./Source\\Ghost/ghost.h" 2
 
 // ghost structure
@@ -1902,18 +1902,6 @@ typedef struct
 
 void playNote(NOTE note);
 BOOL isNotePlaying(void);
-// Remove the initializers
-
-
-
-
-
-
-extern NOTE pacman_wakka[2];
-extern NOTE power_pill_sound[3];
-extern NOTE death_sound[6];
-extern NOTE game_start[4];
-extern NOTE victory_sound[5];
 # 8 "Source/RIT/IRQ_RIT.c" 2
 
 // here we define the shared variable
@@ -1926,7 +1914,64 @@ extern volatile _Bool gamePaused;
 extern volatile _Bool gameOver;
 extern int offsetX;
 extern int offsetY;
+//SHORTENING UNDERTALE: TOO MANY REPETITIONS
+NOTE song[] =
+{
+ // 1
+ {d3, time_semicroma},
+ {d3, time_semicroma},
+ {d4, time_croma},
+ {a3, time_croma},
+ {pause, time_semicroma},
+ {a3b, time_semicroma},
+ {pause, time_semicroma},
+ {g3, time_croma},
+ {f3, time_semicroma*2},
+ {d3, time_semicroma},
+ {f3, time_semicroma},
+ {g3, time_semicroma},
+ // 2
+ {c3, time_semicroma},
+ {c3, time_semicroma},
+ {d4, time_croma},
+ {a3, time_croma},
+ {pause, time_semicroma},
+ {a3b, time_semicroma},
+ {pause, time_semicroma},
+ {g3, time_croma},
+ {f3, time_semicroma*2},
+ {d3, time_semicroma},
+ {f3, time_semicroma},
+ {g3, time_semicroma},
+ // 3
+ {c3b, time_semicroma},
+ {c3b, time_semicroma},
+ {d4, time_croma},
+ {a3, time_croma},
+ {pause, time_semicroma},
+ {a3b, time_semicroma},
+ {pause, time_semicroma},
+ {g3, time_croma},
+ {f3, time_semicroma*2},
+ {d3, time_semicroma},
+ {f3, time_semicroma},
+ {g3, time_semicroma},
+ // 4
+ {a2b, time_semicroma},
+ {a2b, time_semicroma},
+ {d4, time_croma},
+ {a3, time_croma},
+ {pause, time_semicroma},
+ {a3b, time_semicroma},
+ {pause, time_semicroma},
+ {g3, time_croma},
+ {f3, time_semicroma*2},
+ {d3, time_semicroma},
+ {f3, time_semicroma},
+ {g3, time_semicroma},
+ // 5
 
+};
 
 void RIT_IRQHandler (void)
 {
@@ -1941,10 +1986,11 @@ void RIT_IRQHandler (void)
                 gamePaused = !gamePaused; // Toggle pause state
 
                 if (gamePaused) {
-          enable_timer(3);
+          disable_timer(3);
                     // Display "PAUSE" text
                     GUI_Text((240 / 2) - 23, (320 / 2) - 10, (uint8_t *)"PAUSE", 0xFFE0, 0x0000);
                     disable_timer(2); // Pause the game timer
+
                 } else {
                     // Clear "PAUSE" text
           int x, y;
@@ -1954,6 +2000,9 @@ void RIT_IRQHandler (void)
                         }
                     }
                     enable_timer(2); // Resume the game timer
+          enable_timer(3);
+          playBackgroundMusic(song, sizeof(song) / sizeof(song[0]));
+
                 }
             }
         } else { // Button released
@@ -1970,6 +2019,7 @@ void RIT_IRQHandler (void)
 
     // Handle joystick input
     if (!gamePaused) {
+
         int upPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 29)); // Joystick UP
         int downPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 26)); // Joystick DOWN
         int leftPressed = !(((LPC_GPIO_TypeDef *) ((0x2009C000UL) + 0x00020) )->FIOPIN & (1 << 27)); // Joystick LEFT

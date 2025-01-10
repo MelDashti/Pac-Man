@@ -159,7 +159,7 @@ unsigned int init_timer ( char timer_num, unsigned int TimerInterval )
 	LPC_TIM0->MCR = 3;
 // </h>
 // <<< end of configuration section >>>    
-
+	NVIC_SetPriority(TIMER0_IRQn, 2);
 	NVIC_EnableIRQ(TIMER0_IRQn);
 	return (1);
   }
@@ -169,18 +169,23 @@ unsigned int init_timer ( char timer_num, unsigned int TimerInterval )
 	LPC_TIM1->MCR = 7;				/* Interrupt reset and stop on MR1 */
 
 	NVIC_EnableIRQ(TIMER1_IRQn);
+
 	return (1);
   }
 	else if (timer_num == 2){
+		LPC_SC->PCONP |= (1 << 22);  	
 		LPC_TIM2->MR0 = TimerInterval;
 		LPC_TIM2->MCR = 3;          // Like timer 0: Interrupt and reset on MR0
 		NVIC_EnableIRQ(TIMER2_IRQn);
+		
 		return(1);
 	}
 	else if (timer_num == 3){
+		LPC_SC->PCONP |= (1 << 23); 
 		LPC_TIM3->MR0 = TimerInterval;
-		LPC_TIM3->MCR = 7;          // Like timer 1: Interrupt, reset and stop on MR0
+		LPC_TIM3->MCR = 3;          // keeps firing interrupts at the desired interval
     NVIC_EnableIRQ(TIMER3_IRQn);
+		NVIC_SetPriority(TIMER3_IRQn, 1);
 		return(1);
 	}
   return (0);

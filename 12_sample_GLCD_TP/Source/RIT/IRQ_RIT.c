@@ -16,7 +16,64 @@ extern volatile bool gamePaused;
 extern volatile bool gameOver;
 extern int offsetX;
 extern int offsetY;
-
+//SHORTENING UNDERTALE: TOO MANY REPETITIONS
+NOTE song[] = 
+{
+	// 1
+	{d3, time_semicroma},
+	{d3, time_semicroma},
+	{d4, time_croma},
+	{a3, time_croma},
+	{pause, time_semicroma},
+	{a3b, time_semicroma},
+	{pause, time_semicroma},
+	{g3, time_croma},
+	{f3, time_semicroma*2},
+	{d3, time_semicroma},
+	{f3, time_semicroma},
+	{g3, time_semicroma},
+	// 2
+	{c3, time_semicroma},
+	{c3, time_semicroma},
+	{d4, time_croma},
+	{a3, time_croma},
+	{pause, time_semicroma},
+	{a3b, time_semicroma},
+	{pause, time_semicroma},
+	{g3, time_croma},
+	{f3, time_semicroma*2},
+	{d3, time_semicroma},
+	{f3, time_semicroma},
+	{g3, time_semicroma},
+	// 3
+	{c3b, time_semicroma},
+	{c3b, time_semicroma},
+	{d4, time_croma},
+	{a3, time_croma},
+	{pause, time_semicroma},
+	{a3b, time_semicroma},
+	{pause, time_semicroma},
+	{g3, time_croma},
+	{f3, time_semicroma*2},
+	{d3, time_semicroma},
+	{f3, time_semicroma},
+	{g3, time_semicroma},
+	// 4
+	{a2b, time_semicroma},
+	{a2b, time_semicroma},
+	{d4, time_croma},
+	{a3, time_croma},
+	{pause, time_semicroma},
+	{a3b, time_semicroma},
+	{pause, time_semicroma},
+	{g3, time_croma},
+	{f3, time_semicroma*2},
+	{d3, time_semicroma},
+	{f3, time_semicroma},
+	{g3, time_semicroma},
+	// 5
+	
+};
 
 void RIT_IRQHandler (void)
 {
@@ -31,10 +88,11 @@ void RIT_IRQHandler (void)
                 gamePaused = !gamePaused;  // Toggle pause state
 
                 if (gamePaused) {
-										enable_timer(3);
+										disable_timer(3);
                     // Display "PAUSE" text
                     GUI_Text((240 / 2) - 23, (320 / 2) - 10, (uint8_t *)"PAUSE", Yellow, Black);
                     disable_timer(2);  // Pause the game timer
+										
                 } else {
                     // Clear "PAUSE" text
 										int x, y;
@@ -44,6 +102,9 @@ void RIT_IRQHandler (void)
                         }
                     }
                     enable_timer(2);  // Resume the game timer
+										enable_timer(3);
+										playBackgroundMusic(song, sizeof(song) / sizeof(song[0]));
+
                 }
             }
         } else {  // Button released
@@ -60,6 +121,7 @@ void RIT_IRQHandler (void)
 
     // Handle joystick input
     if (!gamePaused) {
+			
         int upPressed    = !(LPC_GPIO1->FIOPIN & (1 << 29));  // Joystick UP
         int downPressed  = !(LPC_GPIO1->FIOPIN & (1 << 26));  // Joystick DOWN
         int leftPressed  = !(LPC_GPIO1->FIOPIN & (1 << 27));  // Joystick LEFT

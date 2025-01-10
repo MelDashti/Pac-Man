@@ -2,7 +2,7 @@
 #include "GLCD/GLCD.h"
 #include <stdlib.h>
 #include <stdbool.h>
-
+#include <music/music.h>
 // external variables
 #define ROWS 29
 #define COLS 28
@@ -23,6 +23,15 @@ extern int offsetY;
 #define CELL_HEIGHT 10
 Ghost blinky;
 
+
+NOTE death_sound[] = {
+    {b4, time_semicroma},
+    {b3, time_semicroma},
+    {a3, time_semicroma},
+    {g3, time_semicroma},
+    {f3, time_semiminima},
+    {pause, time_semicroma}
+};
 
 // For BFS we store row/col in a queue
 typedef struct {
@@ -101,6 +110,8 @@ void ghostFrightenedMode(void){
 		blinky.frightenedTimer = 10;
 }
 
+
+
 void updateGhost(void) 
 {
     if (!blinky.isActive || gamePaused) {
@@ -158,13 +169,34 @@ void updateGhost(void)
             lives--;
             if (lives <= 0) {
                 gamePaused = true;
+								playSoundEffect(death_sound, sizeof(death_sound) / sizeof(death_sound[0]));
+
+								// Stop the game
+								gamePaused=true;
+								disable_RIT();      // 
+								disable_timer(2);   // so countdown stops, etc.
+								disable_timer(0);
+								disable_timer(3);
+								NVIC_DisableIRQ(EINT0_IRQn);
                 GUI_Text((240/2)-40, (320/2)-10, (uint8_t *)"GAME OVER!", Red, Black);
+								
             } else {
-                pacmanRow = 1;
-                pacmanCol = 1;
-                blinky.row = 13;
-                blinky.col = 14;
-            }
+								// Clear the ghost's current position before moving it
+								fillCell(blinky.row, blinky.col, offsetX, offsetY, Black);
+								
+								// Reset positions
+								pacmanRow = 1;
+								pacmanCol = 1;
+								blinky.row = 13;
+								blinky.col = 14;
+								
+								// Reset the underlying cell value
+								blinky.underlyingCell = EMPTY;
+								playSoundEffect(death_sound, sizeof(death_sound) / sizeof(death_sound[0]));
+
+								// Redraw the ghost in its new position
+								drawGhost(offsetX, offsetY);
+}
         }
     }
 }
