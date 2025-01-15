@@ -1845,7 +1845,7 @@ void CAN_wrMsg (uint32_t ctrl, CAN_msg *msg);
 void CAN_rdMsg (uint32_t ctrl, CAN_msg *msg);
 void CAN_wrFilter (uint32_t ctrl, uint32_t id, uint8_t filter_type);
 void CAN_Init (void);
-
+void send_values_CAN(void);
 extern CAN_msg CAN_TxMsg;
 extern CAN_msg CAN_RxMsg;
 # 18 "Source/CAN/IRQ_CAN.c" 2
@@ -1864,7 +1864,11 @@ extern uint8_t icr ; //icr and result must be global in order to work with both 
 extern uint32_t result;
 extern CAN_msg CAN_TxMsg;
 extern CAN_msg CAN_RxMsg;
-
+extern volatile gameOver;
+extern volatile int countdown;
+extern volatile int score;
+extern volatile int lives;
+extern void drawUI(void);
 static int puntiRicevuti1 = 0;
 static int puntiInviati1 = 0;
 
@@ -1879,53 +1883,53 @@ uint16_t val_RxCoordY = 0;
 
 void CAN_IRQHandler (void) {
 
-
- icr = 0;
+  icr = 0;
   icr = (((LPC_CAN_TypeDef *) ((0x40000000UL) + 0x44000) )->ICR | icr) & 0xFF;
 
   if (icr & (1 << 0)) {
-  CAN_rdMsg (1, &CAN_RxMsg);
+    CAN_rdMsg (1, &CAN_RxMsg);
     ((LPC_CAN_TypeDef *) ((0x40000000UL) + 0x44000) )->CMR = (1 << 2);
-
-  val_RxCoordX = (CAN_RxMsg.data[0] << 8) ;
-  val_RxCoordX = val_RxCoordX | CAN_RxMsg.data[1];
-
-  val_RxCoordY = (CAN_RxMsg.data[2] << 8);
-  val_RxCoordY = val_RxCoordY | CAN_RxMsg.data[3];
-
-  display.x = val_RxCoordX;
-  display.y = val_RxCoordY-140;
-  TP_DrawPoint_Magnifier(&display);
-
-  puntiRicevuti1++;
   }
- if (icr & (1 << 1)) {
-  // do nothing in this example
-  puntiInviati1++;
- }
+  if (icr & (1 << 1)) {
+    // do nothing in this example
+  }
 
 
- icr = 0;
- icr = (((LPC_CAN_TypeDef *) ((0x40000000UL) + 0x48000) )->ICR | icr) & 0xFF;
-
- if (icr & (1 << 0)) {
-  CAN_rdMsg (2, &CAN_RxMsg);
+  icr = 0;
+  icr = (((LPC_CAN_TypeDef *) ((0x40000000UL) + 0x48000) )->ICR | icr) & 0xFF;
+  if (icr & (1 << 0)) {
+    CAN_rdMsg (2, &CAN_RxMsg);
     ((LPC_CAN_TypeDef *) ((0x40000000UL) + 0x48000) )->CMR = (1 << 2);
 
-  val_RxCoordX = (CAN_RxMsg.data[0] << 8) ;
-  val_RxCoordX = val_RxCoordX | CAN_RxMsg.data[1];
+    uint8_t time = (uint8_t) CAN_RxMsg.data[0] ;
+    uint8_t lifes = (uint8_t) CAN_RxMsg.data[1] ;
+    uint16_t score = (uint16_t) ( (uint8_t) CAN_RxMsg.data[2] << 8 ) | (uint8_t) CAN_RxMsg.data[3] ;
 
-  val_RxCoordY = (CAN_RxMsg.data[2] << 8);
-  val_RxCoordY = val_RxCoordY | CAN_RxMsg.data[3];
+    if(!gameOver){
+      drawUI();
+    }
+  }
+  if (icr & (1 << 1)) {
+    // do nothing in this example
+  }
+}
 
-  display.x = val_RxCoordX;
-  display.y = val_RxCoordY+140;
-  TP_DrawPoint_Magnifier(&display);
+void send_values_CAN(){
+  uint8_t buffer[4];
 
-  puntiRicevuti2++;
- }
- if (icr & (1 << 1)) {
-  // do nothing in this example
-  puntiInviati2++;
- }
+  buffer[0] = (uint8_t) countdown;
+  buffer[1] = (uint8_t) lives;
+  buffer[2] = (uint8_t) ( ( score & 0xFF00 ) >> 8);
+  buffer[3] = (uint8_t) ( score & 0xFF);
+
+  int i;
+  for(i = 0; i<4; i++){
+    CAN_TxMsg.data[i] = buffer[i];
+  }
+
+  CAN_TxMsg.id = 2;
+  CAN_TxMsg.len = 4;
+  CAN_TxMsg.format = 0;
+  CAN_TxMsg.type = 0;
+  CAN_wrMsg (1, &CAN_TxMsg);
 }

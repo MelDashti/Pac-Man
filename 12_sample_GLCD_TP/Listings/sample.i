@@ -2781,8 +2781,8 @@ __attribute__((__nothrow__)) long double truncl(long double );
 
 
 int pillCount=0;
-int score = 0;
-int lives = 1;
+volatile int score = 0;
+volatile int lives = 1;
 volatile int countdown = 60; // Global for timer use
 volatile int powerPillsSpawned = 0;
 
@@ -2879,7 +2879,7 @@ void drawMazeFromGrid(int offsetX, int offsetY);
 
 
 // Draw Score, Time, Lives
-void drawUI(void) {
+void drawUI() {
     char buffer[40];
 
     sprintf(buffer, "SCORE: %4d", score);
@@ -3178,6 +3178,7 @@ int main(void) {
     GUI_Text((240/2)-23, (320/2)-10, (uint8_t *)"READY", 0xFFE0, 0x0000);
     //init_timer(0, 0x00B6F1A0); // for board
   init_timer(2, 0x17D7840); // for emulator. matches the actual seconds in a clock.
+  CAN_Init();
 
 
     //enable_timer(0);

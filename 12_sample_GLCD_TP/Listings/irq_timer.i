@@ -2368,20 +2368,40 @@ extern __attribute__((__nothrow__)) void __use_no_semihosting_swi(void);
 extern __attribute__((__nothrow__)) void __use_no_semihosting(void);
 # 17 "Source/timer/IRQ_timer.c" 2
 
+# 1 "./Source/CMSIS_core\\../CAN/CAN.h" 1
+# 26 "./Source/CMSIS_core\\../CAN/CAN.h"
+extern uint32_t result;
+extern uint8_t icr;
+
+typedef struct {
+  unsigned int id;
+  unsigned char data[8];
+  unsigned char len;
+  unsigned char format;
+  unsigned char type;
+} CAN_msg;
+
+
+void CAN_setup (uint32_t ctrl);
+void CAN_start (uint32_t ctrl);
+void CAN_waitReady (uint32_t ctrl);
+void CAN_wrMsg (uint32_t ctrl, CAN_msg *msg);
+void CAN_rdMsg (uint32_t ctrl, CAN_msg *msg);
+void CAN_wrFilter (uint32_t ctrl, uint32_t id, uint8_t filter_type);
+void CAN_Init (void);
+void send_values_CAN(void);
+extern CAN_msg CAN_TxMsg;
+extern CAN_msg CAN_RxMsg;
+# 19 "Source/timer/IRQ_timer.c" 2
+
+
 extern volatile int countdown;
 extern volatile powerPillsSpawned;
 extern volatile _Bool gamePaused;
 extern void drawUI(void);
 extern volatile gameOver;
 extern handleGhostTimer();
-# 50 "Source/timer/IRQ_timer.c"
-extern volatile int countdown;
-extern volatile powerPillsSpawned;
-extern volatile _Bool gamePaused;
-extern void drawUI(void);
-extern volatile gameOver;
-extern handleGhostTimer();
-# 65 "Source/timer/IRQ_timer.c"
+# 36 "Source/timer/IRQ_timer.c"
 uint16_t SinTable[45] = {
     410, 467, 523, 576, 627, 673, 714, 749, 778,
     799, 813, 819, 817, 807, 789, 764, 732, 694,
@@ -2418,32 +2438,28 @@ void TIMER1_IRQHandler(void) {
 
 // Game logic (moved from original Timer 0)
 void TIMER2_IRQHandler(void) {
-    // Decrement the countdown if it's greater than 0
     if (countdown > 0) {
         countdown--;
-        drawUI(); // Update the displayed countdown
+        // Instead of directly calling drawUI, send values over CAN
+       send_values_CAN();
     } else {
-        // If countdown reached 0, show "Game Over!"
         GUI_Text((240/2)-30, (320/2)-20, (uint8_t *)"GAME OVER!", 0xF800, 0x0000);
         gameOver = 1;
-        disable_timer(2); // Changed from 0 to 2 since this is now Timer 2
-        disable_RIT(0);
-    disable_timer(3);
+        disable_timer(2);
+        disable_RIT();
+        disable_timer(3);
     }
 
     if (!blinky.isChasing) {
         handleGhostTimer();
     }
 
-    // Random spawn of power pill logic
     if (!gamePaused && powerPillsSpawned < 6) {
         drawPowerPills();
     }
 
     ((LPC_TIM_TypeDef *) ((0x40080000UL) + 0x10000) )->IR = 1; // Clear interrupt flag
-    return;
 }
-
 static NOTE* currentBackgroundSong = 0; // Background song
 static NOTE* currentEffect = 0; // Sound effect buffer
 static int bgSongLength = 0; // Background song length

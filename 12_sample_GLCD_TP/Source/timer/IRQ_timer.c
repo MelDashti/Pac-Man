@@ -15,37 +15,8 @@
 #include "../TouchPanel/TouchPanel.h"
 #include <stdio.h> /*for sprintf*/
 #include <stdbool.h>
-extern volatile int countdown;
-extern volatile powerPillsSpawned;
-extern volatile bool gamePaused;
-extern void drawUI(void);
-extern volatile gameOver;
-extern handleGhostTimer();
+#include <../CAN/CAN.h>
 
-/******************************************************************************
-** Function name:		Timer0_IRQHandler
-**
-** Descriptions:		Timer/Counter 0 interrupt handler
-**
-** parameters:			None
-** Returned value:		None
-**
-******************************************************************************/
-
-/*********************************************************************************************************
-**--------------File Info---------------------------------------------------------------------------------
-** File name:           IRQ_timer.c
-** Descriptions:        functions to manage T0, T1, T2, and T3 interrupts
-** Correlated files:    timer.h
-*********************************************************************************************************/
-#include <string.h>
-#include "LPC17xx.h"
-#include "timer.h"
-#include "Ghost/ghost.h"
-#include "../GLCD/GLCD.h" 
-#include "../TouchPanel/TouchPanel.h"
-#include <stdio.h>
-#include <stdbool.h>
 
 extern volatile int countdown;
 extern volatile powerPillsSpawned;
@@ -98,32 +69,28 @@ void TIMER1_IRQHandler(void) {
 
 // Game logic (moved from original Timer 0)
 void TIMER2_IRQHandler(void) {
-    // Decrement the countdown if it's greater than 0
     if (countdown > 0) {
         countdown--;
-        drawUI(); // Update the displayed countdown
+        // Instead of directly calling drawUI, send values over CAN
+       send_values_CAN();
     } else {
-        // If countdown reached 0, show "Game Over!"
         GUI_Text((240/2)-30, (320/2)-20, (uint8_t *)"GAME OVER!", Red, Black);
         gameOver = true;
-        disable_timer(2);  // Changed from 0 to 2 since this is now Timer 2
-        disable_RIT(0);
-				disable_timer(3);
+        disable_timer(2);
+        disable_RIT();
+        disable_timer(3);
     }
     
     if (!blinky.isChasing) {
         handleGhostTimer();
     }
-        
-    // Random spawn of power pill logic 
+    
     if (!gamePaused && powerPillsSpawned < 6) {
         drawPowerPills();
     }
     
-    LPC_TIM2->IR = 1; // Clear interrupt flag
-    return;
+    LPC_TIM2->IR = 1;  // Clear interrupt flag
 }
-
 static NOTE* currentBackgroundSong = NULL; // Background song
 static NOTE* currentEffect = NULL;         // Sound effect buffer
 static int   bgSongLength = 0;             // Background song length

@@ -42,7 +42,7 @@ void CAN_wrMsg         (uint32_t ctrl, CAN_msg *msg);
 void CAN_rdMsg         (uint32_t ctrl, CAN_msg *msg);
 void CAN_wrFilter      (uint32_t ctrl, uint32_t id, uint8_t filter_type);
 void CAN_Init 				 (void);
-
+void send_values_CAN(void);
 extern CAN_msg       CAN_TxMsg;      /* CAN messge for sending */
 extern CAN_msg       CAN_RxMsg;      /* CAN message for receiving */                                
 
