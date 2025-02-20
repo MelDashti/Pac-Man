@@ -1,9 +1,9 @@
 # Pac-Man on LandTiger Board
 
+<img src="https://github.com/user-attachments/assets/dd9c6794-53af-47e7-a7ba-45bdab5abb05" alt="Pac-Man on LandTiger" width="450" height="400">
+
 ## Overview
 This project is an implementation of **Pac-Man** for the **LandTiger LPC1768 development board**, developed as part of a **Computer Architecture course**. The game follows classic Pac-Man mechanics with added features, including AI-controlled ghosts, sound effects, and CAN bus communication for score and status display.
-
-![image](https://github.com/user-attachments/assets/dd9c6794-53af-47e7-a7ba-45bdab5abb05)
 
 
 ## Features
