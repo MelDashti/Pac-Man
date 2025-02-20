@@ -72,6 +72,3 @@ This project is developed for educational purposes as part of a **Computer Archi
 ## Acknowledgments
 Special thanks to the course instructors and colleagues for feedback and insights during development.
 
----
-
-This README provides a comprehensive and professional description of the project. Feel free to update the **image path** and add any necessary details before finalizing. Let me know if you need further refinements! 🚀
