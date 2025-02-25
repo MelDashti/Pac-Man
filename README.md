@@ -8,7 +8,7 @@ This project is an implementation of **Pac-Man** for the **LandTiger LPC1768 dev
 
 ## Features
 - **Joystick-controlled Pac-Man movement**
-- **AI-driven Ghost (Blinky) with pathfinding** using the **A* algorithm**
+- **AI-driven Ghost (Blinky) with pathfinding** using the BFS algorithm**
 - **Dynamic power pill placement** and frightened mode for ghosts
 - **Sound effects and background music** using the speaker interface
 - **Game status display using CAN bus communication**
@@ -18,7 +18,7 @@ This project is an implementation of **Pac-Man** for the **LandTiger LPC1768 dev
 ## Project Specifications
 ### Game Mechanics
 - **Pac-Man navigates a maze** filled with **240 standard pills** and **6 power pills**.
-- **Ghost AI (Blinky)** actively chases Pac-Man using the **A* pathfinding algorithm**.
+- **Ghost AI (Blinky)** actively chases Pac-Man using the BFS pathfinding algorithm**.
 - **Power pills enable a frightened mode**, turning Blinky blue for 10 seconds, allowing Pac-Man to eat him for extra points.
 - The **score increases** based on the number of pills collected:
   - Standard pill: **+10 points**
@@ -33,7 +33,7 @@ This project is an implementation of **Pac-Man** for the **LandTiger LPC1768 dev
 - **Development Board**: LandTiger LPC1768
 - **Programming Language**: C
 - **IDE**: Keil µVision
-- **AI Pathfinding**: A* Algorithm for ghost movement
+- **AI Pathfinding**: BFS Algorithm for ghost movement
 - **Audio**: Speaker interface for background music and sound effects
 - **CAN Bus Communication**:
   - Displays **current score, remaining lives, and countdown timer**
@@ -57,7 +57,7 @@ This project is an implementation of **Pac-Man** for the **LandTiger LPC1768 dev
 2. **Control Pac-Man**: Use the **joystick** to navigate.
 3. **Score Points**:
    - Collect **standard pills** (+10 points) and **power pills** (+50 points).
-4. **Avoid Blinky**: The red ghost chases Pac-Man using an **A* pathfinding algorithm**.
+4. **Avoid Blinky**: The red ghost chases Pac-Man using an BFS pathfinding algorithm**.
 5. **Use Power Pills**:
    - Activates **frightened mode** (Blinky turns blue and flees).
    - Eat Blinky for **+100 points**.
